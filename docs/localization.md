@@ -59,7 +59,7 @@ navigation. CJK system font stacks do not add external font requests.
 - Each target catalog now has **3,766** keys. ICU argument/tag parity is intact.
   The seven unchanged English values are brands, technical labels and email
   examples; Japanese also retains five actual font-family names.
-- The independent editor's 123 marked HTML attributes, 35 controller labels
+- The independent editor's 130 marked HTML attributes, 35 controller labels
   plus five font labels, and 36 mobile-dock literal occurrences use the main
   message catalogs. `sync-editor-translations.mjs` generates its static modules
   during install/dev/build. Text uses `textContent` and attributes, never HTML.

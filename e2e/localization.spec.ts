@@ -241,7 +241,8 @@ for (const locale of ['en', 'zh-TW', 'ja'] as const) {
       await expect(page.locator('#empty .hint')).toHaveText(messages.directEditor.localPrivacy);
       await expect(page.locator('label').filter({ has: page.locator('#spellchk') })).toHaveText(messages.directEditor.spellingLabel);
       await expect(page.locator('label').filter({ has: page.locator('#caseSens') })).toHaveText(messages.directEditor.matchCaseLabel);
-      await expect(page.locator('label').filter({ has: page.locator('#fLine') })).toHaveText(messages.directEditor.lineSpacingLabel);
+      // The mobile dock reparents this input; its accessible name must survive.
+      await expect(page.locator('#fLine')).toHaveAttribute('aria-label', messages.directEditor.lineSpacingLabel);
       await screenshot(page, `${locale}-${device}-direct-editor-controls`);
     }
     expect(consoleErrors.filter(message => /MISSING_MESSAGE|INVALID_MESSAGE|FORMATTING_ERROR/.test(message))).toEqual([]);

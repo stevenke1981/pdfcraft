@@ -11,7 +11,8 @@
     "The independent app.js controller is recorded as an owned legacy boundary, not third-party. Five font labels preserve actual font option values.",
     "Final pixel review found an unmarked editor landing privacy notice; it is now a reviewed plain-text UI entry. Original 414 and supplemental 424 inventories remain unchanged.",
     "Unmarked HTML review: 15 additional UI labels/hints localized; editLabel was already localized by the controller, and 11 autonyms/format/direction constants retained. Label text nodes are wrapped to preserve form controls.",
-    "Split page-number and English plural-suffix fragments were combined into complete ICU labels to avoid empty catalog values; the page-number input uses a complete generic page label. Original candidate text and denominators remain intact."
+    "Split page-number and English plural-suffix fragments were combined into complete ICU labels to avoid empty catalog values; the page-number input uses a complete generic page label. Original candidate text and denominators remain intact.",
+    "Seven spacing/indent controls receive localized title and aria-label so accessible names survive mobile dock reparenting; UI text changes do not alter controls or settings."
   ],
   "entries": [
     {
@@ -22801,6 +22802,69 @@
         "category": "owned-visible",
         "messageKey": "directEditor.externalEditHint",
         "resolution": "localized"
+      },
+      {
+        "inputId": "fLine",
+        "key": "tools:editPdfText.lineSpacingLabel",
+        "kind": "title",
+        "text": "Line Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.lineSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fPara",
+        "key": "tools:editPdfText.paragraphSpacingLabel",
+        "kind": "title",
+        "text": "Paragraph Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.paragraphSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fChar",
+        "key": "tools:editPdfText.characterSpacingLabel",
+        "kind": "title",
+        "text": "Character Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.characterSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fWordSp",
+        "key": "tools:editPdfText.wordSpacingLabel",
+        "kind": "title",
+        "text": "Word Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.wordSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fHScale",
+        "key": "tools:editPdfText.horizontalScaleLabel",
+        "kind": "title",
+        "text": "Horizontal Scale %",
+        "category": "owned-visible",
+        "messageKey": "directEditor.horizontalScaleLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fFirstInd",
+        "key": "tools:editPdfText.firstLineIndentLabel",
+        "kind": "title",
+        "text": "First-line Indent",
+        "category": "owned-visible",
+        "messageKey": "directEditor.firstLineIndentLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fHangInd",
+        "key": "tools:editPdfText.hangingIndentLabel",
+        "kind": "title",
+        "text": "Hanging Indent",
+        "category": "owned-visible",
+        "messageKey": "directEditor.hangingIndentLabel",
+        "resolution": "localized"
       }
     ],
     "controllerMessages": 35,
@@ -23074,6 +23138,71 @@
         "value": "Save this image as a PNG, edit it in any app; saved changes re-import automatically",
         "category": "owned-visible",
         "messageKey": "directEditor.externalEditHint",
+        "resolution": "localized"
+      }
+    ],
+    "additionalStaticAccessibility": [
+      {
+        "inputId": "fLine",
+        "key": "tools:editPdfText.lineSpacingLabel",
+        "kind": "title",
+        "text": "Line Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.lineSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fPara",
+        "key": "tools:editPdfText.paragraphSpacingLabel",
+        "kind": "title",
+        "text": "Paragraph Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.paragraphSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fChar",
+        "key": "tools:editPdfText.characterSpacingLabel",
+        "kind": "title",
+        "text": "Character Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.characterSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fWordSp",
+        "key": "tools:editPdfText.wordSpacingLabel",
+        "kind": "title",
+        "text": "Word Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.wordSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fHScale",
+        "key": "tools:editPdfText.horizontalScaleLabel",
+        "kind": "title",
+        "text": "Horizontal Scale %",
+        "category": "owned-visible",
+        "messageKey": "directEditor.horizontalScaleLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fFirstInd",
+        "key": "tools:editPdfText.firstLineIndentLabel",
+        "kind": "title",
+        "text": "First-line Indent",
+        "category": "owned-visible",
+        "messageKey": "directEditor.firstLineIndentLabel",
+        "resolution": "localized"
+      },
+      {
+        "inputId": "fHangInd",
+        "key": "tools:editPdfText.hangingIndentLabel",
+        "kind": "title",
+        "text": "Hanging Indent",
+        "category": "owned-visible",
+        "messageKey": "directEditor.hangingIndentLabel",
         "resolution": "localized"
       }
     ]
