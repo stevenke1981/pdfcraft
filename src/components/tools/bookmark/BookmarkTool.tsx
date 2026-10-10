@@ -47,6 +47,7 @@ interface BookmarkNode {
  * Provides a visual interface for editing PDF bookmarks with PDF preview
  */
 export function BookmarkTool({ className = '' }: BookmarkToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -102,10 +103,10 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
       setIsExtractingBookmarks(false);
 
     } catch (err) {
-      setError('Failed to load PDF file.');
+      setError(tFeedback('loadFile'));
       console.error(err);
     }
-  }, []);
+  }, [tFeedback]);
 
   // Manually extract bookmarks from the current PDF
   const handleExtractBookmarks = useCallback(async () => {

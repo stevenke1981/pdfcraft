@@ -38,6 +38,7 @@ export interface OCRPDFToolProps {
 }
 
 export function OCRPDFTool({ className = '' }: OCRPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   const router = useRouter();
@@ -250,7 +251,7 @@ export function OCRPDFTool({ className = '' }: OCRPDFToolProps) {
    */
   const handleOCR = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file.');
+      setError(tFeedback('uploadPdf'));
       return;
     }
 
@@ -317,7 +318,7 @@ export function OCRPDFTool({ className = '' }: OCRPDFToolProps) {
         setStatus('error');
       }
     }
-  }, [file, languages, outputFormat, scale, pageRange, enhanceContrast]);
+  }, [file, languages, outputFormat, scale, pageRange, enhanceContrast, tFeedback]);
 
   const handleCopy = useCallback(async () => {
     if (!textPreview) return;

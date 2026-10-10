@@ -25,6 +25,7 @@ interface ToolsPageClientProps {
 
 export default function ToolsPageClient({ locale, localizedToolContent }: ToolsPageClientProps) {
   const t = useTranslations();
+  const tA11y = useTranslations('common.accessibility');
   const searchParams = useSearchParams();
   const allTools = getAllTools();
   const { favorites, isLoaded: favoritesLoaded, favoritesCount } = useFavorites();
@@ -137,13 +138,13 @@ export default function ToolsPageClient({ locale, localizedToolContent }: ToolsP
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={t('tools.search.placeholder')}
                     className="w-full pl-14 pr-12 py-4 text-lg rounded-2xl border border-[hsl(var(--color-border))] bg-[hsl(var(--color-card))] dark:bg-[hsl(var(--color-card))] text-[hsl(var(--color-foreground))] placeholder:text-[hsl(var(--color-muted-foreground))] shadow-md focus:outline-none focus:ring-4 focus:ring-[hsl(var(--color-primary)/0.15)] focus:border-[hsl(var(--color-primary))] transition-all"
-                    aria-label="Search tools"
+                    aria-label={tA11y('searchTools')}
                   />
                   {searchQuery && (
                     <button
                       onClick={handleClearSearch}
                       className="absolute right-4 top-1/2 -translate-y-1/2 p-2 hover:bg-[hsl(var(--color-muted))] rounded-full transition-colors"
-                      aria-label="Clear search"
+                      aria-label={tA11y('clearSearch')}
                     >
                       <X className="h-5 w-5 text-[hsl(var(--color-muted-foreground))]" aria-hidden="true" />
                     </button>
@@ -175,7 +176,7 @@ export default function ToolsPageClient({ locale, localizedToolContent }: ToolsP
               <div
                 className={`flex flex-wrap gap-2 ${showFilters ? 'block w-full' : 'hidden md:flex flex-1'}`}
                 role="group"
-                aria-label="Filter by category"
+                aria-label={tA11y('filterCategory')}
               >
                 {categories.map((cat) => (
                   <button

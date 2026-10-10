@@ -16,13 +16,13 @@ import type { SVGGraphicsConstructor } from '../loader-legacy';
 
 // Dynamic imports to avoid SSR issues with pdfjs-dist-legacy (which requires 'canvas' module)
 async function loadPdfjsLegacy() {
-    const module = await import('../loader-legacy');
-    return module.loadPdfjsLegacy();
+    const loader = await import('../loader-legacy');
+    return loader.loadPdfjsLegacy();
 }
 
 async function loadSVGGraphics(): Promise<SVGGraphicsConstructor> {
-    const module = await import('../loader-legacy');
-    return module.loadSVGGraphics();
+    const loader = await import('../loader-legacy');
+    return loader.loadSVGGraphics();
 }
 
 /**

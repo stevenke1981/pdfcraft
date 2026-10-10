@@ -18,6 +18,7 @@ export interface CompressPDFToolProps {
 
 export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
   const t = useTranslations('common');
+  const tErrors = useTranslations('errors');
   const tTools = useTranslations('tools');
 
   // Options
@@ -170,15 +171,15 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
       return output.result as Blob;
     }
 
-    throw new Error(output.error?.message || 'Failed to compress PDF file.');
-  }, [algorithm, quality, removeMetadata, optimizeImages, photonDpi]);
+    throw new Error(tErrors('processingFailed'));
+  }, [algorithm, quality, removeMetadata, optimizeImages, photonDpi, tErrors]);
 
   /**
    * Handle compress operation
    */
   const handleCompress = useCallback(async () => {
     if (files.length === 0) {
-      setError('Please select PDF files to compress.');
+      setError(tErrors('selectPdfFirst'));
       return;
     }
     setError(null);
@@ -190,7 +191,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
     }
     
     await startProcessing(compressProcessor);
-  }, [files.length, singleFile, pdfPageImage, startProcessing, compressProcessor]);
+  }, [files.length, singleFile, pdfPageImage, startProcessing, compressProcessor, tErrors]);
 
   /**
    * Handle download as ZIP
@@ -317,7 +318,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
             {/* Algorithm Options */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-[hsl(var(--color-muted-foreground))] uppercase tracking-wider">
-                Compression Algorithm
+                {tTools('compressPdf.algorithmLabel')}
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {(['standard', 'condense', 'photon'] as CompressionAlgorithm[]).map((alg) => (

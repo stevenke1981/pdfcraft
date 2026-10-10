@@ -23,6 +23,7 @@ interface FAQItem {
 
 export default function FAQPageClient({ locale }: FAQPageClientProps) {
   const t = useTranslations('faqPage');
+  const tA11y = useTranslations('common.accessibility');
   const tCommon = useTranslations('common');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
@@ -120,7 +121,7 @@ export default function FAQPageClient({ locale }: FAQPageClientProps) {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t('searchPlaceholder')}
                   className="w-full pl-12 pr-4 py-3 text-base rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-ring))]"
-                  aria-label="Search FAQs"
+                  aria-label={tA11y('searchFaqs')}
                 />
               </div>
             </div>

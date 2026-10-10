@@ -54,6 +54,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
   onPageChange,
   onZoomChange,
 }) => {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   
   const [zoom, setZoom] = useState(initialZoom);
@@ -105,7 +106,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
         onPageChange?.(1, pdf.numPages);
       } catch (err) {
         console.error('Failed to load PDF:', err);
-        setError('Failed to load PDF preview');
+        setError(tFeedback('loadPreview'));
       } finally {
         setIsLoading(false);
       }
@@ -118,7 +119,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
         URL.revokeObjectURL(previewUrl);
       }
     };
-  }, [file]);
+  }, [file, tFeedback]);
 
   /**
    * Render current page

@@ -35,6 +35,7 @@ export interface ExtractImagesToolProps {
  * Provides the UI for extracting images from PDF files.
  */
 export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -100,7 +101,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
      */
     const handleExtract = useCallback(async () => {
         if (files.length === 0) {
-            setError('Please add at least one PDF file.');
+            setError(tFeedback('addPdf'));
             return;
         }
 
@@ -146,7 +147,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                 setStatus('error');
             }
         }
-    }, [files, minWidth, minHeight, minSize]);
+    }, [files, minWidth, minHeight, minSize, tFeedback]);
 
     /**
      * Handle cancel operation

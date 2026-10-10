@@ -27,6 +27,7 @@ export interface PDFVectorExtractorToolProps {
 }
 
 export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -79,11 +80,11 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
 
     } catch (err) {
       console.error(err);
-      setError('Failed to load PDF file. The file structure might be encrypted or broken.');
+      setError(tFeedback('encryptedOrBroken'));
     } finally {
       setIsLoadingMetadata(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Run Vector Extraction Processor

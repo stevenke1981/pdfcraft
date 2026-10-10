@@ -460,7 +460,7 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
                   disabled={isProcessing}
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Use "all" for all pages, or specify ranges like "1-5, 8, 10-12"
+                  Use &quot;all&quot; for all pages, or specify ranges like &quot;1-5, 8, 10-12&quot;
                 </p>
               </div>
 

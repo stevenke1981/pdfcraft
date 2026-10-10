@@ -30,6 +30,7 @@ export interface AlternateMergeToolProps {
  * Perfect for combining separately scanned front and back pages.
  */
 export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -169,7 +170,7 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
    */
   const handleMerge = useCallback(async () => {
     if (files.length < 2) {
-      setError('Please add at least 2 PDF files to alternate merge.');
+      setError(tFeedback('alternateMergeMinimum'));
       return;
     }
 
@@ -214,7 +215,7 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
         setStatus('error');
       }
     }
-  }, [files, reverseSecond]);
+  }, [files, reverseSecond, tFeedback]);
 
   /**
    * Handle cancel operation

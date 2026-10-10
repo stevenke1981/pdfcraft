@@ -20,6 +20,7 @@ interface CategoryItem {
 
 export const Navigation: React.FC<NavigationProps> = ({ locale, currentPath }) => {
   const t = useTranslations('home.categories');
+  const tA11y = useTranslations('common.accessibility');
   const tCommon = useTranslations('common');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -140,7 +141,7 @@ export const Navigation: React.FC<NavigationProps> = ({ locale, currentPath }) =
     <nav 
       className="hidden md:flex items-center gap-1"
       role="navigation"
-      aria-label="Main navigation"
+      aria-label={tA11y('mainNavigation')}
       ref={dropdownRef}
     >
       {mainNavItems.map((item) => (

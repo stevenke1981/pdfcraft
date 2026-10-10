@@ -702,7 +702,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                               : hl.type === 'modified' 
                                 ? t('comparePdfs.modifiedText') 
                                 : t('comparePdfs.paragraphMovedRight')}
-                            <span className="text-zinc-400 block mt-1">"{hl.text}"</span>
+                            <span className="text-zinc-400 block mt-1">&quot;{hl.text}&quot;</span>
                           </div>
                         </div>
                       ))}
@@ -785,7 +785,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                               : hl.type === 'modified' 
                                 ? t('comparePdfs.modifiedText') 
                                 : t('comparePdfs.paragraphMovedLeft')}
-                            <span className="text-zinc-400 block mt-1">"{hl.text}"</span>
+                            <span className="text-zinc-400 block mt-1">&quot;{hl.text}&quot;</span>
                           </div>
                         </div>
                       ))}

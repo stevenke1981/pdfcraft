@@ -23,6 +23,7 @@ export interface PosterizePDFToolProps {
  * Provides the UI for posterizing PDF pages into printable tiles.
  */
 export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -62,9 +63,9 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
       setTotalPages(pdf.numPages);
     } catch (err) {
       console.error('Failed to load PDF info:', err);
-      setError('Failed to load PDF. The file may be corrupted or encrypted.');
+      setError(tFeedback('loadPdf'));
     }
-  }, []);
+  }, [tFeedback]);
 
 
   /**
@@ -118,7 +119,7 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
    */
   const handlePosterize = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
@@ -168,7 +169,7 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
         setStatus('error');
       }
     }
-  }, [file, rows, cols, pageSize, orientation, getOverlapInPoints, scalingMode, pageRange]);
+  }, [file, rows, cols, pageSize, orientation, getOverlapInPoints, scalingMode, pageRange, tFeedback]);
 
   /**
    * Handle cancel operation

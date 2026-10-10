@@ -28,6 +28,7 @@ interface PagePreview {
  * Provides the UI for reordering PDF pages with drag-and-drop functionality.
  */
 export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -107,11 +108,11 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
       setPagePreviews(previews);
     } catch (err) {
       console.error('Failed to load PDF previews:', err);
-      setError('Failed to load PDF preview. The file may be corrupted or encrypted.');
+      setError(tFeedback('previewPdf'));
     } finally {
       setIsLoadingPreviews(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Handle file selected from uploader
@@ -265,12 +266,12 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
    */
   const handleOrganize = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
     if (pageOrder.length === 0) {
-      setError('No pages to organize.');
+      setError(tFeedback('organizeEmpty'));
       return;
     }
 
@@ -310,7 +311,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
         setStatus('error');
       }
     }
-  }, [file, pageOrder]);
+  }, [file, pageOrder, tFeedback]);
 
   /**
    * Handle cancel operation

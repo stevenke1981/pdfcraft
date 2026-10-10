@@ -22,6 +22,7 @@ export interface PDFToPDFAToolProps {
  * Converts PDF files to PDF/A archival format.
  */
 export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -80,12 +81,12 @@ export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
 
     const handleConvert = useCallback(async () => {
         if (files.length === 0) {
-            setError('Please select PDF files to convert.');
+            setError(tFeedback('convertPdfs'));
             return;
         }
         setError(null);
         await startProcessing(pdfaProcessor);
-    }, [files.length, startProcessing, pdfaProcessor]);
+    }, [files.length, startProcessing, pdfaProcessor, tFeedback]);
 
     const handleDownloadZip = useCallback(async () => {
         await downloadAsZip('pdfa-files.zip');

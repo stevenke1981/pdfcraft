@@ -50,20 +50,20 @@ export const ProcessingProgress: React.FC<ProcessingProgressProps> = ({
     if (!estimatedTime || estimatedTime <= 0) return null;
     
     if (estimatedTime < 60) {
-      return `${Math.ceil(estimatedTime)}s remaining`;
+      return t('progress.secondsRemaining', { seconds: Math.ceil(estimatedTime) });
     }
     
     const minutes = Math.floor(estimatedTime / 60);
     const seconds = Math.ceil(estimatedTime % 60);
     
     if (minutes < 60) {
-      return `${minutes}m ${seconds}s remaining`;
+      return t('progress.minutesRemaining', { minutes, seconds });
     }
     
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
-    return `${hours}h ${remainingMinutes}m remaining`;
-  }, [estimatedTime]);
+    return t('progress.hoursRemaining', { hours, minutes: remainingMinutes });
+  }, [estimatedTime, t]);
 
   // Get status text
   const statusText = useMemo(() => {

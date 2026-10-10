@@ -23,6 +23,7 @@ export interface ChangePermissionsToolProps {
  * Provides the UI for changing PDF document permissions.
  */
 export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -116,7 +117,7 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
 
   const handleChangePermissions = useCallback(async () => {
     if (!file) {
-      setError('Please select a PDF file.');
+      setError(tFeedback('selectPdf'));
       return;
     }
 
@@ -201,7 +202,7 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
         setStatus('error');
       }
     }
-  }, [file, permissions, currentPassword, newUserPassword, newOwnerPassword, tTools]);
+  }, [file, permissions, currentPassword, newUserPassword, newOwnerPassword, tTools, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;

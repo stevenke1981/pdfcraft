@@ -4,7 +4,7 @@ import { ProcessingProgress } from '@/components/tools/ProcessingProgress';
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => {
+  useTranslations: () => (key: string, params?: Record<string, number>) => {
     const translations: Record<string, string> = {
       'status.idle': 'Ready',
       'status.uploading': 'Uploading',
@@ -12,8 +12,11 @@ vi.mock('next-intl', () => ({
       'status.complete': 'Complete',
       'status.error': 'Error',
       'buttons.cancel': 'Cancel',
+      'progress.secondsRemaining': '{seconds}s remaining',
+      'progress.minutesRemaining': '{minutes}m {seconds}s remaining',
+      'progress.hoursRemaining': '{hours}h {minutes}m remaining',
     };
-    return translations[key] || key;
+    return (translations[key] || key).replace(/\{(\w+)\}/g, (_, name) => String(params?.[name] ?? `{${name}}`));
   },
 }));
 

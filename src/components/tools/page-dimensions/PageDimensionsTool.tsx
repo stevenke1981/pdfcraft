@@ -25,6 +25,7 @@ type DisplayUnit = 'pt' | 'in' | 'mm';
  * Displays detailed information about each page's size, orientation, and standard size match.
  */
 export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -79,7 +80,7 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
    */
   const handleAnalyze = useCallback(async () => {
     if (!file) {
-      setError('Please select a PDF file to analyze.');
+      setError(tFeedback('analyzePdf'));
       return;
     }
 
@@ -125,7 +126,7 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
         setStatus('error');
       }
     }
-  }, [file, displayUnit]);
+  }, [file, displayUnit, tFeedback]);
 
   /**
    * Handle cancel operation

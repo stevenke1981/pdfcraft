@@ -43,6 +43,7 @@ const normalizeInputAngle = (value: string | number, fallbackValue: number = 0):
  * Includes interactive dials, smooth sliders, angle input validation, multi-selection, and elastic transitions.
  */
 export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -123,11 +124,11 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
       setSelectedPages(new Set(Array.from({ length: pdf.numPages }, (_, i) => i + 1)));
     } catch (err) {
       console.error('Failed to load PDF previews:', err);
-      setError('Failed to load PDF preview. The file may be corrupted or encrypted.');
+      setError(tFeedback('previewPdf'));
     } finally {
       setIsLoadingPreviews(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Handle file selected from uploader
@@ -421,14 +422,14 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
    */
   const handleRotate = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
     // Check if any pages have rotation
     const hasRotations = pagePreviews.some(p => p.rotation !== 0);
     if (!hasRotations) {
-      setError('Please rotate at least one page before processing.');
+      setError(tFeedback('rotateSelection'));
       return;
     }
 
@@ -478,7 +479,7 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
         setStatus('error');
       }
     }
-  }, [file, pagePreviews]);
+  }, [file, pagePreviews, tFeedback]);
 
   /**
    * Handle cancel operation

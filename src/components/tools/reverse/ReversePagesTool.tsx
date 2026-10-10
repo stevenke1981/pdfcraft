@@ -23,6 +23,7 @@ export interface ReversePagesToolProps {
  * Provides the UI for reversing page order in a PDF.
  */
 export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -52,9 +53,9 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
       setTotalPages(pdf.numPages);
     } catch (err) {
       console.error('Failed to load PDF info:', err);
-      setError('Failed to load PDF. The file may be corrupted or encrypted.');
+      setError(tFeedback('loadPdf'));
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Handle file selected from uploader
@@ -93,12 +94,12 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
    */
   const handleReverse = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
     if (totalPages < 2) {
-      setError('PDF must have at least 2 pages to reverse.');
+      setError(tFeedback('reverseMinimum'));
       return;
     }
 
@@ -137,7 +138,7 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
         setStatus('error');
       }
     }
-  }, [file, totalPages]);
+  }, [file, totalPages, tFeedback]);
 
   /**
    * Handle cancel operation

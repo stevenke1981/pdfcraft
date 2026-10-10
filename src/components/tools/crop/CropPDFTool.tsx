@@ -27,6 +27,7 @@ interface CropState {
 }
 
 export function CropPDFTool({ className = '' }: CropPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -176,9 +177,9 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
       renderPage(pdfDoc, 1);
     } catch (err) {
       console.error('Error loading PDF:', err);
-      setError('Failed to load PDF file.');
+      setError(tFeedback('loadFile'));
     }
-  }, []);
+  }, [tFeedback]);
 
   // Render PDF page to image
   const renderPage = async (pdfDoc: any, pageNum: number) => {
@@ -206,7 +207,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
 
     } catch (err) {
       console.error('Error rendering page:', err);
-      setError('Failed to render PDF page.');
+      setError(tFeedback('renderPage'));
     }
   };
 
@@ -315,7 +316,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
       // Use current page crop for ALL pages
       const cropToApply = currentCrops[state.currentPage];
       if (!cropToApply) {
-        setError('Please select a crop area.');
+        setError(tFeedback('cropArea'));
         return;
       }
       for (let i = 1; i <= state.numPages; i++) {
@@ -327,7 +328,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
       // If user only cropped page 1, should we only crop page 1?
       // Logic: Only crop pages that have data.
       if (Object.keys(currentCrops).length === 0) {
-        setError('Please crop at least one page.');
+        setError(tFeedback('cropPage'));
         return;
       }
       finalCrops = currentCrops;
@@ -357,7 +358,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
       setError(err instanceof Error ? err.message : 'Error');
       setStatus('error');
     }
-  }, [state.file, state.crops, state.currentPage, state.numPages, applyToAll]);
+  }, [state.file, state.crops, state.currentPage, state.numPages, applyToAll, tFeedback]);
 
   const isProcessing = status === 'processing';
 

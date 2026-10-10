@@ -29,6 +29,7 @@ export interface PDFToGreyscaleToolProps {
  * Converts PDF pages to greyscale.
  */
 export function PDFToGreyscaleTool({ className = '' }: PDFToGreyscaleToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -116,7 +117,7 @@ export function PDFToGreyscaleTool({ className = '' }: PDFToGreyscaleToolProps) 
    */
   const handleConvert = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file.');
+      setError(tFeedback('uploadPdf'));
       return;
     }
 
@@ -162,7 +163,7 @@ export function PDFToGreyscaleTool({ className = '' }: PDFToGreyscaleToolProps) 
         setStatus('error');
       }
     }
-  }, [file, method, scale, pageRange]);
+  }, [file, method, scale, pageRange, tFeedback]);
 
   /**
    * Handle cancel operation

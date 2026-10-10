@@ -13,6 +13,7 @@ vi.mock('next-intl', () => ({
       'fileUploader.dropToUpload': 'Drop files here',
       'fileUploader.support': 'Support',
       'fileUploader.paste': 'Paste (Ctrl+V)',
+      'fileUploader.maxFiles': `Max files: ${params?.count}`,
     };
     if (key === 'fileTooLarge') {
       return `File size exceeds ${params?.maxSize}MB limit`;

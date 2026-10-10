@@ -42,6 +42,7 @@ interface PagePreview {
  */
 export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
   const t = useTranslations('common');
+  const tErrors = useTranslations('errors');
   const tTools = useTranslations('tools');
 
   // State
@@ -138,11 +139,11 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
       setPagePreviews(previews);
     } catch (err) {
       console.error('Failed to load PDF previews:', err);
-      setError('Failed to load PDF preview. The file may be corrupted or encrypted.');
+      setError(tErrors('previewFailed'));
     } finally {
       setIsLoadingPreviews(false);
     }
-  }, []);
+  }, [tErrors]);
 
   /**
    * Parse PDF.js outline to BookmarkInfo format
@@ -332,13 +333,13 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
    */
   const handleSplit = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tErrors('selectPdfFirst'));
       return;
     }
 
     const ranges = getPageRanges();
     if (ranges.length === 0) {
-      setError('Please specify page ranges or select pages to extract.');
+      setError(tErrors('selectPageRanges'));
       return;
     }
 
@@ -360,7 +361,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || '');
+            setProgressMessage(t('status.processing'));
           }
         }
       );
@@ -383,16 +384,16 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
         setResults(resultFiles);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to split PDF file.');
+        setError(tErrors('processingFailed'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(tErrors('unknown'));
         setStatus('error');
       }
     }
-  }, [file, getPageRanges]);
+  }, [file, getPageRanges, t, tErrors]);
 
   /**
    * Handle cancel operation
@@ -564,7 +565,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                     </svg>
                   </div>
                   <span className={`text-sm font-medium text-center ${splitMode === 'every-page' ? 'text-[hsl(var(--color-primary))]' : 'text-[hsl(var(--color-foreground))]'}`}>
-                    {tTools('splitPdf.modeEveryPage')?.replace('Split All Pages into Separate Files', 'Every Page') || 'Every Page'}
+                    {tTools('splitPdf.modeEveryPage')}
                   </span>
                   {splitMode === 'every-page' && (
                     <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[hsl(var(--color-primary))] flex items-center justify-center">
@@ -730,7 +731,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                         : 'bg-[hsl(var(--color-muted))] text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted)/0.8)]'
                         }`}
                     >
-                      {tTools('splitPdf.bothSeparate') || 'Both (Separate Files)'}
+                      {tTools('splitPdf.bothSeparate')}
                     </button>
                   </div>
                   <p className="mt-2 text-xs text-[hsl(var(--color-muted-foreground))]">
@@ -751,7 +752,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-blue-800">
-                      {totalPages} Separate Files
+                      {totalPages} {tTools('splitPdf.separateFiles')}
                     </p>
                     <p className="text-xs text-blue-600 mt-0.5">
                       {tTools('splitPdf.everyPageInfo', { count: totalPages }) || 'Each page will be extracted as a separate PDF file'}
@@ -772,7 +773,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-purple-800">
-                      Visual Page Selection
+                      {tTools('splitPdf.visualSelection')}
                     </p>
                     <p className="text-xs text-purple-600 mt-0.5">
                       {tTools('splitPdf.visualInfo') || 'Click on page thumbnails below to select pages for extraction'}
@@ -797,10 +798,10 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-emerald-800">
-                            {pdfBookmarks.length} {pdfBookmarks.length === 1 ? 'Bookmark' : 'Bookmarks'} Found
+                            {tTools('splitPdf.foundBookmarks', { count: pdfBookmarks.length })}
                           </p>
                           <p className="text-xs text-emerald-600 mt-0.5">
-                            Your PDF will be split into {pdfBookmarks.length} separate files based on the bookmark structure
+                            {tTools('splitPdf.bookmarkResults', { count: pdfBookmarks.length })}
                           </p>
                         </div>
                       </div>
@@ -814,7 +815,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                           </svg>
                           <p className="text-sm font-medium text-[hsl(var(--color-foreground))]">
-                            Split Points
+                            {tTools('splitPdf.splitPoints')}
                           </p>
                         </div>
                       </div>
@@ -831,7 +832,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                                 </span>
                               </div>
                               <span className="ml-3 flex-shrink-0 px-2 py-1 rounded-md bg-[hsl(var(--color-muted)/0.4)] text-xs font-medium text-[hsl(var(--color-muted-foreground))]">
-                                Page {bookmark.pageNumber}
+                                {tTools('splitPdf.bookmarkPage', { page: bookmark.pageNumber })}
                               </span>
                             </li>
                           ))}
@@ -840,7 +841,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                       {pdfBookmarks.length > 5 && (
                         <div className="px-4 py-2 bg-[hsl(var(--color-muted)/0.2)] border-t border-[hsl(var(--color-border)/0.5)] text-center">
                           <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                            Scroll to see all {pdfBookmarks.length} bookmarks
+                            {tTools('splitPdf.scrollBookmarks', { count: pdfBookmarks.length })}
                           </p>
                         </div>
                       )}
@@ -858,7 +859,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-amber-800">
-                          No Bookmarks Found
+                          {tTools('splitPdf.noBookmarks')}
                         </p>
                         <p className="text-xs text-amber-600 mt-0.5">
                           {tTools('splitPdf.bookmarksNotice') || 'This PDF does not contain bookmarks. The entire document will be returned as a single file.'}
@@ -1019,7 +1020,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                     await saveBlobFile(zipBlob, zipName);
                   } catch (err) {
                     console.error('Failed to create ZIP:', err);
-                    setError('Failed to create ZIP file.');
+                    setError(tErrors('zipFailed'));
                   }
                 }}
                 className="w-full sm:w-auto"

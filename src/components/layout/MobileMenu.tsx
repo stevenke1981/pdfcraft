@@ -36,6 +36,7 @@ const getFocusableElements = (container: HTMLElement): HTMLElement[] => {
 
 export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, locale }) => {
   const t = useTranslations('home.categories');
+  const tA11y = useTranslations('common.accessibility');
   const tCommon = useTranslations('common');
   const menuRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -172,7 +173,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, locale 
         `}
         role="dialog"
         aria-modal="true"
-        aria-label="Mobile navigation menu"
+        aria-label={tA11y('mobileMenu')}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -193,7 +194,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, locale 
         </div>
 
         {/* Navigation */}
-        <nav className="p-4 overflow-y-auto h-[calc(100%-64px)]" aria-label="Mobile navigation">
+        <nav className="p-4 overflow-y-auto h-[calc(100%-64px)]" aria-label={tA11y('mobileNavigation')}>
           <ul className="flex flex-col gap-1">
             {mainNavItems.map((item) => (
               <li key={item.href}>

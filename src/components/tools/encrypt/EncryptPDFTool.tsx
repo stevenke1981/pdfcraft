@@ -23,6 +23,7 @@ export interface EncryptPDFToolProps {
  * All encryption is performed client-side - passwords are never transmitted.
  */
 export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -86,12 +87,12 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
 
   const handleEncrypt = useCallback(async () => {
     if (!file) {
-      setError('Please select a PDF file to encrypt.');
+      setError(tFeedback('encryptPdf'));
       return;
     }
 
     if (!userPassword && !ownerPassword) {
-      setError('Please provide at least one password.');
+      setError(tFeedback('passwordRequired'));
       return;
     }
 
@@ -137,7 +138,7 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
         setStatus('error');
       }
     }
-  }, [file, userPassword, ownerPassword, permissions]);
+  }, [file, userPassword, ownerPassword, permissions, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;

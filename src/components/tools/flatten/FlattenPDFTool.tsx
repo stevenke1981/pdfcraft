@@ -23,6 +23,7 @@ export interface FlattenPDFToolProps {
  * Converts interactive elements into static page content.
  */
 export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -76,7 +77,7 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
 
   const handleFlatten = useCallback(async () => {
     if (!file) {
-      setError('Please select a PDF file to flatten.');
+      setError(tFeedback('flattenPdf'));
       return;
     }
 
@@ -120,7 +121,7 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
         setStatus('error');
       }
     }
-  }, [file, options]);
+  }, [file, options, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;

@@ -32,6 +32,7 @@ export interface ImageToPDFToolProps {
  * Converts images to PDF with support for multiple formats.
  */
 export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -206,7 +207,7 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
    */
   const handleConvert = useCallback(async () => {
     if (files.length < 1) {
-      setError('Please add at least 1 image file.');
+      setError(tFeedback('addImage'));
       return;
     }
 
@@ -286,7 +287,7 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
         setStatus('error');
       }
     }
-  }, [files, pageSize, orientation, margin, centerImage, scaleToFit, svgScale, batchMode, imagesPerPdf]);
+  }, [files, pageSize, orientation, margin, centerImage, scaleToFit, svgScale, batchMode, imagesPerPdf, tFeedback]);
 
   /**
    * Handle cancel operation

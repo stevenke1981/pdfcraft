@@ -7,6 +7,8 @@
 
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import React, { useEffect, useState, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight, HelpCircle } from 'lucide-react';
 import { useGuidedTour, type TourStep } from '@/lib/hooks/useGuidedTour';
@@ -38,6 +40,7 @@ export const GuidedTour: React.FC<GuidedTourProps> = ({
   translations,
   autoStart = false,
 }) => {
+  const tA11y = useTranslations('common.accessibility');
   const {
     isActive,
     currentStep,
@@ -250,7 +253,7 @@ export const GuidedTour: React.FC<GuidedTourProps> = ({
         <button
           onClick={endTour}
           className="absolute top-2 right-2 p-1 text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] transition-colors"
-          aria-label="Close tour"
+          aria-label={tA11y('closeTour')}
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </button>
@@ -288,7 +291,7 @@ export const GuidedTour: React.FC<GuidedTourProps> = ({
         <div 
           className="flex justify-center gap-1 pb-3"
           role="tablist"
-          aria-label="Tour progress"
+          aria-label={tA11y('tourProgress')}
         >
           {steps.map((step, index) => (
             <button

@@ -18,6 +18,7 @@ interface CategoryPageClientProps {
 
 export default function CategoryPageClient({ locale, category, localizedToolContent }: CategoryPageClientProps) {
     const t = useTranslations();
+  const tA11y = useTranslations('common.accessibility');
     const tools = getToolsByCategory(category);
 
     // Map categories to translation keys (matching ToolsPage structure)
@@ -39,7 +40,7 @@ export default function CategoryPageClient({ locale, category, localizedToolCont
             <main className="flex-1">
                 <div className="container mx-auto px-4 pt-24 pb-8">
                     {/* Breadcrumb Navigation */}
-                    <nav aria-label="Breadcrumb" className="mb-4 flex items-center text-sm text-[hsl(var(--color-muted-foreground))] animate-in fade-in slide-in-from-top-4 duration-500 delay-100">
+                    <nav aria-label={tA11y('breadcrumb')} className="mb-4 flex items-center text-sm text-[hsl(var(--color-muted-foreground))] animate-in fade-in slide-in-from-top-4 duration-500 delay-100">
                         <Link
                             href={`/${locale}`}
                             className="flex items-center hover:text-[hsl(var(--color-primary))] transition-colors"

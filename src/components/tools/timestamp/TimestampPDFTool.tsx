@@ -30,6 +30,7 @@ const TSA_SERVERS = [
 ];
 
 export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -71,11 +72,11 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
       setTotalPages(pdf.getPageCount());
     } catch (err) {
       console.error(err);
-      setError('Failed to parse PDF metadata. The file may be corrupt.');
+      setError(tFeedback('parsePdfMetadata'));
     } finally {
       setIsLoadingMetadata(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   const handleClearFile = () => {
     setFile(null);
@@ -89,7 +90,7 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
    */
   const handleTimestampProcess = async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 

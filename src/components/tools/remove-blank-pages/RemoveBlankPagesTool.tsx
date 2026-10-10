@@ -37,6 +37,7 @@ export interface RemoveBlankPagesToolProps {
 }
 
 export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -219,7 +220,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
       .map(p => p.pageNumber);
 
     if (explicitPagesToRemove.length === pages.length) {
-      setError('Cannot remove all pages from PDF. Keep at least 1 page.');
+      setError(tFeedback('keepOne'));
       setStatus('error');
       return;
     }
@@ -250,7 +251,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
       setError(err instanceof Error ? err.message : 'Error processing PDF'); 
       setStatus('error'); 
     }
-  }, [file, pages, isPageRemoved]);
+  }, [file, pages, isPageRemoved, tFeedback]);
 
   const handleClear = () => {
     setFile(null);

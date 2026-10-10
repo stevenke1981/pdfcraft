@@ -24,6 +24,7 @@ export interface LinearizePDFToolProps {
  * to display before the entire file is downloaded.
  */
 export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -91,7 +92,7 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
    */
   const handleLinearize = useCallback(async () => {
     if (files.length === 0) {
-      setError('Please select at least one PDF file to linearize.');
+      setError(tFeedback('linearizePdf'));
       return;
     }
 
@@ -163,7 +164,7 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
         setStatus('error');
       }
     }
-  }, [files, useObjectStreams]);
+  }, [files, useObjectStreams, tFeedback]);
 
   /**
    * Handle cancel operation

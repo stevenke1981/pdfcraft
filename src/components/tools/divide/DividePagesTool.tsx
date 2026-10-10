@@ -23,6 +23,7 @@ export interface DividePagesToolProps {
  * Provides the UI for dividing PDF pages into multiple sections.
  */
 export function DividePagesTool({ className = '' }: DividePagesToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -55,9 +56,9 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
       setTotalPages(pdf.numPages);
     } catch (err) {
       console.error('Failed to load PDF info:', err);
-      setError('Failed to load PDF. The file may be corrupted or encrypted.');
+      setError(tFeedback('loadPdf'));
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Handle file selected from uploader
@@ -96,7 +97,7 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
    */
   const handleDivide = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
@@ -140,7 +141,7 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
         setStatus('error');
       }
     }
-  }, [file, divisionType]);
+  }, [file, divisionType, tFeedback]);
 
   /**
    * Handle cancel operation

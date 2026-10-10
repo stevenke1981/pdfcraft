@@ -23,6 +23,7 @@ export interface DeskewPDFToolProps {
  * Supports batch processing of multiple files with ZIP download.
  */
 export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -95,12 +96,12 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
      */
     const handleDeskew = useCallback(async () => {
         if (files.length === 0) {
-            setError('Please select PDF files to deskew.');
+            setError(tFeedback('deskewPdf'));
             return;
         }
         setError(null);
         await startProcessing(deskewProcessor);
-    }, [files.length, startProcessing, deskewProcessor]);
+    }, [files.length, startProcessing, deskewProcessor, tFeedback]);
 
     /**
      * Handle download as ZIP

@@ -26,6 +26,7 @@ export interface DeepSanitizeToolProps {
 }
 
 export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -208,12 +209,12 @@ export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
 
     } catch (err) {
       console.error(err);
-      setError('Failed to scan file metadata. Page layout catalog may be corrupt.');
+      setError(tFeedback('scanMetadata'));
       setStatus('error');
     } finally {
       setIsLoadingMetadata(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Run Sanitization Process

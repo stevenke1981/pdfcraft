@@ -23,6 +23,7 @@ export interface NUpPDFToolProps {
  * Provides the UI for creating N-Up PDF layouts.
  */
 export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -63,9 +64,9 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
       setTotalPages(pdf.numPages);
     } catch (err) {
       console.error('Failed to load PDF info:', err);
-      setError('Failed to load PDF. The file may be corrupted or encrypted.');
+      setError(tFeedback('loadPdf'));
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Handle file selected from uploader
@@ -104,7 +105,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
    */
   const handleCreateNUp = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
@@ -156,7 +157,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
         setStatus('error');
       }
     }
-  }, [file, pagesPerSheet, customCols, customRows, pageSize, orientation, layoutDirection, useMargins, addBorder, borderColor]);
+  }, [file, pagesPerSheet, customCols, customRows, pageSize, orientation, layoutDirection, useMargins, addBorder, borderColor, tFeedback]);
 
   /**
    * Handle cancel operation

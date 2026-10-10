@@ -6,34 +6,24 @@ import { useTranslations } from 'next-intl';
 import { Globe, ChevronDown, Check } from 'lucide-react';
 import { type Locale, locales, localeConfig, getLocalizedPath } from '@/lib/i18n/config';
 import { Button } from '@/components/ui/Button';
+import { getSavedClientLocale, setClientLocale } from '@/lib/locale-detector';
 
 export interface LanguageSelectorProps {
   currentLocale: Locale;
 }
 
-// Storage key for language preference
-const LANGUAGE_PREFERENCE_KEY = 'pdfcraft-language-preference';
-
 /**
  * Save language preference to localStorage
  */
 export function saveLanguagePreference(locale: Locale): void {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(LANGUAGE_PREFERENCE_KEY, locale);
-  }
+  setClientLocale(locale);
 }
 
 /**
  * Get language preference from localStorage
  */
 export function getLanguagePreference(): Locale | null {
-  if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem(LANGUAGE_PREFERENCE_KEY);
-    if (stored && locales.includes(stored as Locale)) {
-      return stored as Locale;
-    }
-  }
-  return null;
+  return getSavedClientLocale();
 }
 
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocale }) => {
@@ -43,6 +33,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocal
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const currentConfig = localeConfig[currentLocale];
@@ -64,6 +55,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocal
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        if (isOpen) triggerRef.current?.focus();
         setIsOpen(false);
         setFocusedIndex(-1);
       }
@@ -71,7 +63,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocal
 
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, []);
+  }, [isOpen]);
 
   // Focus option when focusedIndex changes
   useEffect(() => {
@@ -110,7 +102,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocal
     
     // Navigate to the new locale path
     const newPath = getLocalizedPath(pathname, locale);
-    router.push(newPath);
+    router.push(newPath + window.location.search + window.location.hash);
     
     setIsOpen(false);
     setFocusedIndex(-1);
@@ -141,6 +133,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocal
         break;
       case 'Escape':
         event.preventDefault();
+        triggerRef.current?.focus();
         setIsOpen(false);
         setFocusedIndex(-1);
         break;
@@ -154,6 +147,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocal
   return (
     <div className="relative" ref={dropdownRef}>
       <Button
+        ref={triggerRef}
         variant="ghost"
         size="sm"
         onClick={handleToggle}
@@ -174,7 +168,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocal
       {/* Dropdown */}
       {isOpen && (
         <div
-          className="absolute top-full right-0 mt-1 w-48 py-1 bg-[hsl(var(--color-background))] border border-[hsl(var(--color-border))] rounded-[var(--radius-lg)] shadow-lg z-50"
+          className="absolute top-full right-0 mt-1 w-72 max-w-[calc(100vw-2rem)] max-h-[60dvh] overflow-y-auto py-1 bg-[hsl(var(--color-background))] border border-[hsl(var(--color-border))] rounded-[var(--radius-lg)] shadow-lg z-50"
           role="listbox"
           aria-label={t('selectLanguage')}
           aria-activedescendant={focusedIndex >= 0 ? `language-option-${locales[focusedIndex]}` : undefined}
@@ -202,8 +196,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLocal
                 aria-selected={isSelected}
                 tabIndex={focusedIndex === index ? 0 : -1}
                 dir={config.direction}
+                lang={locale}
               >
-                <span className="flex items-center gap-2">
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0">
                   <span>{config.nativeName}</span>
                   <span className="text-xs text-[hsl(var(--color-muted-foreground))]">
                     ({config.name})

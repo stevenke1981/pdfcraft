@@ -17,6 +17,9 @@ vi.mock('next-intl', () => ({
         'uploadDescription': 'Drag and drop a PDF file here, or click to browse.',
         'saveDownload': 'Save & Download',
         'saveError': 'Failed to save PDF',
+        'directMode': 'Direct Content Edit',
+        'annotatorMode': 'Classic Annotator',
+        'editorLabel': 'PDF Editor',
       },
     };
     return translations[namespace]?.[key] || key;

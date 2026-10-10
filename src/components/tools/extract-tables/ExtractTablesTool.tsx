@@ -21,6 +21,7 @@ export interface ExtractTablesToolProps {
  * Extracts tables from PDF documents.
  */
 export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -63,7 +64,7 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
      */
     const handleExtract = useCallback(async () => {
         if (!file) {
-            setError('Please select a PDF file.');
+            setError(tFeedback('selectPdf'));
             return;
         }
 
@@ -97,7 +98,7 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
         } finally {
             setIsProcessing(false);
         }
-    }, [file, format, pageRange, minColumns, minRows, includePageNumbers]);
+    }, [file, format, pageRange, minColumns, minRows, includePageNumbers, tFeedback]);
 
     /**
      * Reset state

@@ -1,8 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { getAllTools } from '@/config/tools';
-import { getToolContent, toolContentEn, toolContentPl } from '@/config/tool-content';
+import { getToolContent, toolContentEn, toolContentPl, toolContentJa, toolContentZhTW } from '@/config/tool-content';
 
 describe('tool content integrity', () => {
+  it.each(['ja', 'zh-TW'] as const)('provides localized titles, introductions and help for all tools in %s', (locale) => {
+    const content = locale === 'ja' ? toolContentJa : toolContentZhTW;
+    for (const tool of getAllTools()) {
+      const entry = content[tool.id];
+      expect(entry, tool.id).toBeDefined();
+      expect(getToolContent(locale, tool.id), tool.id).toBe(entry);
+      expect(entry.title, tool.id).toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
+      expect(entry.metaDescription, tool.id).toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
+      expect(entry.description, tool.id).toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
+      expect(entry.description, tool.id).not.toBe(toolContentEn[tool.id]?.description);
+      for (const step of entry.howToUse) expect(step.description, `${tool.id}:step${step.step}`).toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
+    }
+  });
   it('provides fallback content for every configured tool to avoid 404 pages', () => {
     const missingTools = getAllTools()
       .map((tool) => tool.id)

@@ -28,6 +28,7 @@ interface PagePreview {
  * Provides the UI for rotating PDF pages by arbitrary degrees.
  */
 export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -198,7 +199,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
         // Check if any pages have rotation
         const hasRotations = pagePreviews.some(p => p.rotation !== 0);
         if (!hasRotations) {
-            setError('Please rotate at least one page before processing.');
+            setError(tFeedback('rotateSelection'));
             return;
         }
 
@@ -246,7 +247,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                 setStatus('error');
             }
         }
-    }, [file, pagePreviews, t]);
+    }, [file, pagePreviews, t, tFeedback]);
 
     /**
      * Handle cancel operation

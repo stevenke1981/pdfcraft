@@ -27,6 +27,7 @@ export interface AIPDFReflowerToolProps {
 }
 
 export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -79,11 +80,11 @@ export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
 
     } catch (err) {
       console.error(err);
-      setError('Failed to parse PDF file metadata. Ensure it is not corrupted.');
+      setError(tFeedback('metadataCorrupt'));
     } finally {
       setIsLoadingMetadata(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Run Reflow Processor

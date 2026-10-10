@@ -47,6 +47,7 @@ const customNodeStyle: React.CSSProperties = {
 };
 
 export function FormLogicDesignerTool() {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools.formLogicDesigner');
 
@@ -105,7 +106,7 @@ export function FormLogicDesignerTool() {
           setupCanvas(fieldsList);
         }
       } catch (err) {
-        setError('Failed to parse form fields from PDF.');
+        setError(tFeedback('parseForm'));
       }
     }
   };

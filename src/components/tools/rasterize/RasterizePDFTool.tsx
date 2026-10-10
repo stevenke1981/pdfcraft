@@ -21,6 +21,7 @@ export interface RasterizePDFToolProps {
  * Converts PDF pages to high-quality images.
  */
 export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -63,7 +64,7 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
      */
     const handleRasterize = useCallback(async () => {
         if (!file) {
-            setError('Please select a PDF file.');
+            setError(tFeedback('selectPdf'));
             return;
         }
 
@@ -97,7 +98,7 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
         } finally {
             setIsProcessing(false);
         }
-    }, [file, dpi, format, quality, pageRange, backgroundColor]);
+    }, [file, dpi, format, quality, pageRange, backgroundColor, tFeedback]);
 
     /**
      * Reset state

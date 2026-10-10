@@ -54,6 +54,7 @@ const VIEWER_HTML = withBasePath('/pdfjs-viewer/viewer.html');
  * Supports: draw (handwritten), type, and image signatures.
  */
 export function SignPDFTool({ className = '' }: SignPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -224,16 +225,16 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
       }
     } catch (e) {
       console.error('Could not load PDF in viewer:', e);
-      setError('Failed to load PDF in the viewer. Please try again.');
+      setError(tFeedback('viewerLoad'));
     }
-  }, [enableSignatureTools]);
+  }, [enableSignatureTools, tFeedback]);
 
   /**
    * Save signed PDF using PDF.js native save (embeds signatures into the file)
    */
   const handleSave = useCallback(async () => {
     if (!signState.viewerReady || !iframeRef.current) {
-      setError('Viewer not ready. Please wait for the PDF to load.');
+      setError(tFeedback('viewerWait'));
       return;
     }
 
@@ -245,7 +246,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
       const app = viewerWindow.PDFViewerApplication;
 
       if (!app?.pdfDocument) {
-        setError('PDF viewer not initialized.');
+        setError(tFeedback('viewerMissing'));
         setIsProcessing(false);
         return;
       }
@@ -263,7 +264,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
 
       if (pdfDocument.annotationStorage.size === 0) {
         setError(
-          'No signature found. Add a signature using the pen tool in the toolbar, then try again.'
+          tFeedback('signatureRequired')
         );
         setIsProcessing(false);
         return;
@@ -286,7 +287,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
       setError(`Failed to save signed PDF: ${msg}`);
       setIsProcessing(false);
     }
-  }, [signState.viewerReady, signState.file]);
+  }, [signState.viewerReady, signState.file, tFeedback]);
 
   /**
    * Clear and start over

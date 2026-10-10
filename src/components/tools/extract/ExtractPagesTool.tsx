@@ -28,6 +28,7 @@ interface PagePreview {
  * Provides the UI for extracting specific pages from a PDF.
  */
 export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -100,11 +101,11 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
       setPagePreviews(previews);
     } catch (err) {
       console.error('Failed to load PDF previews:', err);
-      setError('Failed to load PDF preview. The file may be corrupted or encrypted.');
+      setError(tFeedback('previewPdf'));
     } finally {
       setIsLoadingPreviews(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Handle file selected from uploader
@@ -191,12 +192,12 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
    */
   const handleExtract = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
     if (selectedPages.size === 0) {
-      setError('Please select at least one page to extract.');
+      setError(tFeedback('extractSelection'));
       return;
     }
 
@@ -238,7 +239,7 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
         setStatus('error');
       }
     }
-  }, [file, selectedPages]);
+  }, [file, selectedPages, tFeedback]);
 
   /**
    * Handle cancel operation

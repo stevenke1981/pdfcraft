@@ -30,6 +30,8 @@ export interface MergePDFToolProps {
  */
 export function MergePDFTool({ className = '' }: MergePDFToolProps) {
   const t = useTranslations('common');
+  const tErrors = useTranslations('errors');
+  const tA11y = useTranslations('common.accessibility');
   const tTools = useTranslations('tools');
   
   // State
@@ -168,7 +170,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
    */
   const handleMerge = useCallback(async () => {
     if (files.length < 2) {
-      setError('Please add at least 2 PDF files to merge.');
+      setError(tErrors('mergeMinimumFiles'));
       return;
     }
 
@@ -190,7 +192,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || '');
+            setProgressMessage(t('status.processing'));
           }
         }
       );
@@ -204,16 +206,16 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to merge PDF files.');
+        setError(tErrors('processingFailed'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(tErrors('unknown'));
         setStatus('error');
       }
     }
-  }, [files, preserveBookmarks]);
+  }, [files, preserveBookmarks, t, tErrors]);
 
   /**
    * Handle cancel operation
@@ -281,7 +283,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
             {tTools('mergePdf.reorderHint') || 'Drag and drop to reorder files. Files will be merged in the order shown.'}
           </p>
 
-          <ul className="space-y-2" role="list" aria-label="Files to merge">
+          <ul className="space-y-2" role="list" aria-label={tTools('mergePdf.filesTitle')}>
             {files.map((file, index) => (
               <li
                 key={file.id}
@@ -344,7 +346,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
                     onClick={() => handleMoveUp(index)}
                     disabled={index === 0 || isProcessing}
                     className="p-1 rounded hover:bg-[hsl(var(--color-muted))] disabled:opacity-30 disabled:cursor-not-allowed"
-                    aria-label="Move up"
+                    aria-label={tA11y('moveUp')}
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M18 15l-6-6-6 6" />
@@ -355,7 +357,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
                     onClick={() => handleMoveDown(index)}
                     disabled={index === files.length - 1 || isProcessing}
                     className="p-1 rounded hover:bg-[hsl(var(--color-muted))] disabled:opacity-30 disabled:cursor-not-allowed"
-                    aria-label="Move down"
+                    aria-label={tA11y('moveDown')}
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M6 9l6 6 6-6" />

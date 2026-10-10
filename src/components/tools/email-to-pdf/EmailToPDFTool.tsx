@@ -15,6 +15,7 @@ export interface EmailToPDFToolProps {
 }
 
 export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -44,7 +45,7 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
 
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError('Please select an email file.');
+            setError(tFeedback('selectEmail'));
             return;
         }
 
@@ -73,7 +74,7 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
         } finally {
             setIsProcessing(false);
         }
-    }, [file, pageSize, includeCcBcc, includeAttachments, dateFormat, timezone]);
+    }, [file, pageSize, includeCcBcc, includeAttachments, dateFormat, timezone, tFeedback]);
 
     const handleReset = useCallback(() => {
         setFile(null);

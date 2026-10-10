@@ -15,6 +15,7 @@ export interface CBZToPDFToolProps {
 }
 
 export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -42,7 +43,7 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
 
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError('Please select a CBZ file.');
+            setError(tFeedback('selectCbz'));
             return;
         }
 
@@ -69,7 +70,7 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
         } finally {
             setIsProcessing(false);
         }
-    }, [file, pageSize, quality, maintainAspectRatio]);
+    }, [file, pageSize, quality, maintainAspectRatio, tFeedback]);
 
     const handleReset = useCallback(() => {
         setFile(null);

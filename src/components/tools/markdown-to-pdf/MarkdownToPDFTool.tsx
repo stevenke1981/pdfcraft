@@ -26,6 +26,7 @@ type InputMode = 'upload' | 'manual';
  * Supports both file upload and manual markdown input with live preview.
  */
 export function MarkdownToPDFTool({ className = '' }: MarkdownToPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -124,7 +125,7 @@ Enjoy converting your Markdown to PDF!
             : manualMarkdown;
 
         if (!content.trim()) {
-            setError('Please enter some Markdown content or upload a file.');
+            setError(tFeedback('markdownRequired'));
             return;
         }
 
@@ -159,7 +160,7 @@ Enjoy converting your Markdown to PDF!
         } finally {
             setIsProcessing(false);
         }
-    }, [inputMode, file, manualMarkdown, pageSize, theme, gfm, syntaxHighlight]);
+    }, [inputMode, file, manualMarkdown, pageSize, theme, gfm, syntaxHighlight, tFeedback]);
 
     /**
      * Reset state

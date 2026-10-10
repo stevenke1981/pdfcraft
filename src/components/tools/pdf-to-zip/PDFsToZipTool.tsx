@@ -29,6 +29,7 @@ export interface PDFsToZipToolProps {
  * Provides the UI for packaging multiple PDF files into a ZIP archive.
  */
 export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -90,7 +91,7 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
    */
   const handleCreateZip = useCallback(async () => {
     if (files.length === 0) {
-      setError('Please add at least one PDF file.');
+      setError(tFeedback('addPdf'));
       return;
     }
 
@@ -134,7 +135,7 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
         setStatus('error');
       }
     }
-  }, [files, compressionLevel]);
+  }, [files, compressionLevel, tFeedback]);
 
   /**
    * Handle cancel operation

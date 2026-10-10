@@ -1,0 +1,46 @@
+name: Localization checks
+
+on:
+  push:
+    branches: ['feature/complete-zh-tw-ja-localization']
+  pull_request:
+    branches: [main]
+    paths:
+      - 'messages/**'
+      - 'src/**'
+      - 'e2e/**'
+      - 'scripts/**'
+      - '*config*'
+      - 'package*.json'
+      - '.github/workflows/i18n.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  localization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      DISABLE_UPDATE_CHECK: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run audit:i18n
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: localization-evidence
+          path: test-results/
+          retention-days: 14

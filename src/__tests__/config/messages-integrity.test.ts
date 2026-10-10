@@ -42,9 +42,9 @@ function getRichTextTags(message: string): string[] {
 }
 
 describe('message catalog integrity', () => {
-  it('keeps Polish messages structurally and token-compatible with English', () => {
+  it.each(['pl', 'ja', 'zh-TW'])('keeps %s messages structurally and token-compatible with English', (locale) => {
     const english = JSON.parse(readFileSync(join(messagesDir, 'en.json'), 'utf8')) as MessageCatalog;
-    const polish = JSON.parse(readFileSync(join(messagesDir, 'pl.json'), 'utf8')) as MessageCatalog;
+    const polish = JSON.parse(readFileSync(join(messagesDir, `${locale}.json`), 'utf8')) as MessageCatalog;
 
     expect(getCatalogShape(polish).sort()).toEqual(getCatalogShape(english).sort());
 

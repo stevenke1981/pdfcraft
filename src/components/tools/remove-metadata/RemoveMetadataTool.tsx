@@ -22,6 +22,7 @@ export interface RemoveMetadataToolProps {
  * Provides the UI for removing metadata from PDF files.
  */
 export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -106,7 +107,7 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
 
   const handleRemoveMetadata = useCallback(async () => {
     if (!file) {
-      setError('Please select a PDF file.');
+      setError(tFeedback('selectPdf'));
       return;
     }
 
@@ -150,7 +151,7 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
         setStatus('error');
       }
     }
-  }, [file, options]);
+  }, [file, options, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;

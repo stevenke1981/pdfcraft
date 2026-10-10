@@ -29,6 +29,7 @@ export interface PSDToPDFToolProps {
  * Converts PSD files to PDF by first rendering them to images.
  */
 export function PSDToPDFTool({ className = '' }: PSDToPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -204,7 +205,7 @@ export function PSDToPDFTool({ className = '' }: PSDToPDFToolProps) {
      */
     const handleConvert = useCallback(async () => {
         if (files.length < 1) {
-            setError('Please add at least 1 PSD file.');
+            setError(tFeedback('addPsd'));
             return;
         }
 
@@ -280,7 +281,7 @@ export function PSDToPDFTool({ className = '' }: PSDToPDFToolProps) {
                 setStatus('error');
             }
         }
-    }, [files, pageSize, orientation, margin, centerImage, scaleToFit]);
+    }, [files, pageSize, orientation, margin, centerImage, scaleToFit, tFeedback]);
 
     /**
      * Handle cancel operation

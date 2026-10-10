@@ -15,6 +15,7 @@ export interface OverlayPDFToolProps {
 }
 
 export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -61,11 +62,11 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
       setBasePages(pdf.getPageCount());
     } catch (err) {
       console.error(err);
-      setError('Failed to parse main base PDF metadata. The file may be corrupt.');
+      setError(tFeedback('basePdfCorrupt'));
     } finally {
       setIsLoadingBase(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Load metadata for Layer PDF
@@ -85,11 +86,11 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
       setLayerPages(pdf.getPageCount());
     } catch (err) {
       console.error(err);
-      setError('Failed to parse overlay layer PDF metadata. The file may be corrupt.');
+      setError(tFeedback('overlayPdfCorrupt'));
     } finally {
       setIsLoadingLayer(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   const handleClearBase = () => {
     setBaseFile(null);
@@ -105,7 +106,7 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
 
   const handleProcess = async () => {
     if (!baseFile || !layerFile) {
-      setError('Please upload both the main PDF and overlay layer PDF.');
+      setError(tFeedback('overlayBothRequired'));
       return;
     }
 

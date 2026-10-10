@@ -16,6 +16,7 @@ export interface FontToOutlineToolProps {
 }
 
 export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -57,12 +58,12 @@ export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
 
     const handleConvert = useCallback(async () => {
         if (files.length === 0) {
-            setError('Please select PDF files.');
+            setError(tFeedback('selectPdfs'));
             return;
         }
         setError(null);
         await startProcessing(processor);
-    }, [files.length, startProcessing, processor]);
+    }, [files.length, startProcessing, processor, tFeedback]);
 
     const handleDownloadZip = useCallback(async () => {
         await downloadAsZip('outlined-pdfs.zip');

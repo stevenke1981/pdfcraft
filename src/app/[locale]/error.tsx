@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { logger } from '@/lib/utils/logger';
+import { useLocale, useTranslations } from 'next-intl';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
@@ -10,6 +11,8 @@ interface ErrorPageProps {
 }
 
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
+  const t = useTranslations('errors');
+  const locale = useLocale();
   useEffect(() => {
     logger.error('Page error:', error);
   }, [error]);
@@ -23,14 +26,14 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-[hsl(var(--color-foreground))]">
-            Something went wrong
+            {t('pageError')}
           </h1>
           <p className="text-[hsl(var(--color-muted-foreground))]">
-            An unexpected error occurred. Please try again.
+            {t('pageErrorDescription')}
           </p>
           {error.digest && (
             <p className="text-xs text-[hsl(var(--color-muted-foreground))] font-mono">
-              Error ID: {error.digest}
+              {t('errorId', { id: error.digest })}
             </p>
           )}
         </div>
@@ -41,14 +44,14 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--color-primary))] text-[hsl(var(--color-primary-foreground))] font-medium hover:opacity-90 transition-opacity cursor-pointer"
           >
             <RefreshCw className="w-4 h-4" />
-            Try again
+            {t('tryAgain')}
           </button>
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/${locale}/`}
             className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--color-secondary))] text-[hsl(var(--color-secondary-foreground))] font-medium hover:opacity-90 transition-opacity cursor-pointer"
           >
             <Home className="w-4 h-4" />
-            Go home
+            {t('goHome')}
           </button>
         </div>
       </div>

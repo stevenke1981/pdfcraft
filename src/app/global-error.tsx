@@ -1,6 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { defaultLocale, getLocaleFromPath, localeConfig, type Locale } from '@/lib/i18n/config';
+import { getClientLocale } from '@/lib/locale-detector';
+import { errorLabels } from '@/lib/i18n/error-labels';
+import { withBasePath, getBasePath } from '@/lib/utils/path';
 
 interface GlobalErrorProps {
   error: Error & { digest?: string };
@@ -8,12 +12,15 @@ interface GlobalErrorProps {
 }
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
+  const [locale, setLocale] = useState<Locale>(defaultLocale);
   useEffect(() => {
     console.error('Global error:', error);
+    setLocale(getLocaleFromPath(window.location.pathname.slice(getBasePath().length)) ?? getClientLocale());
   }, [error]);
+  const labels = errorLabels[locale];
 
   return (
-    <html lang="en">
+    <html lang={locale} dir={localeConfig[locale].direction}>
       <body style={{ 
         margin: 0, 
         minHeight: '100vh', 
@@ -41,14 +48,14 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             </svg>
           </div>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem', color: '#0f172a' }}>
-            Something went wrong
+            {labels.pageError}
           </h1>
           <p style={{ color: '#64748b', marginBottom: '1.5rem' }}>
-            A critical error occurred. Please try again.
+            {labels.pageErrorDescription}
           </p>
           {error.digest && (
             <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '1rem', fontFamily: 'monospace' }}>
-              Error ID: {error.digest}
+              {labels.errorId.replace('{id}', error.digest)}
             </p>
           )}
           <button
@@ -64,10 +71,10 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               marginRight: '0.5rem'
             }}
           >
-            Try again
+            {labels.tryAgain}
           </button>
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => window.location.href = withBasePath(`/${locale}/`)}
             style={{
               padding: '0.75rem 1.5rem',
               backgroundColor: '#e2e8f0',
@@ -78,7 +85,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               cursor: 'pointer'
             }}
           >
-            Go home
+            {labels.goHome}
           </button>
         </div>
       </body>

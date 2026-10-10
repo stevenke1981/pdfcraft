@@ -13,6 +13,7 @@ import { getToolContent } from '@/config/tool-content';
 import { getAllTools } from '@/config/tools';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { UpdateCheckButton } from '@/components/common/UpdateCheckButton';
+import { LanguageSelector } from './LanguageSelector';
 
 export interface HeaderProps {
   locale: Locale;
@@ -21,6 +22,7 @@ export interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => {
   const t = useTranslations('common');
+  const tA11y = useTranslations('common.accessibility');
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -195,7 +197,7 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
                   <polyline points="14 2 14 8 20 8" />
                 </svg>
               </div>
-              <span className="text-xl tracking-tight" data-testid="brand-name">
+              <span className="hidden sm:inline text-xl tracking-tight" data-testid="brand-name">
                 {t('brand')}
               </span>
             </Link>
@@ -203,10 +205,10 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
 
           {/* Desktop Navigation */}
           <nav
-            className={`hidden md:flex items-center gap-1 rounded-full border border-[hsl(var(--color-border))/0.4] bg-[hsl(var(--color-background))/0.5] p-1.5 backdrop-blur-sm shadow-sm transition-all duration-300 ${isSearchOpen ? 'opacity-0 translate-y-[-10px] pointer-events-none' : 'opacity-100 translate-y-0'
+            className={`hidden xl:flex items-center gap-1 rounded-full border border-[hsl(var(--color-border))/0.4] bg-[hsl(var(--color-background))/0.5] p-1.5 backdrop-blur-sm shadow-sm transition-all duration-300 ${isSearchOpen ? 'opacity-0 translate-y-[-10px] pointer-events-none' : 'opacity-100 translate-y-0'
               }`}
             role="navigation"
-            aria-label="Main navigation"
+            aria-label={tA11y('mainNavigation')}
           >
             {navItems.map((item) => (
               <Link
@@ -220,7 +222,7 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
           </nav>
 
           {/* Right side actions */}
-          <div className="flex flex-1 items-center justify-end gap-3">
+          <div className="flex flex-1 items-center justify-end gap-1 sm:gap-3">
             {/* Search */}
             {showSearch && (
               <div className="relative" ref={searchContainerRef}>
@@ -236,14 +238,14 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
                         onKeyDown={handleKeyDown}
                         placeholder={t('search.placeholder') || 'Search tools...'}
                         className="w-full pl-10 pr-10 py-2.5 text-sm rounded-xl border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] shadow-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
-                        aria-label="Search tools"
+                        aria-label={tA11y('searchTools')}
                         autoComplete="off"
                       />
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={handleSearchToggle}
-                        aria-label="Close search"
+                        aria-label={tA11y('closeSearch')}
                         className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-transparent"
                       >
                         <X className="h-4 w-4 text-[hsl(var(--color-muted-foreground))]" aria-hidden="true" />
@@ -296,7 +298,7 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
                     variant="ghost"
                     size="sm"
                     onClick={handleSearchToggle}
-                    aria-label="Open search"
+                    aria-label={tA11y('openSearch')}
                     className="relative text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]"
                   >
                     <Search className="h-5 w-5" aria-hidden="true" />
@@ -326,7 +328,7 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center justify-center h-9 w-9 rounded-lg text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted))/0.5] transition-all"
-              aria-label="GitHub Repository"
+              aria-label={tA11y('githubRepository')}
             >
               <Github className="h-5 w-5" aria-hidden="true" />
             </a>
@@ -334,16 +336,15 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
             {/* Theme Toggle */}
             <ThemeToggle />
 
-            {/* Language Selector placeholder */}
-            <div id="language-selector-slot" />
+            <LanguageSelector currentLocale={locale} />
 
             {/* Mobile Menu Toggle */}
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden"
+              className="xl:hidden"
               onClick={handleMobileMenuToggle}
-              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-label={isMobileMenuOpen ? t('buttons.close') : tA11y('mobileMenu')}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
             >
@@ -360,9 +361,9 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
         {isMobileMenuOpen && (
           <nav
             id="mobile-menu"
-            className="md:hidden py-4 border-t border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] backdrop-blur-xl shadow-lg"
+            className="xl:hidden py-4 border-t border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] backdrop-blur-xl shadow-lg"
             role="navigation"
-            aria-label="Mobile navigation"
+            aria-label={tA11y('mobileNavigation')}
           >
             <ul className="flex flex-col gap-2 p-2">
               {navItems.map((item) => (

@@ -34,6 +34,7 @@ export interface PDFToImageToolProps {
  * Converts PDF pages to images (JPG, PNG, WebP, BMP, TIFF).
  */
 export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -129,7 +130,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
    */
   const handleConvert = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file.');
+      setError(tFeedback('uploadPdf'));
       return;
     }
 
@@ -197,7 +198,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
         setStatus('error');
       }
     }
-  }, [file, format, quality, scale, pageRange, layoutPreset, customColumns, customRows, skipFirstPage]);
+  }, [file, format, quality, scale, pageRange, layoutPreset, customColumns, customRows, skipFirstPage, tFeedback]);
 
   /**
    * Handle cancel operation

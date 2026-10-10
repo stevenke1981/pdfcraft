@@ -27,6 +27,7 @@ interface HomePageClientProps {
 
 export default function HomePageClient({ locale, localizedToolContent }: HomePageClientProps) {
   const t = useTranslations();
+  const tA11y = useTranslations('common.accessibility');
   const allTools = getAllTools();
   const popularTools = getPopularTools();
 
@@ -137,7 +138,7 @@ export default function HomePageClient({ locale, localizedToolContent }: HomePag
         </section>
 
         {/* Features Section */}
-        <section className="py-12 relative z-20" aria-label="Features">
+        <section className="py-12 relative z-20" aria-label={tA11y('features')}>
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {features.map((feature, index) => {
@@ -264,7 +265,7 @@ export default function HomePageClient({ locale, localizedToolContent }: HomePag
         </section>
 
         {/* Stats Section */}
-        <section className="py-16" aria-label="Statistics">
+        <section className="py-16" aria-label={tA11y('statistics')}>
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-[hsl(var(--color-border))]">
               <div className="p-4">

@@ -28,6 +28,7 @@ export interface FixPageSizeToolProps {
  * Provides the UI for standardizing PDF page sizes.
  */
 export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -85,7 +86,7 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
    */
   const handleFixPageSize = useCallback(async () => {
     if (!file) {
-      setError('Please select a PDF file.');
+      setError(tFeedback('selectPdf'));
       return;
     }
 
@@ -134,7 +135,7 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
         setStatus('error');
       }
     }
-  }, [file, sizePreset, customWidth, customHeight, scaleMode, maintainAspectRatio, orientation]);
+  }, [file, sizePreset, customWidth, customHeight, scaleMode, maintainAspectRatio, orientation, tFeedback]);
 
   /**
    * Handle cancel operation

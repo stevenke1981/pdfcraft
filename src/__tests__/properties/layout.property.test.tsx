@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { normalizeLocale } from '@/lib/locale-detector';
 import { locales, type Locale } from '@/lib/i18n/config';
 import { 
   saveLanguagePreference, 
@@ -52,6 +53,7 @@ describe('Layout Property Tests', () => {
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear();
+    document.cookie = 'NEXT_LOCALE=;path=/;max-age=0';
   });
 
   /**
@@ -196,7 +198,7 @@ describe('Layout Property Tests', () => {
         fc.property(
           // Generate strings that are NOT valid locales
           fc.string({ minLength: 1, maxLength: 10 })
-            .filter(s => !locales.includes(s as Locale)),
+            .filter(s => normalizeLocale(s) === null),
           (invalidLocale) => {
             // Manually set an invalid value in localStorage
             localStorage.setItem('pdfcraft-language-preference', invalidLocale);

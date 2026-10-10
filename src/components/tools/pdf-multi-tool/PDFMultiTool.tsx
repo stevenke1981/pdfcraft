@@ -38,6 +38,7 @@ interface HistoryState {
  * All-in-one PDF editor with multi-file support
  */
 export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -151,11 +152,11 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
       setHistoryIndex(0);
     } catch (err) {
       console.error('Failed to load PDF:', err);
-      setError('Failed to load PDF. The file may be corrupted or encrypted.');
+      setError(tFeedback('loadPdf'));
     } finally {
       setIsLoadingPreviews(false);
     }
-  }, [sourceFiles]);
+  }, [sourceFiles, tFeedback]);
 
   const handleFilesSelected = useCallback((files: File[]) => {
     if (files.length > 0) {
@@ -272,18 +273,18 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
     if (newPreviews.length > 0) {
       updatePages(newPreviews);
     } else {
-      setError('Cannot delete all pages.');
+      setError(tFeedback('deleteAll'));
     }
-  }, [pagePreviews, updatePages]);
+  }, [pagePreviews, updatePages, tFeedback]);
 
   const handleDeleteSelected = useCallback(() => {
     const newPreviews = pagePreviews.filter(p => !p.selected);
     if (newPreviews.length > 0) {
       updatePages(newPreviews);
     } else {
-      setError('Cannot delete all pages.');
+      setError(tFeedback('deleteAll'));
     }
-  }, [pagePreviews, updatePages]);
+  }, [pagePreviews, updatePages, tFeedback]);
 
   // Rotate
   const handleRotatePage = useCallback((index: number, degrees: number) => {
@@ -382,15 +383,15 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
 
       setStatus('idle');
     } catch (err) {
-      setError('Failed to download selected pages');
+      setError(tFeedback('downloadPages'));
       setStatus('error');
     }
-  }, [sourceFiles, pagePreviews]);
+  }, [sourceFiles, pagePreviews, tFeedback]);
 
   // Export PDF
   const handleExport = useCallback(async () => {
     if (pagePreviews.length === 0) {
-      setError('No pages to export.');
+      setError(tFeedback('exportEmpty'));
       return;
     }
 
@@ -470,7 +471,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
         setStatus('error');
       }
     }
-  }, [sourceFiles, pagePreviews]);
+  }, [sourceFiles, pagePreviews, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;

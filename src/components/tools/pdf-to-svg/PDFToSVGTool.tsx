@@ -31,6 +31,7 @@ export interface PDFToSVGToolProps {
  * Supports preview and individual export.
  */
 export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -123,7 +124,7 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
      */
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError('Please upload a PDF file.');
+            setError(tFeedback('uploadPdf'));
             return;
         }
 
@@ -173,7 +174,7 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
                 setStatus('error');
             }
         }
-    }, [file, scale, pageRange]);
+    }, [file, scale, pageRange, tFeedback]);
 
     /**
      * Handle cancel operation

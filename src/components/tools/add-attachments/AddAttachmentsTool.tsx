@@ -34,6 +34,7 @@ export interface AddAttachmentsToolProps {
  * Provides the UI for adding attachments to PDF files.
  */
 export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -107,7 +108,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
    */
   const handleAddAttachments = useCallback(async () => {
     if (!pdfFile || attachmentFiles.length === 0) {
-      setError('Please select a PDF file and at least one file to attach.');
+      setError(tFeedback('attachmentsRequired'));
       return;
     }
 
@@ -153,7 +154,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
         setStatus('error');
       }
     }
-  }, [pdfFile, attachmentFiles, attachmentLevel, pageRange]);
+  }, [pdfFile, attachmentFiles, attachmentLevel, pageRange, tFeedback]);
 
   /**
    * Handle cancel operation

@@ -22,6 +22,7 @@ export interface SanitizePDFToolProps {
  * Provides the UI for sanitizing PDF files by removing potentially harmful content.
  */
 export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -78,7 +79,7 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
 
   const handleSanitize = useCallback(async () => {
     if (!file) {
-      setError('Please select a PDF file to sanitize.');
+      setError(tFeedback('sanitizePdf'));
       return;
     }
 
@@ -122,7 +123,7 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
         setStatus('error');
       }
     }
-  }, [file, options]);
+  }, [file, options, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;

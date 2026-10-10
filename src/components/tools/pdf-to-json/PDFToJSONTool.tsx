@@ -29,6 +29,7 @@ export interface PDFToJSONToolProps {
  * Extracts PDF content and metadata to JSON format.
  */
 export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -122,7 +123,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
    */
   const handleConvert = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file.');
+      setError(tFeedback('uploadPdf'));
       return;
     }
 
@@ -178,7 +179,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
         setStatus('error');
       }
     }
-  }, [file, includeText, includeMetadata, includePageInfo, includeOutline, prettyPrint, pageRange]);
+  }, [file, includeText, includeMetadata, includePageInfo, includeOutline, prettyPrint, pageRange, tFeedback]);
 
   /**
    * Handle cancel operation

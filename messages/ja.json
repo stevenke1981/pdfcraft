@@ -83,10 +83,20 @@
       "loading": "読み込み中..."
     },
     "footer": {
-      "footer": "© 2025 PDFCraft. All rights reserved.",
-      "copyright": "© {year} PDFCraft. All rights reserved.",
+      "footer": "© 2025 PDFCraft. 無断転載を禁じます。",
+      "copyright": "© {year} PDFCraft. 無断転載を禁じます。",
       "privacyBadge": "100%プライベート - ファイルはデバイスから離れません",
-      "madeWith": "<Heart /> と <Nextjs /> で作成"
+      "madeWith": "<Heart /> と <Nextjs /> で作成",
+      "resources": "リソース",
+      "security": "セキュリティ",
+      "clientSide": "端末内で処理",
+      "filesStayLocal": "ファイルは端末内に保持",
+      "noUploads": "サーバーへのファイル送信なし",
+      "privateSecure": "プライバシーと安全を保護",
+      "compliance": "プライバシー保護",
+      "gdpr": "GDPRに準拠",
+      "terms": "利用規約",
+      "cookies": "Cookieポリシー"
     },
     "recentFiles": {
       "title": "最近のファイル",
@@ -144,11 +154,14 @@
       "support": "サポート",
       "paste": "貼り付け (Ctrl+V)",
       "encryptedTitle": "このドキュメントは暗号化されています",
-      "enterPasswordHelp": "ロックを解除して読み込むにはパスワードを入力してください：<br/>",
+      "enterPasswordHelp": "ロックを解除して読み込むにはパスワードを入力してください：",
       "passwordPlaceholder": "ドキュメントのパスワードを入力してください...",
       "cancelButton": "キャンセル",
       "decrypting": "復号中...",
-      "decryptAndContinue": "復号して続行"
+      "decryptAndContinue": "復号して続行",
+      "maxFiles": "最大 {count} ファイル",
+      "oneFileOnly": "一度に選択できるファイルは1つです。",
+      "tooManyFiles": "選択できるファイルは最大 {count} 個です。"
     },
     "accessibility": {
       "skipToContent": "メインコンテンツへスキップ",
@@ -167,7 +180,28 @@
       "sortDescending": "降順で並べ替え",
       "closeDialog": "ダイアログを閉じる",
       "expandSection": "セクションを展開",
-      "collapseSection": "セクションを折りたたむ"
+      "collapseSection": "セクションを折りたたむ",
+      "mainNavigation": "メインナビゲーション",
+      "mobileNavigation": "モバイルナビゲーション",
+      "mobileMenu": "モバイルナビゲーションメニュー",
+      "searchTools": "ツールを検索",
+      "openSearch": "検索を開く",
+      "closeSearch": "検索を閉じる",
+      "clearSearch": "検索をクリア",
+      "filterCategory": "カテゴリで絞り込む",
+      "breadcrumb": "パンくずリスト",
+      "features": "主な機能",
+      "statistics": "統計",
+      "searchFaqs": "よくある質問を検索",
+      "githubRepository": "GitHubリポジトリ",
+      "moveUp": "上へ移動",
+      "moveDown": "下へ移動",
+      "fileDropZone": "ファイルのドロップ領域",
+      "filesToProcess": "処理するファイル",
+      "closeTour": "ガイドを閉じる",
+      "tourProgress": "ガイドの進行状況",
+      "switchToDark": "ダークモードに切り替える",
+      "switchToLight": "ライトモードに切り替える"
     },
     "options": {
       "auto": "自動",
@@ -685,7 +719,21 @@
       "successTitle": "OCR文字認識が完了しました！",
       "successSearchablePdf": "検索可能なPDFが生成されました！スキャンされたシートにインタラクティブなテキストがオーバーレイされています。自由にハイライトや検索を行えます。",
       "successText": "プレーンテキスト構造が正常に抽出されました。以下にテキストのプレビューが表示されます。",
-      "previewTitle": "抽出されたテキストストリームのプレビュー"
+      "previewTitle": "抽出されたテキストストリームのプレビュー",
+      "formatMarkdown": "構造化Markdown（.md）",
+      "formatJson": "構造化JSON（.json）",
+      "enhanceContrast": "画像品質を自動補正",
+      "enhanceContrastDesc": "薄い筆跡や暗いスキャン画像のコントラストと輪郭を自動補正します",
+      "copyText": "認識したテキストをコピー",
+      "copied": "クリップボードにコピーしました！",
+      "openInEditor": "PDFエディターで編集",
+      "openInEditorDesc": "ダウンロードせずにPDFCraftエディターでテキストとレイアウトを直接編集できます",
+      "statsPages": "ページ数",
+      "statsWords": "単語数",
+      "statsChars": "文字数",
+      "statsConfidence": "平均認識信頼度",
+      "tabText": "テキストプレビュー",
+      "tabJson": "JSON構造"
     },
     "overlayPdf": {
       "uploadBaseLabel": "1. 基本ドキュメントをアップロード (Base PDF)",
@@ -951,6 +999,70 @@
       "downloadStartedNotice": "ブラウザでダウンロードを開始しました！開始されない場合はリンクをコピーして手動で開いてください。",
       "downloadFailedNotice": "ブラウザを自動で開けませんでした。リンクをコピーしてブラウザに貼り付けてください。",
       "linkCopied": "ダウンロードリンクをクリップボードにコピーしました！"
+    },
+    "progress": {
+      "secondsRemaining": "残り {seconds} 秒",
+      "minutesRemaining": "残り {minutes} 分 {seconds} 秒",
+      "hoursRemaining": "残り {hours} 時間 {minutes} 分"
+    },
+    "toolFeedback": {
+      "attachmentsRequired": "PDFと、添付するファイルを1つ以上選択してください。",
+      "loadPdf": "PDFを読み込めません。破損または暗号化されている可能性があります。",
+      "uploadFirst": "先にPDFファイルを選択してください。",
+      "validPageCount": "有効なページ数（1以上）を入力してください。",
+      "metadataCorrupt": "PDFのメタデータを解析できません。ファイルが破損していないか確認してください。",
+      "alternateMergeMinimum": "交互に結合するPDFを2つ以上追加してください。",
+      "loadFile": "PDFファイルを読み込めません。",
+      "selectCbz": "CBZファイルを選択してください。",
+      "selectPdf": "PDFファイルを選択してください。",
+      "parseMetadata": "PDFのメタデータを解析できません。ファイルが破損している可能性があります。",
+      "renderPage": "PDFページを表示できません。",
+      "cropArea": "切り取る領域を選択してください。",
+      "cropPage": "1ページ以上を切り取ってください。",
+      "decryptPdf": "復号するPDFファイルを選択してください。",
+      "scanMetadata": "メタデータを読み取れません。ページの構造が破損している可能性があります。",
+      "previewPdf": "PDFプレビューを読み込めません。破損または暗号化されている可能性があります。",
+      "keepPage": "すべてのページは削除できません。1ページ以上を残してください。",
+      "deleteSelection": "削除するページを1ページ以上選択してください。",
+      "deskewPdf": "傾きを補正するPDFを選択してください。",
+      "selectEmail": "メールファイルを選択してください。",
+      "encryptPdf": "暗号化するPDFファイルを選択してください。",
+      "passwordRequired": "パスワードを1つ以上設定してください。",
+      "extractSelection": "抽出するページを1ページ以上選択してください。",
+      "addPdf": "PDFファイルを1つ以上追加してください。",
+      "loadPreview": "PDFプレビューを読み込めません",
+      "flattenPdf": "フラット化するPDFを選択してください。",
+      "selectPdfs": "PDFファイルを選択してください。",
+      "createBlank": "空白のPDFを作成できません。",
+      "createForm": "テンプレートからフォームを作成できません。",
+      "addBlank": "空白ページを追加できません。",
+      "readForm": "フォームの項目を読み取れません。このPDFに入力可能なフォームが含まれていない可能性があります。",
+      "parseForm": "PDFのフォーム項目を解析できません。",
+      "addImage": "画像ファイルを1つ以上追加してください。",
+      "addJson": "JSONファイルを1つ以上追加してください。",
+      "linearizePdf": "リニアライズするPDFを1つ以上選択してください。",
+      "markdownRequired": "Markdownの内容を入力するか、ファイルを選択してください。",
+      "uploadPdf": "PDFファイルを選択してください。",
+      "organizeEmpty": "整理するページがありません。",
+      "basePdfCorrupt": "元のPDFのメタデータを解析できません。破損している可能性があります。",
+      "overlayPdfCorrupt": "重ねるPDFのメタデータを解析できません。破損している可能性があります。",
+      "overlayBothRequired": "元のPDFと重ねるPDFを選択してください。",
+      "analyzePdf": "解析するPDFファイルを選択してください。",
+      "deleteAll": "すべてのページは削除できません。",
+      "downloadPages": "選択したページをダウンロードできません",
+      "exportEmpty": "書き出すページがありません。",
+      "convertPdfs": "変換するPDFを選択してください。",
+      "addPsd": "PSDファイルを1つ以上追加してください。",
+      "keepOne": "PDFのすべてのページは削除できません。1ページ以上を残してください。",
+      "reverseMinimum": "ページ順を逆にするには、PDFに2ページ以上が必要です。",
+      "rotateSelection": "処理前に1ページ以上を回転してください。",
+      "sanitizePdf": "機密データを除去するPDFを選択してください。",
+      "viewerLoad": "ビューアーでPDFを読み込めません。もう一度お試しください。",
+      "viewerWait": "ビューアーの準備ができていません。PDFの読み込みをお待ちください。",
+      "viewerMissing": "PDFビューアーが初期化されていません。",
+      "signatureRequired": "署名が見つかりません。ツールバーのペンで署名を追加してから、もう一度お試しください。",
+      "parsePdfMetadata": "PDFのメタデータを解析できません。破損している可能性があります。",
+      "encryptedOrBroken": "PDFを読み込めません。暗号化されているか、ファイルの構造が破損している可能性があります。"
     }
   },
   "toolsPage": {
@@ -985,7 +1097,7 @@
       "general": {
         "whatIs": {
           "question": "PDFCraftとは何ですか？",
-          "answer": "PDFCraftは、ブラウザ上で完全に動作する、プライバシーに配慮した無料のPDFツールキットです。PDFの編集、変換、結合、分割、暗号化など、{count}種類以上のプロフェッショナルなツールを、サーバーにファイルをアップロードすることなく提供します。"
+          "answer": "PDFCraftはブラウザ内で動作する、プライバシーに配慮した無料のPDFツールキットです。PDFの編集、変換、結合、分割、暗号化など80種類以上のツールを、サーバーにファイルを送信せずに利用できます。"
         },
         "isFree": {
           "question": "PDFCraftは本当に無料ですか？",
@@ -1208,7 +1320,16 @@
     "unknown": "予期しないエラーが発生しました。もう一度お試しください。",
     "toolNotFound": "ツールが見つかりません",
     "invalidPassword": "入力されたパスワードが正しくありません。確認して再度お試しください。",
-    "incorrectPassword": "パスワードが正しくありません。もう一度お試しください。"
+    "incorrectPassword": "パスワードが正しくありません。もう一度お試しください。",
+    "selectPdfFirst": "先にPDFファイルを選択してください。",
+    "mergeMinimumFiles": "結合するPDFファイルを2つ以上追加してください。",
+    "previewFailed": "PDFプレビューを読み込めません。ファイルが破損しているか、暗号化されている可能性があります。",
+    "selectPageRanges": "ページ範囲を指定するか、抽出するページを選択してください。",
+    "zipFailed": "ZIPファイルを作成できません。",
+    "pdfToolsFailed": "PDFツールを読み込めません",
+    "pageNotFound": "ページが見つかりません",
+    "pageNotFoundDescription": "お探しのページは存在しないか、移動されています。",
+    "errorId": "エラーID: {id}"
   },
   "home": {
     "hero": {
@@ -1457,7 +1578,12 @@
     "conditionGateway": "条件分岐",
     "downloadPdf": "PDFをダウンロード",
     "outputCategory": "出力とエクスポート",
-    "filenameLabel": "出力ファイル名"
+    "filenameLabel": "出力ファイル名",
+    "addToWorkflowHint": "ドラッグまたはダブルクリックでワークフローに追加",
+    "inputCategory": "入力元",
+    "pdfInput": "PDF入力",
+    "imageInput": "画像入力",
+    "fileInput": "ファイル入力"
   },
   "tools": {
     "search": {
@@ -1551,11 +1677,11 @@
       "borderColor": "枠線の色",
       "layoutPreview": "レイアウトプレビュー",
       "gridLayoutInfo": "グリッド: {cols} × {rows} ({perSheet}ページ/シート)",
-      "previewInfo": "{pages}ページが{sheets}シートに{perSheet}ページずつ配置されます。",
+      "previewInfo": "{pages}ページ → 出力{sheets}枚",
       "readingOrder": "読み順",
       "topToBottom": "↓ 上から下へ",
       "leftToRight": "→ 左から右へ、次に↓下へ",
-      "createButton": "N-Up PDFを作成",
+      "createButton": "{pages}ページ集約PDFを作成",
       "createCustomButton": "{cols}×{rows} PDFを作成",
       "gridLabel": "グリッドレイアウト",
       "outputPages": "出力シート数",
@@ -1598,7 +1724,15 @@
       "modeVisualShort": "視覚的選択",
       "modeBookmarksShort": "ブックマーク",
       "modeNTimesShort": "N分割",
-      "downloadZip": "ZIPとして一括ダウンロード"
+      "downloadZip": "ZIPとして一括ダウンロード",
+      "separateFiles": "個別のファイル",
+      "visualSelection": "プレビューからページを選択",
+      "foundBookmarks": "{count} 個のしおりが見つかりました",
+      "bookmarkResults": "しおりの構造に従ってPDFを {count} 個のファイルに分割します。",
+      "splitPoints": "分割位置",
+      "bookmarkPage": "{page} ページ",
+      "scrollBookmarks": "スクロールして {count} 個すべてのしおりを表示",
+      "noBookmarks": "しおりが見つかりません"
     },
     "deletePages": {
       "uploadLabel": "PDFファイルをアップロード",
@@ -1819,7 +1953,20 @@
         "fontSize": "フォントサイズ",
         "inkColor": "インクの色",
         "inkThickness": "インクの厚さ"
-      }
+      },
+      "textHistory": "テキストの変更履歴",
+      "textUndo": "テキストの変更を元に戻す",
+      "textRedo": "テキストの変更をやり直す",
+      "textUndoApplied": "直前のテキスト変更を元に戻しました。",
+      "textRedoApplied": "テキストの変更をやり直しました。",
+      "overflowAppliedWarning": "置換後のテキストが元の領域を超えています。書き出す前に表示結果を確認してください。",
+      "fallbackFontWarning": "元のフォントを再利用できないため、代替フォントを使用しました。文字と間隔を確認してください。",
+      "signatureInvalidatedWarning": "このPDFには電子署名が含まれています。内容を編集すると既存の署名は無効になります。",
+      "directMode": "内容を直接編集",
+      "annotatorMode": "注釈ツール",
+      "editorLabel": "PDF エディター",
+      "savedFile": "{name} を保存しました（{size}）。",
+      "downloaded": "ダウンロード済み"
     },
     "imageToPdf": {
       "uploadLabel": "画像をアップロードする",
@@ -1891,7 +2038,7 @@
       "downloadAllZip": "すべてZIPでダウンロード",
       "originalSize": "元のサイズ：",
       "compressedSize": "圧縮:",
-      "saved": "保存済み:"
+      "saved": "削減量："
     },
     "signPdf": {
       "uploadLabel": "PDFファイルをアップロード",
@@ -2607,17 +2754,17 @@
       "previewTitle": "プレビュー",
       "previewNote": "プレビュー生成速度向上のため最初のページのみ表示しています",
       "previewGenerating": "プレビューを生成中...",
-      "flattenTitle": "Flatten Watermark",
-      "flattenDescription": "Rasterize pages into tamper-resistant images so watermarks cannot be removed or extracted",
-      "dragHint": "Drag watermark directly on preview or drag corners to resize",
-      "posTop": "Top",
-      "posBottom": "Bottom",
-      "posLeft": "Left",
-      "posRight": "Right",
-      "scale": "Image Scale",
-      "page": "Page",
-      "of": "of",
-      "pages": "pages"
+      "flattenTitle": "透かしを画像に統合",
+      "flattenDescription": "ページを画像に変換し、透かしが個別に削除・抽出されにくくします",
+      "dragHint": "プレビュー上で透かしをドラッグして移動するか、角をドラッグしてサイズを変更します",
+      "posTop": "上",
+      "posBottom": "下",
+      "posLeft": "左",
+      "posRight": "右",
+      "scale": "画像の拡大率",
+      "page": "ページ",
+      "of": "/",
+      "pages": "ページ"
     },
     "headerFooter": {
       "uploadLabel": "PDFファイルをアップロード",
@@ -2690,7 +2837,13 @@
       "uploadLabel": "PDFファイルをアップロード",
       "uploadDescription": "ここにPDFフォームをドラッグ＆ドロップしてください。",
       "saveButton": "フォームを保存",
-      "successMessage": "フォームが正常に保存されました！"
+      "successMessage": "フォームが正常に保存されました！",
+      "fieldsHeading": "フォームフィールド（{count}）",
+      "enterField": "{type} を入力",
+      "flattenOption": "入力後にフォームを統合（編集不可にする）",
+      "emptyFields": "この PDF には入力可能なフォームフィールドがありません。",
+      "fillButton": "フォームに入力",
+      "filledMessage": "フォームへの入力が完了しました。"
     },
     "formCreator": {
       "uploadLabel": "PDFファイルをアップロード",

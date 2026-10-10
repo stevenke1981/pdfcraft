@@ -170,6 +170,7 @@ const formTemplates: FormTemplate[] = [
 ];
 
 export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -255,9 +256,9 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
       renderPage(pdf, 1);
     } catch (err) {
       console.error('Failed to load PDF:', err);
-      setError('Failed to load PDF file.');
+      setError(tFeedback('loadFile'));
     }
-  }, []);
+  }, [tFeedback]);
 
   // Create blank PDF
   const createBlankPdf = useCallback(async () => {
@@ -300,9 +301,9 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
       await loadPdf(pdfFile);
     } catch (err) {
       console.error('Failed to create blank PDF:', err);
-      setError('Failed to create blank PDF.');
+      setError(tFeedback('createBlank'));
     }
-  }, [blankPdfPageSize, blankPdfPageCount, loadPdf]);
+  }, [blankPdfPageSize, blankPdfPageCount, loadPdf, tFeedback]);
 
   // Create form from template
   const createFromTemplate = useCallback(async (template: FormTemplate) => {
@@ -337,9 +338,9 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
       await loadPdf(pdfFile);
     } catch (err) {
       console.error('Failed to create form from template:', err);
-      setError('Failed to create form from template.');
+      setError(tFeedback('createForm'));
     }
-  }, [loadPdf]);
+  }, [loadPdf, tFeedback]);
 
   // Add blank page to existing PDF
   const addBlankPage = useCallback(async (position: 'before' | 'after' | 'end') => {
@@ -408,11 +409,11 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
       await renderPage(newPdf, newPageNum);
     } catch (err) {
       console.error('Failed to add blank page:', err);
-      setError('Failed to add blank page.');
+      setError(tFeedback('addBlank'));
     } finally {
       setIsAddingPage(false);
     }
-  }, [file, currentPage, fields, isAddingPage]);
+  }, [file, currentPage, fields, isAddingPage, tFeedback]);
 
   // Render page
   const renderPage = async (pdf: any, pageNum: number) => {

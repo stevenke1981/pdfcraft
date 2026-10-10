@@ -21,6 +21,7 @@ export interface PDFBookletToolProps {
  * Creates booklet layouts from PDF files for printing.
  */
 export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -61,7 +62,7 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
      */
     const handleCreateBooklet = useCallback(async () => {
         if (!file) {
-            setError('Please select a PDF file.');
+            setError(tFeedback('selectPdf'));
             return;
         }
 
@@ -94,7 +95,7 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
         } finally {
             setIsProcessing(false);
         }
-    }, [file, gridMode, paperSize, orientation, rotation, padding]);
+    }, [file, gridMode, paperSize, orientation, rotation, padding, tFeedback]);
 
     /**
      * Reset state

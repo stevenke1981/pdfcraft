@@ -25,6 +25,7 @@ export interface RemoveRestrictionsToolProps {
  * This removes owner password restrictions that prevent printing, copying, and editing.
  */
 export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -88,7 +89,7 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
    */
   const handleRemoveRestrictions = useCallback(async () => {
     if (!file) {
-      setError('Please select a PDF file.');
+      setError(tFeedback('selectPdf'));
       return;
     }
 
@@ -160,7 +161,7 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
         setStatus('error');
       }
     }
-  }, [file, ownerPassword, tTools]);
+  }, [file, ownerPassword, tTools, tFeedback]);
 
   /**
    * Handle cancel operation

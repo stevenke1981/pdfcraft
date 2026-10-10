@@ -108,12 +108,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
     // Check max files
     if (!multiple && files.length > 1) {
-      errors.push('Only one file can be uploaded at a time.');
+      errors.push(t('fileUploader.oneFileOnly'));
       return { valid: [files[0]], errors };
     }
 
     if (files.length > maxFiles) {
-      errors.push(`Maximum ${maxFiles} files allowed.`);
+      errors.push(t('fileUploader.tooManyFiles', { count: maxFiles }));
       files = files.slice(0, maxFiles);
     }
 
@@ -157,7 +157,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     }
 
     return { valid, errors };
-  }, [accept, maxSize, maxFiles, multiple, tErrors]);
+  }, [accept, maxSize, maxFiles, multiple, tErrors, t]);
 
   /**
    * Handle decryption submit action
@@ -204,7 +204,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       console.error('PDF Decryption failed:', err);
       setShouldShake(true);
       setTimeout(() => setShouldShake(false), 500);
-      setDecryptError(tErrors('incorrectPassword') || 'Incorrect password. Please try again.');
+      setDecryptError(tErrors('incorrectPassword'));
     } finally {
       setIsDecrypting(false);
     }
@@ -570,7 +570,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       {multiple && (
         <div className="mt-6 flex flex-wrap gap-2 justify-center">
           <span className="text-xs px-2 py-1 rounded-md bg-[hsl(var(--color-muted))] text-[hsl(var(--color-muted-foreground))]">
-            Max files: {maxFiles}
+            {t('fileUploader.maxFiles', { count: maxFiles })}
           </span>
         </div>
       )}
@@ -642,6 +642,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                   <input
                     type="password"
                     placeholder={t('fileUploader.passwordPlaceholder')}
+                    aria-label={t('fileUploader.passwordPlaceholder')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     autoFocus

@@ -23,6 +23,7 @@ export interface AddBlankPageToolProps {
  * Provides the UI for adding blank pages to a PDF.
  */
 export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -57,9 +58,9 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
       setPosition(pdf.numPages); // Default to end
     } catch (err) {
       console.error('Failed to load PDF info:', err);
-      setError('Failed to load PDF. The file may be corrupted or encrypted.');
+      setError(tFeedback('loadPdf'));
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Handle file selected from uploader
@@ -100,12 +101,12 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
    */
   const handleAddBlankPages = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
     if (count < 1) {
-      setError('Please enter a valid number of pages (1 or more).');
+      setError(tFeedback('validPageCount'));
       return;
     }
 
@@ -151,7 +152,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
         setStatus('error');
       }
     }
-  }, [file, position, count, totalPages]);
+  }, [file, position, count, totalPages, tFeedback]);
 
   /**
    * Handle cancel operation

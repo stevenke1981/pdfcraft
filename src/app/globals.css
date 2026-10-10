@@ -307,3 +307,6 @@ select option {
 .scroll-smooth { scroll-behavior: smooth; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
+/* Prefer locally installed CJK fonts; switching UI language does not fetch fonts. */
+:lang(zh-TW) { font-family: var(--font-inter), "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; }
+:lang(ja) { font-family: var(--font-inter), "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", "Noto Sans JP", sans-serif; }

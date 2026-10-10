@@ -24,6 +24,7 @@ export interface DecryptPDFToolProps {
  * All decryption is performed client-side - passwords are never transmitted.
  */
 export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -69,7 +70,7 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
 
   const handleDecrypt = useCallback(async () => {
     if (!file) {
-      setError('Please select a PDF file to decrypt.');
+      setError(tFeedback('decryptPdf'));
       return;
     }
 
@@ -134,7 +135,7 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
         setStatus('error');
       }
     }
-  }, [file, password, tTools]);
+  }, [file, password, tTools, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;

@@ -29,6 +29,7 @@ export interface JSONToPDFToolProps {
  * Converts JSON files to PDF with formatted output.
  */
 export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -117,7 +118,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
    */
   const handleConvert = useCallback(async () => {
     if (files.length < 1) {
-      setError('Please add at least 1 JSON file.');
+      setError(tFeedback('addJson'));
       return;
     }
 
@@ -165,7 +166,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
         setStatus('error');
       }
     }
-  }, [files, pageSize, fontSize, indentSpaces, prettyPrint, showLineNumbers]);
+  }, [files, pageSize, fontSize, indentSpaces, prettyPrint, showLineNumbers, tFeedback]);
 
   /**
    * Handle cancel operation

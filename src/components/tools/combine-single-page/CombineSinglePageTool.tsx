@@ -23,6 +23,7 @@ export interface CombineSinglePageToolProps {
  * Provides the UI for combining PDF pages into a single continuous page.
  */
 export function CombineSinglePageTool({ className = '' }: CombineSinglePageToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -61,9 +62,9 @@ export function CombineSinglePageTool({ className = '' }: CombineSinglePageToolP
       setTotalPages(pdf.numPages);
     } catch (err) {
       console.error('Failed to load PDF info:', err);
-      setError('Failed to load PDF. The file may be corrupted or encrypted.');
+      setError(tFeedback('loadPdf'));
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Handle file selected from uploader
@@ -102,7 +103,7 @@ export function CombineSinglePageTool({ className = '' }: CombineSinglePageToolP
    */
   const handleCombine = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
@@ -151,7 +152,7 @@ export function CombineSinglePageTool({ className = '' }: CombineSinglePageToolP
         setStatus('error');
       }
     }
-  }, [file, orientation, spacing, backgroundColor, addSeparator, separatorThickness, separatorColor]);
+  }, [file, orientation, spacing, backgroundColor, addSeparator, separatorThickness, separatorColor, tFeedback]);
 
   /**
    * Handle cancel operation

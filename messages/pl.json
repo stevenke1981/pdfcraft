@@ -86,7 +86,17 @@
       "footer": "© 2025 PDFCraft. Wszelkie prawa zastrzeżone.",
       "copyright": "© {year} PDFCraft. Wszelkie prawa zastrzeżone.",
       "privacyBadge": "100% prywatności — pliki nigdy nie opuszczają Twojego urządzenia",
-      "madeWith": "Wykonane z <Heart /> i <Nextjs />"
+      "madeWith": "Wykonane z <Heart /> i <Nextjs />",
+      "resources": "Resources",
+      "security": "Security",
+      "clientSide": "Client-side processing",
+      "filesStayLocal": "Files never leave your device",
+      "noUploads": "No file uploads",
+      "privateSecure": "100% private & secure",
+      "compliance": "Compliance",
+      "gdpr": "GDPR Compliant",
+      "terms": "Terms",
+      "cookies": "Cookies"
     },
     "recentFiles": {
       "title": "Najnowsze pliki",
@@ -144,11 +154,14 @@
       "support": "Wsparcie",
       "paste": "Wklej (Ctrl+V)",
       "encryptedTitle": "Ten dokument jest zaszyfrowany",
-      "enterPasswordHelp": "Wprowadź hasło, aby odblokować i załadować: <br/>",
+      "enterPasswordHelp": "Wprowadź hasło, aby odblokować i załadować: ",
       "passwordPlaceholder": "Podaj hasło dokumentu...",
       "cancelButton": "Anuluj",
       "decrypting": "Odszyfrowywanie...",
-      "decryptAndContinue": "Odszyfruj i kontynuuj"
+      "decryptAndContinue": "Odszyfruj i kontynuuj",
+      "maxFiles": "Maximum files: {count}",
+      "oneFileOnly": "Only one file can be selected at a time.",
+      "tooManyFiles": "A maximum of {count} files is allowed."
     },
     "accessibility": {
       "skipToContent": "Przejdź do głównej treści",
@@ -167,7 +180,28 @@
       "sortDescending": "Sortuj malejąco",
       "closeDialog": "Zamknij okno dialogowe",
       "expandSection": "Rozwiń sekcję",
-      "collapseSection": "Zwiń sekcję"
+      "collapseSection": "Zwiń sekcję",
+      "mainNavigation": "Main navigation",
+      "mobileNavigation": "Mobile navigation",
+      "mobileMenu": "Mobile navigation menu",
+      "searchTools": "Search tools",
+      "openSearch": "Open search",
+      "closeSearch": "Close search",
+      "clearSearch": "Clear search",
+      "filterCategory": "Filter by category",
+      "breadcrumb": "Breadcrumb",
+      "features": "Features",
+      "statistics": "Statistics",
+      "searchFaqs": "Search FAQs",
+      "githubRepository": "GitHub repository",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "fileDropZone": "File drop zone",
+      "filesToProcess": "Files to process",
+      "closeTour": "Close tour",
+      "tourProgress": "Tour progress",
+      "switchToDark": "Switch to dark mode",
+      "switchToLight": "Switch to light mode"
     },
     "options": {
       "auto": "Automatycznie",
@@ -965,6 +999,70 @@
       "downloadStartedNotice": "Pobieranie rozpoczęte w przeglądarce! Jeśli nie ruszyło, skopiuj link i wklej w przeglądarce.",
       "downloadFailedNotice": "Nie udało się otworzyć przeglądarki. Skopiuj link i wklej ręcznie w przeglądarce.",
       "linkCopied": "Link do pobrania skopiowany do schowka!"
+    },
+    "progress": {
+      "secondsRemaining": "{seconds}s remaining",
+      "minutesRemaining": "{minutes}m {seconds}s remaining",
+      "hoursRemaining": "{hours}h {minutes}m remaining"
+    },
+    "toolFeedback": {
+      "attachmentsRequired": "Please select a PDF file and at least one file to attach.",
+      "loadPdf": "Failed to load PDF. The file may be corrupted or encrypted.",
+      "uploadFirst": "Please upload a PDF file first.",
+      "validPageCount": "Please enter a valid number of pages (1 or more).",
+      "metadataCorrupt": "Failed to parse PDF file metadata. Ensure it is not corrupted.",
+      "alternateMergeMinimum": "Please add at least 2 PDF files to alternate merge.",
+      "loadFile": "Failed to load PDF file.",
+      "selectCbz": "Please select a CBZ file.",
+      "selectPdf": "Please select a PDF file.",
+      "parseMetadata": "Failed to parse PDF metadata. File might be corrupted.",
+      "renderPage": "Failed to render PDF page.",
+      "cropArea": "Please select a crop area.",
+      "cropPage": "Please crop at least one page.",
+      "decryptPdf": "Please select a PDF file to decrypt.",
+      "scanMetadata": "Failed to scan file metadata. Page layout catalog may be corrupt.",
+      "previewPdf": "Failed to load PDF preview. The file may be corrupted or encrypted.",
+      "keepPage": "Cannot delete all pages. At least one page must remain.",
+      "deleteSelection": "Please select at least one page to delete.",
+      "deskewPdf": "Please select PDF files to deskew.",
+      "selectEmail": "Please select an email file.",
+      "encryptPdf": "Please select a PDF file to encrypt.",
+      "passwordRequired": "Please provide at least one password.",
+      "extractSelection": "Please select at least one page to extract.",
+      "addPdf": "Please add at least one PDF file.",
+      "loadPreview": "Failed to load PDF preview",
+      "flattenPdf": "Please select a PDF file to flatten.",
+      "selectPdfs": "Please select PDF files.",
+      "createBlank": "Failed to create blank PDF.",
+      "createForm": "Failed to create form from template.",
+      "addBlank": "Failed to add blank page.",
+      "readForm": "Failed to read form fields. This PDF may not contain fillable forms.",
+      "parseForm": "Failed to parse form fields from PDF.",
+      "addImage": "Please add at least 1 image file.",
+      "addJson": "Please add at least 1 JSON file.",
+      "linearizePdf": "Please select at least one PDF file to linearize.",
+      "markdownRequired": "Please enter some Markdown content or upload a file.",
+      "uploadPdf": "Please upload a PDF file.",
+      "organizeEmpty": "No pages to organize.",
+      "basePdfCorrupt": "Failed to parse main base PDF metadata. The file may be corrupt.",
+      "overlayPdfCorrupt": "Failed to parse overlay layer PDF metadata. The file may be corrupt.",
+      "overlayBothRequired": "Please upload both the main PDF and overlay layer PDF.",
+      "analyzePdf": "Please select a PDF file to analyze.",
+      "deleteAll": "Cannot delete all pages.",
+      "downloadPages": "Failed to download selected pages",
+      "exportEmpty": "No pages to export.",
+      "convertPdfs": "Please select PDF files to convert.",
+      "addPsd": "Please add at least 1 PSD file.",
+      "keepOne": "Cannot remove all pages from PDF. Keep at least 1 page.",
+      "reverseMinimum": "PDF must have at least 2 pages to reverse.",
+      "rotateSelection": "Please rotate at least one page before processing.",
+      "sanitizePdf": "Please select a PDF file to sanitize.",
+      "viewerLoad": "Failed to load PDF in the viewer. Please try again.",
+      "viewerWait": "Viewer not ready. Please wait for the PDF to load.",
+      "viewerMissing": "PDF viewer not initialized.",
+      "signatureRequired": "No signature found. Add a signature using the pen tool in the toolbar, then try again.",
+      "parsePdfMetadata": "Failed to parse PDF metadata. The file may be corrupt.",
+      "encryptedOrBroken": "Failed to load PDF file. The file structure might be encrypted or broken."
     }
   },
   "toolsPage": {
@@ -1222,7 +1320,16 @@
     "unknown": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.",
     "toolNotFound": "Nie znaleziono narzędzia",
     "invalidPassword": "Wprowadzone hasło jest nieprawidłowe. Sprawdź i spróbuj ponownie.",
-    "incorrectPassword": "Nieprawidłowe hasło. Spróbuj ponownie."
+    "incorrectPassword": "Nieprawidłowe hasło. Spróbuj ponownie.",
+    "selectPdfFirst": "Please select a PDF file first.",
+    "mergeMinimumFiles": "Please add at least 2 PDF files to merge.",
+    "previewFailed": "Unable to load the PDF preview. The file may be corrupted or encrypted.",
+    "selectPageRanges": "Please specify page ranges or select pages to extract.",
+    "zipFailed": "Unable to create the ZIP file.",
+    "pdfToolsFailed": "Failed to load PDF tools",
+    "pageNotFound": "Page not found",
+    "pageNotFoundDescription": "The page you are looking for does not exist or has been moved.",
+    "errorId": "Error ID: {id}"
   },
   "home": {
     "hero": {
@@ -1472,7 +1579,11 @@
     "conditionGateway": "Bramka warunkowa",
     "downloadPdf": "Pobierz PDF",
     "outputCategory": "Wyjście i Eksport",
-    "filenameLabel": "Nazwa pliku wyjściowego"
+    "filenameLabel": "Nazwa pliku wyjściowego",
+    "inputCategory": "Źródła wejściowe",
+    "pdfInput": "Wejście PDF",
+    "imageInput": "Wejście obrazu",
+    "fileInput": "Wejście pliku"
   },
   "tools": {
     "search": {
@@ -1613,7 +1724,15 @@
       "modeVisualShort": "Wybór wizualny",
       "modeBookmarksShort": "Zakładki",
       "modeNTimesShort": "Podziel N części",
-      "downloadZip": "Pobierz wszystko jako ZIP"
+      "downloadZip": "Pobierz wszystko jako ZIP",
+      "separateFiles": "Separate Files",
+      "visualSelection": "Visual Page Selection",
+      "foundBookmarks": "Found {count} bookmarks",
+      "bookmarkResults": "Your PDF will be split into {count} files based on the bookmark structure.",
+      "splitPoints": "Split Points",
+      "bookmarkPage": "Page {page}",
+      "scrollBookmarks": "Scroll to see all {count} bookmarks",
+      "noBookmarks": "No Bookmarks Found"
     },
     "deletePages": {
       "uploadLabel": "Prześlij plik PDF",
@@ -1842,7 +1961,12 @@
         "fontSize": "Rozmiar czcionki",
         "inkColor": "Kolor atramentu",
         "inkThickness": "Grubość atramentu"
-      }
+      },
+      "directMode": "Direct Content Edit",
+      "annotatorMode": "Classic Annotator",
+      "editorLabel": "PDF editor",
+      "savedFile": "{name} saved successfully ({size}).",
+      "downloaded": "downloaded"
     },
     "imageToPdf": {
       "uploadLabel": "Prześlij obrazy",
@@ -2713,7 +2837,13 @@
       "uploadLabel": "Prześlij plik PDF",
       "uploadDescription": "Przeciągnij i upuść formularz PDF.",
       "saveButton": "Zapisz formularz",
-      "successMessage": "Formularz został zapisany pomyślnie!"
+      "successMessage": "Formularz został zapisany pomyślnie!",
+      "fieldsHeading": "Form fields ({count})",
+      "enterField": "Enter {type}",
+      "flattenOption": "Flatten form after filling (make non-editable)",
+      "emptyFields": "No fillable form fields found in this PDF.",
+      "fillButton": "Fill Form",
+      "filledMessage": "Form filled successfully!"
     },
     "formCreator": {
       "uploadLabel": "Prześlij plik PDF",

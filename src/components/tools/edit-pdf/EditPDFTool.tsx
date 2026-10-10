@@ -162,7 +162,7 @@ export function EditPDFTool({ className = '' }: EditPDFToolProps) {
         setIsEditorReady(true);
       } else if (type === 'PDFCRAFT_SAVE_SUCCESS') {
         setSavedNotice(
-          `${fileName || 'Document'} saved successfully! (${sizeKb ? sizeKb + ' KB' : 'downloaded'})`
+          tTools('savedFile', { name: fileName || 'document.pdf', size: sizeKb ? `${sizeKb} KB` : tTools('downloaded') })
         );
         setTimeout(() => setSavedNotice(null), 6000);
       } else if (type === 'PDFCRAFT_EXIT_EDITOR') {
@@ -172,7 +172,7 @@ export function EditPDFTool({ className = '' }: EditPDFToolProps) {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [handleClear, sendPdfToIframe, sendThemeToIframe]);
+  }, [handleClear, sendPdfToIframe, sendThemeToIframe, tTools]);
 
   return (
     <div className={`space-y-6 ${className}`.trim()}>
@@ -190,7 +190,7 @@ export function EditPDFTool({ className = '' }: EditPDFToolProps) {
                 }`}
               >
                 <span>✦</span>
-                <span>{locale === 'zh' ? '直接编辑正文与图片' : 'Direct Content Edit'}</span>
+                <span>{tTools('directMode')}</span>
               </button>
               <button
                 type="button"
@@ -202,7 +202,7 @@ export function EditPDFTool({ className = '' }: EditPDFToolProps) {
                 }`}
               >
                 <span>✎</span>
-                <span>{locale === 'zh' ? '经典批注与涂鸦' : 'Classic Annotator'}</span>
+                <span>{tTools('annotatorMode')}</span>
               </button>
             </div>
           </div>
@@ -260,7 +260,7 @@ export function EditPDFTool({ className = '' }: EditPDFToolProps) {
                   }`}
                 >
                   <span>✦</span>
-                  <span>{locale === 'zh' ? '直接编辑正文与图片' : 'Direct Content Edit'}</span>
+                  <span>{tTools('directMode')}</span>
                 </button>
                 <button
                   type="button"
@@ -272,7 +272,7 @@ export function EditPDFTool({ className = '' }: EditPDFToolProps) {
                   }`}
                 >
                   <span>✎</span>
-                  <span>{locale === 'zh' ? '经典批注与涂鸦' : 'Classic Annotator'}</span>
+                  <span>{tTools('annotatorMode')}</span>
                 </button>
               </div>
 
@@ -295,7 +295,7 @@ export function EditPDFTool({ className = '' }: EditPDFToolProps) {
                 ref={iframeRef}
                 src={`/direct-pdf-editor/index.html?lang=${encodeURIComponent(locale || 'en')}`}
                 className="w-full h-[820px] border-0"
-                title="PDF Editor"
+                title={tTools('editorLabel')}
                 sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
                 allow="local-fonts"
                 onLoad={handleIframeLoad}

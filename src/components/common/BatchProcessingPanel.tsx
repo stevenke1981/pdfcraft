@@ -7,6 +7,8 @@
 
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import {
   Files,
@@ -68,6 +70,7 @@ export const BatchProcessingPanel: React.FC<BatchProcessingPanelProps> = ({
   processor,
   maxConcurrent = 2,
 }) => {
+  const tA11y = useTranslations('common.accessibility');
   const {
     files,
     isProcessing,
@@ -212,7 +215,7 @@ export const BatchProcessingPanel: React.FC<BatchProcessingPanelProps> = ({
         onDragOver={handleDragOver}
         className="border-2 border-dashed border-[hsl(var(--color-border))] rounded-[var(--radius-lg)] p-6 text-center hover:border-[hsl(var(--color-primary))] transition-colors cursor-pointer"
         role="region"
-        aria-label="File drop zone"
+        aria-label={tA11y('fileDropZone')}
       >
         <input
           type="file"
@@ -240,7 +243,7 @@ export const BatchProcessingPanel: React.FC<BatchProcessingPanelProps> = ({
         <div 
           className="mt-4 space-y-2 max-h-64 overflow-auto"
           role="list"
-          aria-label="Files to process"
+          aria-label={tA11y('filesToProcess')}
         >
           {files.map((file, index) => (
             <div

@@ -2,8 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export function ThemeToggle() {
+  const t = useTranslations('common.accessibility');
   const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
 
   useEffect(() => {
@@ -33,8 +35,8 @@ export function ThemeToggle() {
     <button
       onClick={toggleTheme}
       className="flex items-center justify-center h-9 w-9 rounded-lg text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted))/0.5] transition-all"
-      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-      title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      aria-label={t(theme === 'dark' ? 'switchToLight' : 'switchToDark')}
+      title={t(theme === 'dark' ? 'switchToLight' : 'switchToDark')}
     >
       {theme === 'dark' ? (
         <Sun className="h-5 w-5" aria-hidden="true" />

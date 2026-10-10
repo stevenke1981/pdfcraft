@@ -34,6 +34,7 @@ export interface ExtractAttachmentsToolProps {
  * Provides the UI for extracting attachments from PDF files.
  */
 export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -92,7 +93,7 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
    */
   const handleExtract = useCallback(async () => {
     if (files.length === 0) {
-      setError('Please add at least one PDF file.');
+      setError(tFeedback('addPdf'));
       return;
     }
 
@@ -131,7 +132,7 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
         setStatus('error');
       }
     }
-  }, [files]);
+  }, [files, tFeedback]);
 
   /**
    * Handle cancel operation

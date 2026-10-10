@@ -37,6 +37,7 @@ interface CitationItem {
 }
 
 export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -103,11 +104,11 @@ export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) 
 
     } catch (err) {
       console.error(err);
-      setError('Failed to parse PDF metadata. File might be corrupted.');
+      setError(tFeedback('parseMetadata'));
     } finally {
       setIsLoadingMetadata(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Scan Citations from PDF

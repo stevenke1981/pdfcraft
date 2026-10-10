@@ -28,6 +28,7 @@ interface PagePreview {
  * Provides the UI for deleting specific pages from a PDF.
  */
 export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
+  const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -100,11 +101,11 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
       setPagePreviews(previews);
     } catch (err) {
       console.error('Failed to load PDF previews:', err);
-      setError('Failed to load PDF preview. The file may be corrupted or encrypted.');
+      setError(tFeedback('previewPdf'));
     } finally {
       setIsLoadingPreviews(false);
     }
-  }, []);
+  }, [tFeedback]);
 
   /**
    * Handle file selected from uploader
@@ -185,31 +186,31 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
       const pages = parsePageSelection(pageInput, totalPages);
       // Ensure we don't select all pages
       if (pages.length >= totalPages) {
-        setError('Cannot delete all pages. At least one page must remain.');
+        setError(tFeedback('keepPage'));
         return;
       }
       setSelectedPages(new Set(pages));
       setResult(null);
       setError(null);
     }
-  }, [pageInput, totalPages]);
+  }, [pageInput, totalPages, tFeedback]);
 
   /**
    * Handle delete operation
    */
   const handleDelete = useCallback(async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(tFeedback('uploadFirst'));
       return;
     }
 
     if (selectedPages.size === 0) {
-      setError('Please select at least one page to delete.');
+      setError(tFeedback('deleteSelection'));
       return;
     }
 
     if (selectedPages.size >= totalPages) {
-      setError('Cannot delete all pages. At least one page must remain.');
+      setError(tFeedback('keepPage'));
       return;
     }
 
@@ -251,7 +252,7 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
         setStatus('error');
       }
     }
-  }, [file, selectedPages, totalPages]);
+  }, [file, selectedPages, totalPages, tFeedback]);
 
   /**
    * Handle cancel operation
