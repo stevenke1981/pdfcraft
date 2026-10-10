@@ -40,6 +40,12 @@ async function screenshot(page: Page, name: string) {
       const tool = document.querySelector('[data-testid="tool-page-interface"]');
       if (tool) window.scrollTo(0, window.scrollY + tool.getBoundingClientRect().top - 90);
     });
+    // Scroll events update the translucent fixed banner on the next render.
+    // Capture its settled state instead of a transparent intermediate frame.
+    await page.waitForFunction(() => {
+      const banner = document.querySelector('[role="banner"]');
+      return !banner || banner.classList.contains('backdrop-blur-md') === (window.scrollY > 10);
+    });
     await page.screenshot({ path: path.join(evidenceDirectory, name + '-viewport.png'), animations: 'disabled' });
   }
 }
@@ -232,6 +238,10 @@ for (const locale of ['en', 'zh-TW', 'ja'] as const) {
       await expect(page.locator('html')).toHaveAttribute('lang', locale);
       await expect(page.locator('#editLabel')).toHaveText(messages.directEditor.editAll);
       await expect(page.locator('#save')).toHaveAttribute('aria-label', messages.directEditor.exportS);
+      await expect(page.locator('#empty .hint')).toHaveText(messages.directEditor.localPrivacy);
+      await expect(page.locator('label').filter({ has: page.locator('#spellchk') })).toHaveText(messages.directEditor.spellingLabel);
+      await expect(page.locator('label').filter({ has: page.locator('#caseSens') })).toHaveText(messages.directEditor.matchCaseLabel);
+      await expect(page.locator('label').filter({ has: page.locator('#fLine') })).toHaveText(messages.directEditor.lineSpacingLabel);
       await screenshot(page, `${locale}-${device}-direct-editor-controls`);
     }
     expect(consoleErrors.filter(message => /MISSING_MESSAGE|INVALID_MESSAGE|FORMATTING_ERROR/.test(message))).toEqual([]);

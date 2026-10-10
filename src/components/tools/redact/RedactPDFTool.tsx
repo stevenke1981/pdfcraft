@@ -1845,7 +1845,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                                 : 'bg-muted/40 hover:bg-muted text-foreground'
                             }`}
                           >
-                            <span>{tUi('interfaceText.pageNumberPrefix')} {p} {tUi('interfaceText.pageNumberSuffix')}</span>
+                            <span>{tUi('dynamicUi.pageNumberLabel', { page: p })}</span>
                             {count > 0 && (
                               <span
                                 className={`px-1.5 py-0.5 rounded-full text-[10px] ${
@@ -2047,7 +2047,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                   </Button>
 
                   <div className="flex items-center gap-1 px-2 py-0.5 bg-background rounded-lg border border-border shadow-xs">
-                    <span className="text-muted-foreground text-xs">{tUi('interfaceText.pageNumberPrefix')}</span>
+                    <span className="text-muted-foreground text-xs">{tUi('interfaceText.page')}</span>
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
@@ -2064,7 +2064,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                         title={tUi('interfaceText.enterAPageNumberAndPressEnter')}
                       />
                     </form>
-                    <span className="text-muted-foreground text-xs">/ {numPages} {tUi('interfaceText.pageNumberSuffix')}</span>
+                    <span className="text-muted-foreground text-xs">/ {numPages}</span>
                   </div>
 
                   <Button

@@ -336,7 +336,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                             {tUi('tools.rotateCustom.title')}
                             {rotatedCount > 0 && (
                                 <span className="ml-2 text-[hsl(var(--color-primary))] text-sm">
-                                    ({rotatedCount} {tUi('tools.gridCombine.page')}{rotatedCount !== 1 ? tUi('interfaceText.s') : ''} {tUi('interfaceText.set')}
+                                    ({tUi('dynamicUi.pagesRotationSet', { count: rotatedCount })}
                                 </span>
                             )}
                         </h3>

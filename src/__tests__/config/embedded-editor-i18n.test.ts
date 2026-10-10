@@ -4,11 +4,20 @@ import { join } from 'node:path';
 import en from '../../../messages/en.json';
 import ja from '../../../messages/ja.json';
 import zhTW from '../../../messages/zh-TW.json';
-import { resolveEditorLocale } from '../../../public/direct-pdf-editor/i18n.js';
+import { resolveEditorLocale, localizeEditorUI } from '../../../public/direct-pdf-editor/i18n.js';
 
 const keys = JSON.parse(readFileSync(join(process.cwd(), 'public/direct-pdf-editor/translation-keys.json'), 'utf8'));
 const catalogs = { en, ja, 'zh-TW': zhTW };
 describe('embedded editor UI boundary', () => {
+  it('preserves form controls and settings when labels are translated', () => {
+    const document = new DOMParser().parseFromString(readFileSync(join(process.cwd(), 'public/direct-pdf-editor/index.html'), 'utf8'), 'text/html');
+    const state = () => [...document.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea')]
+      .map(element => ({id: element.id, type: element.type, value: element.value, checked: 'checked' in element ? element.checked : undefined}));
+    const before = state();
+    expect(before.map(element => element.id)).toEqual(expect.arrayContaining(['spellchk', 'rulersChk', 'caseSens', 'fLine']));
+    localizeEditorUI(document);
+    expect(state()).toEqual(before);
+  });
   it.each([['zh-TW', 'zh-TW'], ['zh-Hant', 'zh-TW'], ['ja-JP', 'ja'], ['en-US', 'en'], ['zh-CN', 'zh'], ['xx-YY', 'en']])('resolves %s as %s', (input, expected) => {
     expect(resolveEditorLocale(input)).toBe(expected);
   });

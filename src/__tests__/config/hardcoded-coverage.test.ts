@@ -24,6 +24,7 @@ describe('reviewed UI coverage', () => {
     for (const entry of entries.filter(entry => entry.category === 'owned-visible')) {
       expect(entry.messageKey, JSON.stringify(entry)).toBeTruthy();
       expect(typeof lookup(catalogs[locale], entry.messageKey!), entry.messageKey).toBe('string');
+      expect(lookup(catalogs[locale], entry.messageKey!), entry.messageKey).not.toBe('');
     }
   });
   it('resolves literal translation calls in their actual component namespaces', () => {

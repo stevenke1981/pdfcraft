@@ -151,7 +151,7 @@
         <input id="imgFile" type="file" accept="image/*" hidden />
         <div class="tgroup viewopts" hidden>
           <label class="chk"
-            ><input id="spellchk" type="checkbox" /> Spelling</label
+            ><input id="spellchk" type="checkbox" /> <span data-i18n="tools:editPdfText.spellingLabel">Spelling</span></label
           >
           <select
             id="spellLang"
@@ -172,7 +172,7 @@
             <option value="hi">हिन्दी</option>
           </select>
           <label class="chk"
-            ><input id="rulersChk" type="checkbox" /> Rulers</label
+            ><input id="rulersChk" type="checkbox" /> <span data-i18n="tools:editPdfText.rulersLabel">Rulers</span></label
           >
         </div>
         <span id="info" class="info"></span>
@@ -272,8 +272,8 @@
         <div id="findbar" hidden>
           <div class="findhead">
             <span class="findtitle"
-              ><i class="ph ph-magnifying-glass barlead"></i> Find &amp;
-              Replace</span
+              ><i class="ph ph-magnifying-glass barlead"></i> <span data-i18n="tools:editPdfText.findTitle">Find &amp;
+              Replace</span></span
             >
             <button
               id="findDone"
@@ -329,13 +329,13 @@
             </button>
           </div>
           <label class="chk"
-            ><input id="caseSens" type="checkbox" /> Match case</label
+            ><input id="caseSens" type="checkbox" /> <span data-i18n="tools:editPdfText.matchCaseLabel">Match case</span></label
           >
           <label class="chk"
-            ><input id="wholeWord" type="checkbox" /> Whole word</label
+            ><input id="wholeWord" type="checkbox" /> <span data-i18n="tools:editPdfText.wholeWordLabel">Whole word</span></label
           >
           <label class="chk"
-            ><input id="noAccents" type="checkbox" /> Ignore accents</label
+            ><input id="noAccents" type="checkbox" /> <span data-i18n="tools:editPdfText.ignoreAccentsLabel">Ignore accents</span></label
           >
           <span id="findStatus" class="findstatus"></span>
         </div>
@@ -351,7 +351,7 @@
               data-i18n="tools:editPdfText.choosePdf"
               >Choose a PDF…</label
             >
-            <p class="hint">
+            <p class="hint" data-i18n="tools:editPdfText.localPrivacy">
               Everything runs locally in your browser, and nothing is uploaded.
             </p>
           </div>
@@ -413,7 +413,7 @@
               id="extEdit"
               class="btn icon objbtn"
               hidden
-              title="Save this image as a PNG, edit it in any app; saved changes re-import automatically"
+              title="Save this image as a PNG, edit it in any app; saved changes re-import automatically" data-i18n-title="tools:editPdfText.externalEditHint"
             >
               <i class="ph ph-arrow-square-out"></i>
             </button>
@@ -526,7 +526,7 @@
         </div>
 
         <aside id="inspector" hidden>
-          <h2><i class="ph ph-sliders-horizontal"></i> Format</h2>
+          <h2><i class="ph ph-sliders-horizontal"></i> <span data-i18n="tools:editPdfText.formatTitle">Format</span></h2>
           <h3 class="sect" data-i18n="tools:editPdfText.font">Font</h3>
           <div class="row">
             <select id="fFamily"></select>
@@ -713,7 +713,7 @@
           </div>
           <h3 class="sect" data-i18n="tools:editPdfText.spacing">Spacing</h3>
           <label class="field"
-            >Line Spacing
+            ><span data-i18n="tools:editPdfText.lineSpacingLabel">Line Spacing</span>
             <input
               id="fLine"
               type="number"
@@ -723,7 +723,7 @@
               class="num"
           /></label>
           <label class="field"
-            >Paragraph Spacing
+            ><span data-i18n="tools:editPdfText.paragraphSpacingLabel">Paragraph Spacing</span>
             <input
               id="fPara"
               type="number"
@@ -733,7 +733,7 @@
               class="num"
           /></label>
           <label class="field"
-            >Character Spacing
+            ><span data-i18n="tools:editPdfText.characterSpacingLabel">Character Spacing</span>
             <input
               id="fChar"
               type="number"
@@ -743,7 +743,7 @@
               class="num"
           /></label>
           <label class="field"
-            >Word Spacing
+            ><span data-i18n="tools:editPdfText.wordSpacingLabel">Word Spacing</span>
             <input
               id="fWordSp"
               type="number"
@@ -753,7 +753,7 @@
               class="num"
           /></label>
           <label class="field"
-            >Horizontal Scale %
+            ><span data-i18n="tools:editPdfText.horizontalScaleLabel">Horizontal Scale %</span>
             <input
               id="fHScale"
               type="number"
@@ -763,7 +763,7 @@
               class="num"
           /></label>
           <label class="field"
-            >First-line Indent
+            ><span data-i18n="tools:editPdfText.firstLineIndentLabel">First-line Indent</span>
             <input
               id="fFirstInd"
               type="number"
@@ -773,7 +773,7 @@
               class="num"
           /></label>
           <label class="field"
-            >Hanging Indent
+            ><span data-i18n="tools:editPdfText.hangingIndentLabel">Hanging Indent</span>
             <input
               id="fHangInd"
               type="number"

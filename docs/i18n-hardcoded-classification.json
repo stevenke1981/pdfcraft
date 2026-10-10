@@ -8,7 +8,10 @@
     "Reused message keys were reviewed for meaning: generic page/position/upload labels use dedicated keys instead of rotation, outline, or conversion-specific copy.",
     "Additional UI fallbacks, invalid translation calls and dynamic templates were inventoried separately; original and supplemental denominators remain unchanged.",
     "Static key-call validation also checks namespaces and ICU arguments; previous missing-key aliases were repaired.",
-    "The independent app.js controller is recorded as an owned legacy boundary, not third-party. Five font labels preserve actual font option values."
+    "The independent app.js controller is recorded as an owned legacy boundary, not third-party. Five font labels preserve actual font option values.",
+    "Final pixel review found an unmarked editor landing privacy notice; it is now a reviewed plain-text UI entry. Original 414 and supplemental 424 inventories remain unchanged.",
+    "Unmarked HTML review: 15 additional UI labels/hints localized; editLabel was already localized by the controller, and 11 autonyms/format/direction constants retained. Label text nodes are wrapped to preserve form controls.",
+    "Split page-number and English plural-suffix fragments were combined into complete ICU labels to avoid empty catalog values; the page-number input uses a complete generic page label. Original candidate text and denominators remain intact."
   ],
   "entries": [
     {
@@ -7061,7 +7064,7 @@
       "end": 73725,
       "category": "owned-visible",
       "reason": "Project-owned visible UI, accessibility label, input hint, or progress message.",
-      "messageKey": "interfaceText.pageNumberPrefix",
+      "messageKey": "dynamicUi.pageNumberLabel",
       "resolution": "localized"
     },
     {
@@ -7074,7 +7077,7 @@
       "end": 73730,
       "category": "owned-visible",
       "reason": "Project-owned visible UI, accessibility label, input hint, or progress message.",
-      "messageKey": "interfaceText.pageNumberSuffix",
+      "messageKey": "dynamicUi.pageNumberLabel",
       "resolution": "localized"
     },
     {
@@ -7307,7 +7310,7 @@
       "end": 83470,
       "category": "owned-visible",
       "reason": "Project-owned visible UI, accessibility label, input hint, or progress message.",
-      "messageKey": "interfaceText.pageNumberPrefix",
+      "messageKey": "dynamicUi.pageNumberLabel",
       "resolution": "localized"
     },
     {
@@ -7320,7 +7323,7 @@
       "end": 84302,
       "category": "owned-visible",
       "reason": "Project-owned visible UI, accessibility label, input hint, or progress message.",
-      "messageKey": "interfaceText.pageNumberSuffix",
+      "messageKey": "dynamicUi.pageNumberLabel",
       "resolution": "localized"
     },
     {
@@ -7791,7 +7794,7 @@
       "end": 12212,
       "category": "owned-visible",
       "reason": "Project-owned visible UI, accessibility label, input hint, or progress message.",
-      "messageKey": "interfaceText.s",
+      "messageKey": "dynamicUi.pagesRotationSet",
       "resolution": "localized"
     },
     {
@@ -22670,6 +22673,134 @@
         "category": "owned-visible",
         "messageKey": "directEditor.ok",
         "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.localPrivacy",
+        "kind": "text",
+        "text": "Everything runs locally in your browser, and nothing is uploaded.",
+        "category": "owned-visible",
+        "messageKey": "directEditor.localPrivacy",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.spellingLabel",
+        "kind": "text",
+        "text": "Spelling",
+        "category": "owned-visible",
+        "messageKey": "directEditor.spellingLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.rulersLabel",
+        "kind": "text",
+        "text": "Rulers",
+        "category": "owned-visible",
+        "messageKey": "directEditor.rulersLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.findTitle",
+        "kind": "text",
+        "text": "Find & Replace",
+        "category": "owned-visible",
+        "messageKey": "directEditor.findTitle",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.matchCaseLabel",
+        "kind": "text",
+        "text": "Match case",
+        "category": "owned-visible",
+        "messageKey": "directEditor.matchCaseLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.wholeWordLabel",
+        "kind": "text",
+        "text": "Whole word",
+        "category": "owned-visible",
+        "messageKey": "directEditor.wholeWordLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.ignoreAccentsLabel",
+        "kind": "text",
+        "text": "Ignore accents",
+        "category": "owned-visible",
+        "messageKey": "directEditor.ignoreAccentsLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.formatTitle",
+        "kind": "text",
+        "text": "Format",
+        "category": "owned-visible",
+        "messageKey": "directEditor.formatTitle",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.lineSpacingLabel",
+        "kind": "text",
+        "text": "Line Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.lineSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.paragraphSpacingLabel",
+        "kind": "text",
+        "text": "Paragraph Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.paragraphSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.characterSpacingLabel",
+        "kind": "text",
+        "text": "Character Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.characterSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.wordSpacingLabel",
+        "kind": "text",
+        "text": "Word Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.wordSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.horizontalScaleLabel",
+        "kind": "text",
+        "text": "Horizontal Scale %",
+        "category": "owned-visible",
+        "messageKey": "directEditor.horizontalScaleLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.firstLineIndentLabel",
+        "kind": "text",
+        "text": "First-line Indent",
+        "category": "owned-visible",
+        "messageKey": "directEditor.firstLineIndentLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.hangingIndentLabel",
+        "kind": "text",
+        "text": "Hanging Indent",
+        "category": "owned-visible",
+        "messageKey": "directEditor.hangingIndentLabel",
+        "resolution": "localized"
+      },
+      {
+        "key": "tools:editPdfText.externalEditHint",
+        "kind": "title",
+        "text": "Save this image as a PNG, edit it in any app; saved changes re-import automatically",
+        "category": "owned-visible",
+        "messageKey": "directEditor.externalEditHint",
+        "resolution": "localized"
       }
     ],
     "controllerMessages": 35,
@@ -22700,6 +22831,251 @@
       }
     ],
     "fontLabels": 5,
-    "keyCount": 147
+    "keyCount": 163,
+    "unmarkedHtmlReview": [
+      {
+        "tag": "SPAN",
+        "id": "editLabel",
+        "class": "",
+        "text": "Edit All",
+        "category": "owned-visible",
+        "messageKey": "directEditor.editAll",
+        "resolution": "already-localized-by-controller"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "chk",
+        "text": "Spelling",
+        "category": "owned-visible",
+        "messageKey": "directEditor.spellingLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "OPTION",
+        "id": "",
+        "class": "",
+        "text": "English (US)",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "OPTION",
+        "id": "",
+        "class": "",
+        "text": "English (UK)",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "OPTION",
+        "id": "",
+        "class": "",
+        "text": "Deutsch",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "OPTION",
+        "id": "",
+        "class": "",
+        "text": "Français",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "OPTION",
+        "id": "",
+        "class": "",
+        "text": "Español",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "OPTION",
+        "id": "",
+        "class": "",
+        "text": "Italiano",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "OPTION",
+        "id": "",
+        "class": "",
+        "text": "Português",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "chk",
+        "text": "Rulers",
+        "category": "owned-visible",
+        "messageKey": "directEditor.rulersLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "SPAN",
+        "id": "",
+        "class": "findtitle",
+        "text": "Find & Replace",
+        "category": "owned-visible",
+        "messageKey": "directEditor.findTitle",
+        "resolution": "localized"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "chk",
+        "text": "Match case",
+        "category": "owned-visible",
+        "messageKey": "directEditor.matchCaseLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "chk",
+        "text": "Whole word",
+        "category": "owned-visible",
+        "messageKey": "directEditor.wholeWordLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "chk",
+        "text": "Ignore accents",
+        "category": "owned-visible",
+        "messageKey": "directEditor.ignoreAccentsLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "H2",
+        "id": "",
+        "class": "",
+        "text": "Format",
+        "category": "owned-visible",
+        "messageKey": "directEditor.formatTitle",
+        "resolution": "localized"
+      },
+      {
+        "tag": "OPTION",
+        "id": "",
+        "class": "",
+        "text": "i. ii. iii.",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "OPTION",
+        "id": "",
+        "class": "",
+        "text": "I. II. III.",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "field",
+        "text": "Line Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.lineSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "field",
+        "text": "Paragraph Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.paragraphSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "field",
+        "text": "Character Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.characterSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "field",
+        "text": "Word Spacing",
+        "category": "owned-visible",
+        "messageKey": "directEditor.wordSpacingLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "field",
+        "text": "Horizontal Scale %",
+        "category": "owned-visible",
+        "messageKey": "directEditor.horizontalScaleLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "field",
+        "text": "First-line Indent",
+        "category": "owned-visible",
+        "messageKey": "directEditor.firstLineIndentLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "LABEL",
+        "id": "",
+        "class": "field",
+        "text": "Hanging Indent",
+        "category": "owned-visible",
+        "messageKey": "directEditor.hangingIndentLabel",
+        "resolution": "localized"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "class": "",
+        "text": "LTR",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "class": "",
+        "text": "RTL",
+        "category": "technical",
+        "resolution": "retained",
+        "reason": "Language autonym, literal numbering sample, or LTR/RTL direction abbreviation."
+      },
+      {
+        "tag": "BUTTON",
+        "id": "extEdit",
+        "attribute": "title",
+        "value": "Save this image as a PNG, edit it in any app; saved changes re-import automatically",
+        "category": "owned-visible",
+        "messageKey": "directEditor.externalEditHint",
+        "resolution": "localized"
+      }
+    ]
   }
 }

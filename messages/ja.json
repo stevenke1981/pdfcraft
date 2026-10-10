@@ -3721,7 +3721,6 @@
     "sensitiveContentHasBeenIrreversiblyRemovedAtPixelLevelMetadataAndPrivacyFingerprintsHaveBe": "機密情報をピクセル単位で復元できない形に削除し、メタデータとプライバシー情報を消去しました。",
     "continueEditing": "編集を続ける",
     "eG135": "例：1, 3-5",
-    "s": "",
     "rotatePdf": "PDF を回転",
     "total": "（合計",
     "previousPage3": "◀ 前のページ",
@@ -3815,8 +3814,6 @@
     "page": "ページ",
     "uploadPdfFile": "PDF ファイルをアップロード",
     "copy": "コピー",
-    "pageNumberPrefix": "",
-    "pageNumberSuffix": "ページ",
     "noServerUploads": "サーバーへのアップロードなし",
     "noServerUploadsDescription": "ファイルはサーバーにアップロードされず、すべての処理はブラウザー内で行われます。",
     "localProcessing": "ローカル処理",
@@ -4106,7 +4103,9 @@
     "convertFromPdf": "PDF から変換",
     "optimize": "最適化",
     "security": "セキュリティ",
-    "output": "出力"
+    "output": "出力",
+    "pageNumberLabel": "{page} ページ",
+    "pagesRotationSet": "{count} ページに設定済み"
   },
   "workflowSummary": {
     "defaultRotation": "回転：時計回りに 90°",
@@ -4294,6 +4293,22 @@
     "fontYaHei": "Microsoft YaHei",
     "fontSimSun": "SimSun",
     "fontSimHei": "SimHei",
-    "fontKaiTi": "KaiTi"
+    "fontKaiTi": "KaiTi",
+    "localPrivacy": "すべての処理はブラウザ内で行われ、ファイルはアップロードされません。",
+    "spellingLabel": "スペルチェック",
+    "rulersLabel": "ルーラー",
+    "findTitle": "検索と置換",
+    "matchCaseLabel": "大文字と小文字を区別",
+    "wholeWordLabel": "単語単位で検索",
+    "ignoreAccentsLabel": "アクセント記号を区別しない",
+    "formatTitle": "書式",
+    "lineSpacingLabel": "行間",
+    "paragraphSpacingLabel": "段落間隔",
+    "characterSpacingLabel": "文字間隔",
+    "wordSpacingLabel": "単語間隔",
+    "horizontalScaleLabel": "水平方向の倍率 %",
+    "firstLineIndentLabel": "最初の行の字下げ",
+    "hangingIndentLabel": "ぶら下げインデント",
+    "externalEditHint": "画像を PNG として保存し、別のアプリで編集します。保存した変更は自動的に再読み込みされます。"
   }
 }

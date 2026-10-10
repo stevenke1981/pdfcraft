@@ -3713,7 +3713,6 @@
     "sensitiveContentHasBeenIrreversiblyRemovedAtPixelLevelMetadataAndPrivacyFingerprintsHaveBe": "Sensitive content has been irreversibly removed at pixel level; metadata and privacy fingerprints have been cleared.",
     "continueEditing": "Continue editing",
     "eG135": "e.g. 1, 3-5",
-    "s": "s",
     "rotatePdf": "Rotate PDF",
     "total": "(total",
     "previousPage3": "◀ Previous page",
@@ -3807,8 +3806,6 @@
     "page": "Page",
     "uploadPdfFile": "Upload PDF File",
     "copy": "Copy",
-    "pageNumberPrefix": "Page",
-    "pageNumberSuffix": "",
     "noServerUploads": "No Server Uploads",
     "noServerUploadsDescription": "Your files are never uploaded to any server. All processing happens locally in your browser.",
     "localProcessing": "Local Processing",
@@ -4098,7 +4095,9 @@
     "convertFromPdf": "Convert from PDF",
     "optimize": "Optimize",
     "security": "Security",
-    "output": "Output"
+    "output": "Output",
+    "pageNumberLabel": "Page {page}",
+    "pagesRotationSet": "{count, plural, one {# page set} other {# pages set}}"
   },
   "workflowSummary": {
     "defaultRotation": "Rotation: 90° clockwise",
@@ -4286,6 +4285,22 @@
     "fontYaHei": "微软雅黑 (Microsoft YaHei)",
     "fontSimSun": "宋体 (SimSun)",
     "fontSimHei": "黑体 (SimHei)",
-    "fontKaiTi": "楷体 (KaiTi)"
+    "fontKaiTi": "楷体 (KaiTi)",
+    "localPrivacy": "Everything runs locally in your browser, and nothing is uploaded.",
+    "spellingLabel": "Spelling",
+    "rulersLabel": "Rulers",
+    "findTitle": "Find & Replace",
+    "matchCaseLabel": "Match case",
+    "wholeWordLabel": "Whole word",
+    "ignoreAccentsLabel": "Ignore accents",
+    "formatTitle": "Format",
+    "lineSpacingLabel": "Line Spacing",
+    "paragraphSpacingLabel": "Paragraph Spacing",
+    "characterSpacingLabel": "Character Spacing",
+    "wordSpacingLabel": "Word Spacing",
+    "horizontalScaleLabel": "Horizontal Scale %",
+    "firstLineIndentLabel": "First-line Indent",
+    "hangingIndentLabel": "Hanging Indent",
+    "externalEditHint": "Save this image as a PNG, edit it in any app; saved changes re-import automatically"
   }
 }

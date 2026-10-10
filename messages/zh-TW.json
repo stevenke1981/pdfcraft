@@ -3721,7 +3721,6 @@
     "sensitiveContentHasBeenIrreversiblyRemovedAtPixelLevelMetadataAndPrivacyFingerprintsHaveBe": "敏感內容已在像素層級不可逆移除，中繼資料與隱私指紋已清除。",
     "continueEditing": "繼續編輯",
     "eG135": "例如：1, 3-5",
-    "s": "",
     "rotatePdf": "旋轉 PDF",
     "total": "（共",
     "previousPage3": "◀ 上一頁",
@@ -3815,8 +3814,6 @@
     "page": "頁面",
     "uploadPdfFile": "上傳 PDF 檔案",
     "copy": "複製",
-    "pageNumberPrefix": "第",
-    "pageNumberSuffix": "頁",
     "noServerUploads": "不會上傳至伺服器",
     "noServerUploadsDescription": "您的檔案不會上傳至任何伺服器，所有處理都在瀏覽器內進行。",
     "localProcessing": "本機處理",
@@ -4106,7 +4103,9 @@
     "convertFromPdf": "從 PDF 轉換",
     "optimize": "最佳化",
     "security": "安全性",
-    "output": "輸出"
+    "output": "輸出",
+    "pageNumberLabel": "第 {page} 頁",
+    "pagesRotationSet": "已設定 {count} 頁"
   },
   "workflowSummary": {
     "defaultRotation": "旋轉：90° 順時針",
@@ -4294,6 +4293,22 @@
     "fontYaHei": "微軟雅黑（Microsoft YaHei）",
     "fontSimSun": "宋體（SimSun）",
     "fontSimHei": "黑體（SimHei）",
-    "fontKaiTi": "楷體（KaiTi）"
+    "fontKaiTi": "楷體（KaiTi）",
+    "localPrivacy": "所有處理都在您的瀏覽器本機進行，不會上傳任何檔案。",
+    "spellingLabel": "拼字檢查",
+    "rulersLabel": "尺規",
+    "findTitle": "尋找與取代",
+    "matchCaseLabel": "區分大小寫",
+    "wholeWordLabel": "全字比對",
+    "ignoreAccentsLabel": "忽略變音符號",
+    "formatTitle": "格式",
+    "lineSpacingLabel": "行距",
+    "paragraphSpacingLabel": "段落間距",
+    "characterSpacingLabel": "字元間距",
+    "wordSpacingLabel": "單字間距",
+    "horizontalScaleLabel": "水平縮放 %",
+    "firstLineIndentLabel": "首行縮排",
+    "hangingIndentLabel": "凸排",
+    "externalEditHint": "將圖片儲存為 PNG，使用其他應用程式編輯；儲存的變更會自動重新匯入。"
   }
 }

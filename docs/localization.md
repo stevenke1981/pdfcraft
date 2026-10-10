@@ -54,12 +54,12 @@ navigation. CJK system font stacks do not add external font requests.
   accessibility/brush labels, seven progress props and localized workflow
   summaries. Unreachable English fallbacks following valid next-intl calls are
   removed without counting them as newly translated controls. Invalid key aliases
-  are repaired; the audit resolves 3,687 static calls in their actual namespaces
+  are repaired; the audit resolves 3,683 static calls in their actual namespaces
   with no missing messages.
-- Each target catalog now has **3,751** keys. ICU argument/tag parity is intact.
+- Each target catalog now has **3,766** keys. ICU argument/tag parity is intact.
   The seven unchanged English values are brands, technical labels and email
   examples; Japanese also retains five actual font-family names.
-- The independent editor's 107 marked HTML attributes, 35 controller labels
+- The independent editor's 123 marked HTML attributes, 35 controller labels
   plus five font labels, and 36 mobile-dock literal occurrences use the main
   message catalogs. `sync-editor-translations.mjs` generates its static modules
   during install/dev/build. Text uses `textContent` and attributes, never HTML.
