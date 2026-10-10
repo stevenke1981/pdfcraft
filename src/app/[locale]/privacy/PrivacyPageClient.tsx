@@ -12,28 +12,29 @@ interface PrivacyPageClientProps {
 }
 
 export default function PrivacyPageClient({ locale }: PrivacyPageClientProps) {
+  const tUi = useTranslations();
   const t = useTranslations();
 
   const privacyHighlights = [
     {
       icon: Server,
-      title: 'No Server Uploads',
-      description: 'Your files are never uploaded to any server. All processing happens locally in your browser.',
+      title: tUi('interfaceText.noServerUploads'),
+      description: tUi('interfaceText.noServerUploadsDescription'),
     },
     {
       icon: Lock,
-      title: 'Local Processing',
-      description: 'PDF operations are performed using JavaScript and WebAssembly directly on your device.',
+      title: tUi('interfaceText.localProcessing'),
+      description: tUi('interfaceText.localProcessingDescription'),
     },
     {
       icon: Trash2,
-      title: 'Automatic Cleanup',
-      description: 'All file data is automatically cleared when you close the browser tab or navigate away.',
+      title: tUi('interfaceText.automaticCleanup'),
+      description: tUi('interfaceText.automaticCleanupDescription'),
     },
     {
       icon: Eye,
-      title: 'No Tracking',
-      description: 'We don\'t track your file contents or personal information. Your documents remain private.',
+      title: tUi('interfaceText.noTracking'),
+      description: tUi('interfaceText.noTrackingDescription'),
     },
   ];
 
@@ -50,11 +51,10 @@ export default function PrivacyPageClient({ locale }: PrivacyPageClientProps) {
                 <Shield className="h-8 w-8 text-green-600" />
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-[hsl(var(--color-foreground))] mb-6">
-                Privacy Policy
+                {tUi('metadata.privacy.title')}
               </h1>
               <p className="text-lg text-[hsl(var(--color-muted-foreground))]">
-                Your privacy is our top priority. {t('common.brand')} is designed from the ground up 
-                to protect your data.
+                {tUi('interfaceText.yourPrivacyIsOurTopPriority')} {t('common.brand')} {tUi('interfaceText.isDesignedFromTheGroundUpToProtectYourData')}
               </p>
             </div>
           </div>
@@ -89,143 +89,135 @@ export default function PrivacyPageClient({ locale }: PrivacyPageClientProps) {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto prose prose-lg">
               <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-8">
-                Last updated: December 2024
+                {tUi('interfaceText.lastUpdatedDecember2024')}
               </p>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                1. Introduction
+                {tUi('interfaceText.1Introduction')}
               </h2>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                {t('common.brand')} (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. 
-                This Privacy Policy explains how we handle your information when you use our PDF tools.
+                {t('common.brand')} {tUi('interfaceText.weOurOrUsIsCommittedToProtectingYourPrivacyThisPrivacyPolicyExplainsHowWeHandleYourInforma')}
               </p>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                2. How Our Service Works
+                {tUi('interfaceText.2HowOurServiceWorks')}
               </h2>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                {t('common.brand')} is a client-side application. This means:
+                {t('common.brand')} {tUi('interfaceText.isAClientSideApplicationThisMeans')}
               </p>
               <ul className="list-disc pl-6 space-y-2 text-[hsl(var(--color-muted-foreground))] mb-4">
-                <li>All PDF processing happens directly in your web browser</li>
-                <li>Your files are never uploaded to our servers or any third-party servers</li>
-                <li>We cannot see, access, or store your documents</li>
-                <li>Your files remain on your device at all times</li>
+                <li>{tUi('interfaceText.allPdfProcessingHappensDirectlyInYourWebBrowser')}</li>
+                <li>{tUi('interfaceText.yourFilesAreNeverUploadedToOurServersOrAnyThirdPartyServers')}</li>
+                <li>{tUi('interfaceText.weCannotSeeAccessOrStoreYourDocuments')}</li>
+                <li>{tUi('interfaceText.yourFilesRemainOnYourDeviceAtAllTimes')}</li>
               </ul>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                3. Information We Collect
+                {tUi('interfaceText.3InformationWeCollect')}
               </h2>
               <h3 className="text-xl font-semibold text-[hsl(var(--color-foreground))] mt-6 mb-3">
-                3.1 Your Files
+                {tUi('interfaceText.31YourFiles')}
               </h3>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                <strong>We do not collect your files.</strong> When you use our PDF tools, your files 
-                are processed entirely within your browser. They are never transmitted to our servers.
+                <strong>{tUi('interfaceText.weDoNotCollectYourFiles')}</strong> {tUi('interfaceText.whenYouUseOurPdfToolsYourFilesAreProcessedEntirelyWithinYourBrowserTheyAreNeverTransmitted')}
               </p>
 
               <h3 className="text-xl font-semibold text-[hsl(var(--color-foreground))] mt-6 mb-3">
-                3.2 Usage Data
+                {tUi('interfaceText.32UsageData')}
               </h3>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                We may collect anonymous usage statistics to improve our service, such as:
+                {tUi('interfaceText.weMayCollectAnonymousUsageStatisticsToImproveOurServiceSuchAs')}
               </p>
               <ul className="list-disc pl-6 space-y-2 text-[hsl(var(--color-muted-foreground))] mb-4">
-                <li>Which tools are most popular</li>
-                <li>General geographic region (country level)</li>
-                <li>Browser type and version</li>
-                <li>Device type (desktop, mobile, tablet)</li>
+                <li>{tUi('interfaceText.whichToolsAreMostPopular')}</li>
+                <li>{tUi('interfaceText.generalGeographicRegionCountryLevel')}</li>
+                <li>{tUi('interfaceText.browserTypeAndVersion')}</li>
+                <li>{tUi('interfaceText.deviceTypeDesktopMobileTablet')}</li>
               </ul>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                This data is aggregated and anonymized. It cannot be used to identify you personally.
+                {tUi('interfaceText.thisDataIsAggregatedAndAnonymizedItCannotBeUsedToIdentifyYouPersonally')}
               </p>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                4. Local Storage
+                {tUi('interfaceText.4LocalStorage')}
               </h2>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                {t('common.brand')} may use your browser&apos;s local storage to:
+                {t('common.brand')} {tUi('interfaceText.mayUseYourBrowserSLocalStorageTo')}
               </p>
               <ul className="list-disc pl-6 space-y-2 text-[hsl(var(--color-muted-foreground))] mb-4">
-                <li>Remember your language preference</li>
-                <li>Store your recent tool history</li>
-                <li>Save work-in-progress for interrupted sessions</li>
+                <li>{tUi('interfaceText.rememberYourLanguagePreference')}</li>
+                <li>{tUi('interfaceText.storeYourRecentToolHistory')}</li>
+                <li>{tUi('interfaceText.saveWorkInProgressForInterruptedSessions')}</li>
               </ul>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                This data is stored only on your device and is not transmitted to us.
+                {tUi('interfaceText.thisDataIsStoredOnlyOnYourDeviceAndIsNotTransmittedToUs')}
               </p>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                5. Cookies
+                {tUi('interfaceText.5Cookies')}
               </h2>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                We use minimal cookies for essential functionality:
+                {tUi('interfaceText.weUseMinimalCookiesForEssentialFunctionality')}
               </p>
               <ul className="list-disc pl-6 space-y-2 text-[hsl(var(--color-muted-foreground))] mb-4">
-                <li><strong>Essential cookies:</strong> Required for the website to function properly</li>
-                <li><strong>Preference cookies:</strong> Remember your settings like language preference</li>
+                <li><strong>{tUi('interfaceText.essentialCookies')}</strong> {tUi('interfaceText.requiredForTheWebsiteToFunctionProperly')}</li>
+                <li><strong>{tUi('interfaceText.preferenceCookies')}</strong> {tUi('interfaceText.rememberYourSettingsLikeLanguagePreference')}</li>
               </ul>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                We do not use tracking cookies or advertising cookies.
+                {tUi('interfaceText.weDoNotUseTrackingCookiesOrAdvertisingCookies')}
               </p>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                6. Third-Party Services
+                {tUi('interfaceText.6ThirdPartyServices')}
               </h2>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                {t('common.brand')} does not share your data with third parties. We do not use:
+                {t('common.brand')} {tUi('interfaceText.doesNotShareYourDataWithThirdPartiesWeDoNotUse')}
               </p>
               <ul className="list-disc pl-6 space-y-2 text-[hsl(var(--color-muted-foreground))] mb-4">
-                <li>Third-party analytics that track individual users</li>
-                <li>Advertising networks</li>
-                <li>Social media tracking pixels</li>
-                <li>External file processing services</li>
-              </ul>
-
-              <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                7. Data Security
-              </h2>
-              <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                Since your files never leave your device, they are protected by your own device&apos;s 
-                security measures. We recommend:
-              </p>
-              <ul className="list-disc pl-6 space-y-2 text-[hsl(var(--color-muted-foreground))] mb-4">
-                <li>Using an up-to-date browser</li>
-                <li>Keeping your operating system updated</li>
-                <li>Using secure networks when handling sensitive documents</li>
+                <li>{tUi('interfaceText.thirdPartyAnalyticsThatTrackIndividualUsers')}</li>
+                <li>{tUi('interfaceText.advertisingNetworks')}</li>
+                <li>{tUi('interfaceText.socialMediaTrackingPixels')}</li>
+                <li>{tUi('interfaceText.externalFileProcessingServices')}</li>
               </ul>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                8. Your Rights
+                {tUi('interfaceText.7DataSecurity')}
               </h2>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                Since we don&apos;t collect personal data, there is no personal data to access, correct, 
-                or delete. You can clear your browser&apos;s local storage at any time to remove any 
-                preferences stored by {t('common.brand')}.
+                {tUi('interfaceText.sinceYourFilesNeverLeaveYourDeviceTheyAreProtectedByYourOwnDeviceSSecurityMeasuresWeRecomm')}
+              </p>
+              <ul className="list-disc pl-6 space-y-2 text-[hsl(var(--color-muted-foreground))] mb-4">
+                <li>{tUi('interfaceText.usingAnUpToDateBrowser')}</li>
+                <li>{tUi('interfaceText.keepingYourOperatingSystemUpdated')}</li>
+                <li>{tUi('interfaceText.usingSecureNetworksWhenHandlingSensitiveDocuments')}</li>
+              </ul>
+
+              <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
+                {tUi('interfaceText.8YourRights')}
+              </h2>
+              <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
+                {tUi('interfaceText.sinceWeDonTCollectPersonalDataThereIsNoPersonalDataToAccessCorrectOrDeleteYouCanClearYourB')} {t('common.brand')}.
               </p>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                9. Children&apos;s Privacy
+                {tUi('interfaceText.9ChildrenSPrivacy')}
               </h2>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                {t('common.brand')} is not directed at children under 13. We do not knowingly collect 
-                any information from children.
+                {t('common.brand')} {tUi('interfaceText.isNotDirectedAtChildrenUnder13WeDoNotKnowinglyCollectAnyInformationFromChildren')}
               </p>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                10. Changes to This Policy
+                {tUi('interfaceText.10ChangesToThisPolicy')}
               </h2>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                We may update this Privacy Policy from time to time. We will notify you of any changes 
-                by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date.
+                {tUi('interfaceText.weMayUpdateThisPrivacyPolicyFromTimeToTimeWeWillNotifyYouOfAnyChangesByPostingTheNewPrivac')}
               </p>
 
               <h2 className="text-2xl font-bold text-[hsl(var(--color-foreground))] mt-8 mb-4">
-                11. Contact Us
+                {tUi('interfaceText.11ContactUs')}
               </h2>
               <p className="text-[hsl(var(--color-muted-foreground))] mb-4">
-                If you have any questions about this Privacy Policy, please contact us through our 
-                contact page.
+                {tUi('interfaceText.ifYouHaveAnyQuestionsAboutThisPrivacyPolicyPleaseContactUsThroughOurContactPage')}
               </p>
             </div>
           </div>
@@ -242,7 +234,7 @@ export default function PrivacyPageClient({ locale }: PrivacyPageClientProps) {
                     {t('common.footer.privacyBadge')}
                   </p>
                   <p className="text-sm text-green-600">
-                    Your documents are processed securely in your browser
+                    {tUi('interfaceText.yourDocumentsAreProcessedSecurelyInYourBrowser')}
                   </p>
                 </div>
               </div>

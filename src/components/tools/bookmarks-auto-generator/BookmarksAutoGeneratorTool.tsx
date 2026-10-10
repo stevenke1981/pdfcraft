@@ -16,6 +16,7 @@ export interface BookmarksAutoGeneratorToolProps {
 }
 
 export function BookmarksAutoGeneratorTool({ className = '' }: BookmarksAutoGeneratorToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [strategy, setStrategy] = useState<'regex' | 'font-size' | 'both'>('both');
@@ -52,7 +53,7 @@ export function BookmarksAutoGeneratorTool({ className = '' }: BookmarksAutoGene
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Deducing bookmarks structure...');
+            setProgressMessage(message || tUi('interfaceFeedback.deducingBookmarksStructure'));
           }
         }
       );
@@ -66,12 +67,12 @@ export function BookmarksAutoGeneratorTool({ className = '' }: BookmarksAutoGene
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to auto-generate PDF bookmarks.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToAutoGeneratePdfBookmarks'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error deducing bookmarks.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorDeducingBookmarks'));
         setStatus('error');
       }
     }

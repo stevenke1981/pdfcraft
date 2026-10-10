@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import React, { memo, useState, useRef } from 'react';
 import { Handle, Position, useReactFlow } from 'reactflow';
 import { ToolNodeData, WorkflowNode } from '@/types/workflow';
@@ -30,6 +31,7 @@ const InputNode: React.FC<InputNodeProps> = ({
     selected = false,
     isConnectable = true,
 }) => {
+  const tUi = useTranslations();
     const { setNodes, setEdges } = useReactFlow();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isDragOver, setIsDragOver] = useState(false);
@@ -149,7 +151,7 @@ const InputNode: React.FC<InputNodeProps> = ({
     };
 
     const socketColor = isImageNode
-        ? { bg: '#10b981', border: '#059669', label: 'Images' }
+        ? { bg: '#10b981', border: '#059669', label: tUi('dynamicUi.images') }
         : { bg: '#6366f1', border: '#4f46e5', label: 'PDF' };
 
     return (
@@ -168,10 +170,10 @@ const InputNode: React.FC<InputNodeProps> = ({
                     </div>
                     <div>
                         <h4 className="text-xs font-semibold text-[hsl(var(--color-foreground))]">
-                            {data.label || (isImageNode ? '图片输入 (Image Input)' : 'PDF 输入 (PDF Input)')}
+                            {data.label || (isImageNode ? tUi('workflow.imageInput') : tUi('workflow.pdfInput'))}
                         </h4>
                         <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
-                            数据输入源 (Input Node)
+                            {tUi('interfaceText.dataInputSourceInputNode')}
                         </span>
                     </div>
                 </div>
@@ -181,7 +183,7 @@ const InputNode: React.FC<InputNodeProps> = ({
                         <button
                             type="button"
                             onClick={handleClearAll}
-                            title="清空已选文件"
+                            title={tUi('interfaceText.clearSelectedFiles')}
                             className="p-1 rounded text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
                         >
                             <Trash2 size={13} />
@@ -190,7 +192,7 @@ const InputNode: React.FC<InputNodeProps> = ({
                     <button
                         type="button"
                         onClick={handleDeleteNode}
-                        title="删除节点"
+                        title={tUi('interfaceText.deleteNode')}
                         className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
                     >
                         <X size={13} />
@@ -220,7 +222,7 @@ const InputNode: React.FC<InputNodeProps> = ({
                     <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-[11px] text-muted-foreground px-0.5">
                             <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
-                                <CheckCircle2 size={12} /> 已加载 {files.length} 个文件
+                                <CheckCircle2 size={12} /> {tUi('interfaceText.loaded')} {files.length} {tUi('workflow.filesCount')}
                             </span>
                             <div className="flex items-center gap-2">
                                 <button
@@ -230,16 +232,16 @@ const InputNode: React.FC<InputNodeProps> = ({
                                         window.dispatchEvent(new CustomEvent('workflow:open-preview'));
                                     }}
                                     className="flex items-center gap-0.5 text-xs text-[hsl(var(--color-primary))] hover:underline cursor-pointer"
-                                    title="打开实时预览窗口"
+                                    title={tUi('interfaceText.openLivePreview')}
                                 >
-                                    <Eye size={11} /> 预览
+                                    <Eye size={11} /> {tUi('workflow.preview')}
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => fileInputRef.current?.click()}
                                     className="flex items-center gap-0.5 text-xs text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer"
                                 >
-                                    <Plus size={11} /> 追加
+                                    <Plus size={11} /> {tUi('interfaceText.append')}
                                 </button>
                             </div>
                         </div>
@@ -280,7 +282,7 @@ const InputNode: React.FC<InputNodeProps> = ({
                             }`}
                         >
                             <span className="text-[10px] text-muted-foreground">
-                                拖放或点击可追加更多文件
+                                {tUi('interfaceText.dropOrClickToAppendMoreFiles')}
                             </span>
                         </div>
                     </div>
@@ -302,10 +304,10 @@ const InputNode: React.FC<InputNodeProps> = ({
                                 <Upload size={16} />
                             </div>
                             <div className="text-[11px] font-medium text-foreground">
-                                拖放文件至此，或 <span className="text-emerald-600 dark:text-emerald-400 underline">点击上传</span>
+                                {tUi('interfaceText.dropFilesHereOr')} <span className="text-emerald-600 dark:text-emerald-400 underline">{tUi('interfaceText.clickToUpload')}</span>
                             </div>
                             <div className="text-[10px] text-muted-foreground">
-                                支持 {acceptedExtensions.join(', ')}
+                                {tUi('interfaceText.supports')} {acceptedExtensions.join(', ')}
                             </div>
                         </div>
                     </div>
@@ -327,7 +329,7 @@ const InputNode: React.FC<InputNodeProps> = ({
             />
             {/* Output Socket Label Badge */}
             <div className="absolute right-2.5 bottom-1 text-[9px] font-mono text-muted-foreground pointer-events-none">
-                输出 ➔
+                {tUi('interfaceText.output')}
             </div>
         </div>
     );

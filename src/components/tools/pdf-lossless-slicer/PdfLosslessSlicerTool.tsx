@@ -16,6 +16,7 @@ export interface PdfLosslessSlicerToolProps {
 }
 
 export function PdfLosslessSlicerTool({ className = '' }: PdfLosslessSlicerToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -72,7 +73,7 @@ export function PdfLosslessSlicerTool({ className = '' }: PdfLosslessSlicerToolP
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Engraving laser slicing beams...');
+            setProgressMessage(message || tUi('interfaceFeedback.engravingLaserSlicingBeams'));
           }
         }
       );
@@ -86,12 +87,12 @@ export function PdfLosslessSlicerTool({ className = '' }: PdfLosslessSlicerToolP
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to slice document.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToSliceDocument'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error slicing blueprint.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorSlicingBlueprint'));
         setStatus('error');
       }
     }
@@ -163,7 +164,7 @@ export function PdfLosslessSlicerTool({ className = '' }: PdfLosslessSlicerToolP
                     }}
                   >
                     <span className="text-[9px] text-green-600 font-mono tracking-widest font-black">
-                      LASER SLICER GRID
+                      {tUi('interfaceText.laserSlicerGrid')}
                     </span>
                   </div>
                 </div>

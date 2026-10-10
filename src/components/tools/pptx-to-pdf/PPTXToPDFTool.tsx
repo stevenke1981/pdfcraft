@@ -21,6 +21,7 @@ export interface PPTXToPDFToolProps {
 }
 
 export function PPTXToPDFTool({ className = '' }: PPTXToPDFToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -46,13 +47,13 @@ export function PPTXToPDFTool({ className = '' }: PPTXToPDFToolProps) {
 
                 setPreloadStatus('processing');
                 setPreloadProgress(0);
-                setPreloadMessage('Checking environment...');
+                setPreloadMessage(tUi('interfaceFeedback.checkingEnvironment'));
 
                 await converter.initialize((loadProgress: { percent: number; message: string; phase?: string }) => {
                     if (cancelled) return;
                     setPreloadStatus('processing');
                     setPreloadProgress(loadProgress.percent);
-                    setPreloadMessage(loadProgress.message || 'Loading conversion engine...');
+                    setPreloadMessage(loadProgress.message || tUi('interfaceFeedback.loadingConversionEngine'));
 
                     if (loadProgress.phase === 'ready' || loadProgress.percent >= 100) {
                         setPreloadStatus('complete');
@@ -62,15 +63,15 @@ export function PPTXToPDFTool({ className = '' }: PPTXToPDFToolProps) {
                 if (cancelled) return;
                 setPreloadStatus('complete');
                 setPreloadProgress(100);
-                setPreloadMessage('Conversion engine ready!');
+                setPreloadMessage(tUi('interfaceFeedback.conversionEngineReady2'));
             } catch (err) {
                 if (cancelled) return;
                 setPreloadStatus('error');
-                setPreloadMessage(err instanceof Error ? err.message : 'Failed to preload conversion engine.');
+                setPreloadMessage(err instanceof Error ? err.message : tUi('interfaceFeedback.failedToPreloadConversionEngine'));
             }
         })();
         return () => { cancelled = true; };
-    }, []);
+    }, [tUi]);
 
     const handleFilesSelected = useCallback((newFiles: File[]) => {
         if (newFiles.length > 0) {
@@ -101,7 +102,7 @@ export function PPTXToPDFTool({ className = '' }: PPTXToPDFToolProps) {
 
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError(t('errors.uploadFile') || 'Please upload a PowerPoint file.');
+            setError(tUi('interfaceFeedback.pleaseUploadAPowerpointFile'));
             return;
         }
 
@@ -132,16 +133,16 @@ export function PPTXToPDFTool({ className = '' }: PPTXToPDFToolProps) {
                 setResult(output.result);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || 'Failed to convert PowerPoint to PDF.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToConvertPowerpointToPdf'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, t]);
+    }, [tUi, file]);
 
     const handleCancel = useCallback(() => {
         cancelledRef.current = true;
@@ -157,11 +158,11 @@ export function PPTXToPDFTool({ className = '' }: PPTXToPDFToolProps) {
         );
 
         if (!output.success || !output.result || Array.isArray(output.result)) {
-            throw new Error(output.error?.message || 'Failed to convert file.');
+            throw new Error(output.error?.message || tUi('interfaceFeedback.failedToConvertFile'));
         }
 
         return output.result;
-    }, []);
+    }, [tUi]);
 
     const formatSize = (bytes: number): string => {
         if (bytes < 1024) return `${bytes} B`;
@@ -186,8 +187,8 @@ export function PPTXToPDFTool({ className = '' }: PPTXToPDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('pptxToPdf.uploadLabel') || 'Upload PowerPoint File'}
-                description={tTools('pptxToPdf.uploadDescription') || 'Drag and drop a PowerPoint file here, or click to browse.'}
+                label={tTools('pptxToPdf.uploadLabel')}
+                description={tTools('pptxToPdf.uploadDescription')}
             />
 
             {error && (
@@ -233,7 +234,7 @@ export function PPTXToPDFTool({ className = '' }: PPTXToPDFToolProps) {
             <div className="flex flex-wrap items-center justify-center gap-4">
                 <Button variant="primary" size="lg" onClick={handleConvert} disabled={!canConvert} loading={isProcessing} className="min-w-[200px] shadow-lg hover:shadow-primary/25 transition-all hover:-translate-y-0.5">
                     {!isProcessing && <RefreshCw className="w-5 h-5 mr-2" />}
-                    {isProcessing ? (t('status.processing') || 'Converting...') : (tTools('pptxToPdf.convertButton') || 'Convert to PDF')}
+                    {isProcessing ? (t('status.processing')) : (tTools('pptxToPdf.convertButton'))}
                 </Button>
 
                 {result && !Array.isArray(result) && (
@@ -246,9 +247,9 @@ export function PPTXToPDFTool({ className = '' }: PPTXToPDFToolProps) {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
                         <CheckCircle2 className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle') || 'Conversion Successful!'}</h3>
+                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle')}</h3>
                     <p className="text-green-800/80 max-w-md mx-auto">
-                        {tTools('pptxToPdf.successMessage') || 'Your PowerPoint file has been converted to PDF.'}
+                        {tTools('pptxToPdf.successMessage')}
                     </p>
                 </div>
             )}

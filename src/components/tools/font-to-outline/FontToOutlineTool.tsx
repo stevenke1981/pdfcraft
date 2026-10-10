@@ -16,6 +16,7 @@ export interface FontToOutlineToolProps {
 }
 
 export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -98,8 +99,8 @@ export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('fontToOutline.uploadLabel') || 'Upload PDF Files'}
-                description={tTools('fontToOutline.uploadDescription') || 'Drag and drop PDF files to convert fonts to outlines.'}
+                label={tTools('fontToOutline.uploadLabel')}
+                description={tTools('fontToOutline.uploadDescription')}
             />
 
             {error && (
@@ -112,11 +113,11 @@ export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
                 <Card variant="outlined" size="lg">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                            {tTools('fontToOutline.filesTitle') || 'Files'} ({files.length})
+                            {tTools('fontToOutline.filesTitle')} ({files.length})
                         </h3>
                         <Button variant="ghost" size="sm" onClick={clearFiles} disabled={isProcessing}>
                             <Trash2 className="w-4 h-4 mr-1" />
-                            {t('buttons.clearAll') || 'Clear All'}
+                            {t('buttons.clearAll')}
                         </Button>
                     </div>
                     <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -129,7 +130,7 @@ export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
                                         <div className="flex items-center gap-2">
                                             <span className="text-xs text-[hsl(var(--color-muted-foreground))]">{formatSize(batchFile.file.size)}</span>
                                             {batchFile.status === 'processing' && <span className="text-xs text-blue-500">{batchFile.progress}%</span>}
-                                            {batchFile.status === 'completed' && <span className="text-xs text-green-500">✓ Outlined</span>}
+                                            {batchFile.status === 'completed' && <span className="text-xs text-green-500">{tUi('interfaceText.outlined')}</span>}
                                             {batchFile.status === 'error' && <span className="text-xs text-red-500">{batchFile.error}</span>}
                                         </div>
                                     </div>
@@ -151,13 +152,13 @@ export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
             {hasFiles && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('fontToOutline.optionsTitle') || 'Conversion Options'}
+                        {tTools('fontToOutline.optionsTitle')}
                     </h3>
                     <div className="space-y-4">
                         {/* DPI Setting */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('fontToOutline.dpiLabel') || 'Output Quality (DPI)'}: {dpi}
+                                {tTools('fontToOutline.dpiLabel')}: {dpi}
                             </label>
                             <div className="grid grid-cols-3 gap-2">
                                 {[150, 300, 600].map((d) => (
@@ -175,7 +176,7 @@ export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
                                 ))}
                             </div>
                             <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                                {tTools('fontToOutline.dpiDesc') || 'Higher DPI produces better quality but larger files. 300 DPI recommended for print.'}
+                                {tUi('interfaceText.dpiDescription')}
                             </p>
                         </div>
 
@@ -190,10 +191,10 @@ export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
                             />
                             <div className="flex-1">
                                 <span className="text-sm font-medium text-[hsl(var(--color-foreground))]">
-                                    {tTools('fontToOutline.preserveTextLabel') || 'Preserve searchable text (experimental)'}
+                                    {tUi('interfaceText.preserveSearchableText')}
                                 </span>
                                 <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-0.5">
-                                    {tTools('fontToOutline.preserveTextDesc') || 'Adds invisible text layer for search. May increase file size.'}
+                                    {tUi('interfaceText.preserveSearchableDescription')}
                                 </p>
                             </div>
                         </label>
@@ -208,12 +209,12 @@ export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
             <div className="flex flex-wrap items-center gap-4">
                 <Button variant="primary" size="lg" onClick={handleConvert} disabled={!canProcess} loading={isProcessing}>
                     <Type className="w-4 h-4 mr-2" />
-                    {isProcessing ? (t('status.processing') || 'Processing...') : (tTools('fontToOutline.convertButton') || 'Convert Fonts to Outlines')}
+                    {isProcessing ? (t('status.processing')) : (tTools('fontToOutline.convertButton'))}
                 </Button>
                 {hasCompletedFiles && (
                     <Button variant="secondary" size="lg" onClick={handleDownloadZip} disabled={isProcessing}>
                         <FileArchive className="w-4 h-4 mr-2" />
-                        {tTools('fontToOutline.downloadAllZip') || 'Download All as ZIP'}
+                        {tTools('fontToOutline.downloadAllZip')}
                     </Button>
                 )}
             </div>
@@ -221,7 +222,7 @@ export function FontToOutlineTool({ className = '' }: FontToOutlineToolProps) {
             {allCompleted && (
                 <div className="p-4 rounded-[var(--radius-md)] bg-green-50 border border-green-200 text-green-700" role="status">
                     <p className="text-sm font-medium">{tTools('fontToOutline.successMessage') || `Successfully converted ${completedCount} file(s)!`}</p>
-                    {errorCount > 0 && <p className="text-sm text-red-600 mt-1">{errorCount} file(s) failed.</p>}
+                    {errorCount > 0 && <p className="text-sm text-red-600 mt-1">{errorCount} {tUi('interfaceText.fileSFailed')}</p>}
                 </div>
             )}
         </div>

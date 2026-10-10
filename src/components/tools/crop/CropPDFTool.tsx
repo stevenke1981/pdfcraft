@@ -27,6 +27,7 @@ interface CropState {
 }
 
 export function CropPDFTool({ className = '' }: CropPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -351,14 +352,14 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed.');
+        setError(output.error?.message || tUi('interfaceFeedback.failed'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : tUi('common.status.error'));
       setStatus('error');
     }
-  }, [state.file, state.crops, state.currentPage, state.numPages, applyToAll, tFeedback]);
+  }, [tUi, state.file, state.crops, state.currentPage, state.numPages, applyToAll, tFeedback]);
 
   const isProcessing = status === 'processing';
 
@@ -395,8 +396,8 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={setError}
           disabled={isProcessing}
-          label={tTools('cropPdf.uploadLabel') || "Upload PDF File"}
-          description={tTools('cropPdf.uploadDescription') || "Drag and drop a PDF file to crop."}
+          label={tTools('cropPdf.uploadLabel')}
+          description={tTools('cropPdf.uploadDescription')}
         />
       )}
 
@@ -420,12 +421,12 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                 <div>
                   <h3 className="font-medium">{state.file.name}</h3>
                   <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                    {state.numPages} {tTools('cropPdf.pages') || 'pages'}
+                    {state.numPages} {tTools('cropPdf.pages')}
                   </p>
                 </div>
               </div>
               <Button variant="ghost" size="sm" onClick={() => setState({ file: null, numPages: 0, currentPage: 1, pdfDoc: null, pageImage: null, crops: {} })} disabled={isProcessing}>
-                {t('buttons.remove') || 'Remove'}
+                {t('buttons.remove')}
               </Button>
             </div>
           </Card>
@@ -452,7 +453,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                 />
               ) : (
                 <div className="flex items-center justify-center h-[500px]">
-                  <span className="text-gray-400">Loading page...</span>
+                  <span className="text-gray-400">{tUi('interfaceText.loadingPage')}</span>
                 </div>
               )}
 
@@ -464,7 +465,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                     onClick={handleZoomOut}
                     disabled={isProcessing}
                     className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    title={tTools('cropPdf.zoomOut') || 'Zoom Out'}
+                    title={tTools('cropPdf.zoomOut')}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -480,9 +481,9 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                     onClick={handleResetZoom}
                     disabled={isProcessing}
                     className="px-3 py-1 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    title={tTools('cropPdf.resetZoom') || 'Reset Zoom'}
+                    title={tTools('cropPdf.resetZoom')}
                   >
-                    {tTools('cropPdf.reset') || 'Reset'}
+                    {tTools('cropPdf.reset')}
                   </button>
 
                   <button
@@ -490,7 +491,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                     onClick={handleZoomIn}
                     disabled={isProcessing}
                     className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    title={tTools('cropPdf.zoomIn') || 'Zoom In'}
+                    title={tTools('cropPdf.zoomIn')}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
@@ -503,7 +504,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                     type="button"
                     onClick={handleToggleFullscreen}
                     className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-                    title={isFullscreen ? (tTools('cropPdf.exitFullscreen') || 'Exit Fullscreen') : (tTools('cropPdf.fullscreen') || 'Fullscreen')}
+                    title={isFullscreen ? (tTools('cropPdf.exitFullscreen')) : (tTools('cropPdf.fullscreen'))}
                   >
                     {isFullscreen ? (
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -540,7 +541,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                       onBlur={handlePageInputBlur}
                       disabled={isProcessing}
                       className="w-12 text-center border border-gray-300 rounded px-1 py-0.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50"
-                      aria-label="Go to page"
+                      aria-label={tUi('interfaceText.goToPage')}
                     />
                     <span>/ {state.numPages}</span>
                   </div>
@@ -566,14 +567,14 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                   size="sm"
                   onClick={() => changePage(-1)}
                   disabled={state.currentPage <= 1 || isProcessing}
-                  aria-label="Previous page"
+                  aria-label={tUi('interfaceText.previousPage')}
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </Button>
                 <div className="flex items-center gap-1 text-sm font-medium min-w-[120px] justify-center">
-                  <span>{tTools('cropPdf.page') || 'Page'}</span>
+                  <span>{tTools('cropPdf.page')}</span>
                   <input
                     type="text"
                     value={pageInputValue}
@@ -582,7 +583,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                     onBlur={handlePageInputBlur}
                     disabled={isProcessing}
                     className="w-14 text-center border border-gray-300 rounded px-1 py-0.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                    aria-label="Go to page"
+                    aria-label={tUi('interfaceText.goToPage')}
                   />
                   <span>/ {state.numPages}</span>
                 </div>
@@ -591,7 +592,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                   size="sm"
                   onClick={() => changePage(1)}
                   disabled={state.currentPage >= state.numPages || isProcessing}
-                  aria-label="Next page"
+                  aria-label={tUi('interfaceText.nextPage')}
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -608,7 +609,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                     className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     disabled={isProcessing}
                   />
-                  <span className="text-sm font-medium">{tTools('cropPdf.applyToAll') || 'Apply to all pages'}</span>
+                  <span className="text-sm font-medium">{tTools('cropPdf.applyToAll')}</span>
                 </label>
 
                 <Button
@@ -617,7 +618,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
                   loading={isProcessing}
                   disabled={isProcessing}
                 >
-                  {tTools('cropPdf.cropButton') || 'Crop PDF'}
+                  {tTools('cropPdf.cropButton')}
                 </Button>
               </div>
             </div>
@@ -631,7 +632,7 @@ export function CropPDFTool({ className = '' }: CropPDFToolProps) {
         <div className="p-4 rounded-[var(--radius-md)] bg-green-50 border border-green-200">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="text-green-700 font-medium">
-              {tTools('cropPdf.successMessage') || 'PDF cropped successfully!'}
+              {tTools('cropPdf.successMessage')}
             </div>
             <DownloadButton file={result} filename={state.file.name.replace('.pdf', '_cropped.pdf')} variant="primary" size="lg" />
           </div>

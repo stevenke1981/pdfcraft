@@ -43,6 +43,7 @@ const normalizeInputAngle = (value: string | number, fallbackValue: number = 0):
  * Includes interactive dials, smooth sliders, angle input validation, multi-selection, and elastic transitions.
  */
 export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -470,16 +471,16 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to rotate PDF.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToRotatePdf'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, pagePreviews, tFeedback]);
+  }, [tUi, file, pagePreviews, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -515,8 +516,8 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('rotatePdf.uploadLabel') || 'Upload PDF File'}
-          description={tTools('rotatePdf.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('rotatePdf.uploadLabel')}
+          description={tTools('rotatePdf.uploadDescription')}
         />
       )}
 
@@ -543,7 +544,7 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -553,7 +554,7 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -712,7 +713,7 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
                               handleApplyCustomPages();
                             }
                           }}
-                          placeholder="e.g. 1, 3-5"
+                          placeholder={tUi('interfaceText.eG135')}
                           className="flex-1 text-[11px] px-2 py-1 rounded bg-[hsl(var(--color-background))] border border-[hsl(var(--color-border))] text-[hsl(var(--color-foreground))] placeholder:text-[hsl(var(--color-muted-foreground))]/50 focus:outline-none focus:ring-1 focus:ring-[hsl(var(--color-primary))]"
                         />
                         <button
@@ -721,7 +722,7 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
                           disabled={!customPageInput.trim()}
                           className="text-[11px] px-3 py-1 rounded bg-[hsl(var(--color-primary))] text-white hover:bg-[hsl(var(--color-primary))/0.9] disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                         >
-                          Select
+                          {tUi('tools.editPdf.toolbar.select')}
                         </button>
                       </div>
                     </div>
@@ -976,12 +977,12 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
                             {preview.thumbnail ? (
                               <img
                                 src={preview.thumbnail}
-                                alt={`Page ${preview.pageNumber}`}
+                                alt={tUi('dynamicUi.pageNumber', { page: preview.pageNumber })}
                                 className="max-w-full max-h-full object-contain shadow-[var(--shadow-sm)] rounded-[var(--radius-sm)] pointer-events-none"
                               />
                             ) : (
                               <div className="w-16 h-20 rounded border border-dashed border-[hsl(var(--color-border))] flex items-center justify-center text-sm font-semibold text-[hsl(var(--color-muted-foreground))]">
-                                Page {preview.pageNumber}
+                                {tUi('interfaceText.page')} {preview.pageNumber}
                               </div>
                             )}
                           </div>
@@ -1003,7 +1004,7 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
                               onClick={() => updateRotationOnPages([preview.pageNumber], current => current - 90)}
                               disabled={isProcessing}
                               className="w-6 h-6 flex items-center justify-center rounded bg-[hsl(var(--color-muted))] hover:bg-[hsl(var(--color-muted-foreground)/0.2)] text-[hsl(var(--color-foreground))] transition-colors disabled:opacity-50"
-                              aria-label={`Rotate page ${preview.pageNumber} left`}
+                              aria-label={tUi('dynamicUi.rotatePageLeft', { page: preview.pageNumber })}
                             >
                               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
@@ -1015,7 +1016,7 @@ export function RotatePDFTool({ className = '' }: RotatePDFToolProps) {
                               onClick={() => updateRotationOnPages([preview.pageNumber], current => current + 90)}
                               disabled={isProcessing}
                               className="w-6 h-6 flex items-center justify-center rounded bg-[hsl(var(--color-muted))] hover:bg-[hsl(var(--color-muted-foreground)/0.2)] text-[hsl(var(--color-foreground))] transition-colors disabled:opacity-50"
-                              aria-label={`Rotate page ${preview.pageNumber} right`}
+                              aria-label={tUi('dynamicUi.rotatePageRight', { page: preview.pageNumber })}
                             >
                               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 10H11a8 8 0 00-8 8v2m18-10l-6 6m6-6l-6-6" />

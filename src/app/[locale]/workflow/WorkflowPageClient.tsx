@@ -1,5 +1,6 @@
 'use client';
 
+import { LocalizedText } from '@/components/ui/LocalizedText';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -15,7 +16,7 @@ const WorkflowEditor = dynamic(
             <div className="flex items-center justify-center h-full">
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-10 h-10 border-3 border-[hsl(var(--color-primary))] border-t-transparent rounded-full animate-spin" />
-                    <p className="text-[hsl(var(--color-muted-foreground))]">Loading workflow editor...</p>
+                    <p className="text-[hsl(var(--color-muted-foreground))]"><LocalizedText messageKey="interfaceText.loadingWorkflowEditor" /></p>
                 </div>
             </div>
         )
@@ -62,7 +63,7 @@ export default function WorkflowPageClient({ locale }: WorkflowPageClientProps) 
                     <div className="flex items-center gap-1.5">
                         <GitBranch className="w-4 h-4 text-[hsl(var(--color-primary))]" />
                         <h1 className="text-sm font-medium text-[hsl(var(--color-foreground))]">
-                            {tWorkflow('title') || 'PDF Workflow Builder'}
+                            {tWorkflow('title')}
                         </h1>
                     </div>
                 </div>

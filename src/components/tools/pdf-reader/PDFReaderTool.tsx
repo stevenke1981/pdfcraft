@@ -19,6 +19,7 @@ export interface PDFReaderToolProps {
  * A full-featured PDF reader with automatic selection-to-clipboard synchronization.
  */
 export function PDFReaderTool({ className = '' }: PDFReaderToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -128,8 +129,8 @@ export function PDFReaderTool({ className = '' }: PDFReaderToolProps) {
                     maxFiles={1}
                     onFilesSelected={handleFilesSelected}
                     onError={handleUploadError}
-                    label={tTools('pdfReader.uploadLabel') || 'Open PDF File'}
-                    description={tTools('pdfReader.uploadDescription') || 'Open a PDF file to read and view.'}
+                    label={tTools('pdfReader.uploadLabel')}
+                    description={tTools('pdfReader.uploadDescription')}
                 />
             )}
 
@@ -159,16 +160,16 @@ export function PDFReaderTool({ className = '' }: PDFReaderToolProps) {
                                     size="sm"
                                     onClick={() => setAutoCopyEnabled(!autoCopyEnabled)}
                                     className="text-xs h-7 gap-1"
-                                    title={autoCopyEnabled ? "划选自动存入剪贴板 (已开启)" : "划选自动存入剪贴板 (已关闭)"}
+                                    title={autoCopyEnabled ? tUi('interfaceText.autoCopySelectedTextEnabled') : tUi('interfaceText.autoCopySelectedTextDisabled')}
                                 >
                                     <CopyCheck className={`w-3.5 h-3.5 ${autoCopyEnabled ? 'text-primary' : 'text-muted-foreground'}`} />
-                                    <span className="hidden sm:inline">选中文本自动复制</span>
+                                    <span className="hidden sm:inline">{tUi('interfaceText.autoCopySelectedText')}</span>
                                 </Button>
 
-                                <Button variant="ghost" size="sm" onClick={handleDownload} title="Download">
+                                <Button variant="ghost" size="sm" onClick={handleDownload} title={tUi('common.buttons.download')}>
                                     <Download className="w-4 h-4" />
                                 </Button>
-                                <Button variant="ghost" size="sm" onClick={handleReset} title="Close">
+                                <Button variant="ghost" size="sm" onClick={handleReset} title={tUi('common.buttons.close')}>
                                     <X className="w-4 h-4" />
                                 </Button>
                             </div>
@@ -179,7 +180,7 @@ export function PDFReaderTool({ className = '' }: PDFReaderToolProps) {
                     {copiedNotify && (
                         <div className="fixed bottom-6 right-6 z-50 px-3 py-2 rounded-lg bg-foreground text-background text-xs shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">
                             <CopyCheck className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>已自动存入剪贴板: <strong>{copiedNotify}</strong></span>
+                            <span>{tUi('interfaceText.copiedToClipboard')} <strong>{copiedNotify}</strong></span>
                         </div>
                     )}
 

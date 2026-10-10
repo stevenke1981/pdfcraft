@@ -70,6 +70,7 @@ export const BatchProcessingPanel: React.FC<BatchProcessingPanelProps> = ({
   processor,
   maxConcurrent = 2,
 }) => {
+  const tUi = useTranslations();
   const tA11y = useTranslations('common.accessibility');
   const {
     files,
@@ -290,7 +291,7 @@ export const BatchProcessingPanel: React.FC<BatchProcessingPanelProps> = ({
                 <button
                   onClick={() => removeFile(file.id)}
                   className="p-1 text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-destructive))] focus:text-[hsl(var(--color-destructive))] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--color-ring))] rounded-sm"
-                  aria-label={`Remove ${file.file.name}`}
+                  aria-label={tUi('dynamicUi.removeFileName', { filename: file.file.name })}
                   tabIndex={focusedFileIndex === index ? 0 : -1}
                 >
                   <X className="h-4 w-4" aria-hidden="true" />

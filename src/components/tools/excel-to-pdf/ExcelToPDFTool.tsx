@@ -22,6 +22,7 @@ export interface ExcelToPDFToolProps {
 }
 
 export function ExcelToPDFTool({ className = '' }: ExcelToPDFToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -46,23 +47,23 @@ export function ExcelToPDFTool({ className = '' }: ExcelToPDFToolProps) {
                     if (cancelled) return;
                     setPreloadStatus('complete');
                     setPreloadProgress(100);
-                    setPreloadMessage('Conversion engine ready.');
+                    setPreloadMessage(tUi('interfaceFeedback.conversionEngineReady'));
                     return;
                 }
 
                 setPreloadStatus('processing');
                 setPreloadProgress(0);
-                setPreloadMessage('Loading conversion engine...');
+                setPreloadMessage(tUi('interfaceFeedback.loadingConversionEngine'));
 
                 await preloadExcelPyodide((message) => {
                     if (cancelled) return;
-                    setPreloadMessage(message || 'Loading conversion engine...');
+                    setPreloadMessage(message || tUi('interfaceFeedback.loadingConversionEngine'));
                 });
 
                 if (cancelled) return;
                 setPreloadStatus('complete');
                 setPreloadProgress(100);
-                setPreloadMessage('Conversion engine ready.');
+                setPreloadMessage(tUi('interfaceFeedback.conversionEngineReady'));
             } catch (err) {
                 if (cancelled) return;
                 console.warn('[ExcelToPDF] Engine preload warning:', err);
@@ -71,7 +72,7 @@ export function ExcelToPDFTool({ className = '' }: ExcelToPDFToolProps) {
             }
         })();
         return () => { cancelled = true; };
-    }, []);
+    }, [tUi]);
 
     const handleFilesSelected = useCallback((newFiles: File[]) => {
         if (newFiles.length > 0) {
@@ -102,14 +103,14 @@ export function ExcelToPDFTool({ className = '' }: ExcelToPDFToolProps) {
 
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError(t('errors.uploadFile') || 'Please upload an Excel file.');
+            setError(tUi('interfaceFeedback.pleaseUploadAnExcelFile'));
             return;
         }
 
         cancelledRef.current = false;
         setStatus('processing');
         setProgress(20);
-        setProgressMessage('Converting Excel to PDF...');
+        setProgressMessage(tUi('interfaceText.convertingExcelToPdf'));
         setError(null);
         setResult(null);
 
@@ -134,16 +135,16 @@ export function ExcelToPDFTool({ className = '' }: ExcelToPDFToolProps) {
                 setResult(output.result);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || 'Failed to convert Excel to PDF.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToConvertExcelToPdf'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, t]);
+    }, [tUi, file]);
 
     const handleCancel = useCallback(() => {
         cancelledRef.current = true;
@@ -159,11 +160,11 @@ export function ExcelToPDFTool({ className = '' }: ExcelToPDFToolProps) {
         );
 
         if (!output.success || !output.result || Array.isArray(output.result)) {
-            throw new Error(output.error?.message || 'Failed to convert file.');
+            throw new Error(output.error?.message || tUi('interfaceFeedback.failedToConvertFile'));
         }
 
         return output.result;
-    }, []);
+    }, [tUi]);
 
     const formatSize = (bytes: number): string => {
         if (bytes < 1024) return `${bytes} B`;
@@ -189,8 +190,8 @@ export function ExcelToPDFTool({ className = '' }: ExcelToPDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('excelToPdf.uploadLabel') || 'Upload Excel File'}
-                description={tTools('excelToPdf.uploadDescription') || 'Drag and drop an Excel file here, or click to browse.'}
+                label={tTools('excelToPdf.uploadLabel')}
+                description={tTools('excelToPdf.uploadDescription')}
             />
 
             {error && (
@@ -236,7 +237,7 @@ export function ExcelToPDFTool({ className = '' }: ExcelToPDFToolProps) {
             <div className="flex flex-wrap items-center justify-center gap-4">
                 <Button variant="primary" size="lg" onClick={handleConvert} disabled={!canConvert} loading={isProcessing} className="min-w-[200px] shadow-lg hover:shadow-primary/25 transition-all hover:-translate-y-0.5">
                     {!isProcessing && <RefreshCw className="w-5 h-5 mr-2" />}
-                    {isProcessing ? (t('status.processing') || 'Converting...') : (tTools('excelToPdf.convertButton') || 'Convert to PDF')}
+                    {isProcessing ? (t('status.processing')) : (tTools('excelToPdf.convertButton'))}
                 </Button>
 
                 {result && !Array.isArray(result) && (
@@ -249,9 +250,9 @@ export function ExcelToPDFTool({ className = '' }: ExcelToPDFToolProps) {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
                         <CheckCircle2 className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle') || 'Conversion Successful!'}</h3>
+                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle')}</h3>
                     <p className="text-green-800/80 max-w-md mx-auto">
-                        {tTools('excelToPdf.successMessage') || 'Your Excel file has been converted to PDF.'}
+                        {tTools('excelToPdf.successMessage')}
                     </p>
                 </div>
             )}

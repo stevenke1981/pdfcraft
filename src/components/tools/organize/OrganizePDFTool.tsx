@@ -28,6 +28,7 @@ interface PagePreview {
  * Provides the UI for reordering PDF pages with drag-and-drop functionality.
  */
 export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -302,16 +303,16 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to organize PDF file.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToOrganizePdfFile'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, pageOrder, tFeedback]);
+  }, [tUi, file, pageOrder, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -352,8 +353,8 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('organizePdf.uploadLabel') || 'Upload PDF File'}
-          description={tTools('organizePdf.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('organizePdf.uploadLabel')}
+          description={tTools('organizePdf.uploadDescription')}
         />
       )}
 
@@ -380,7 +381,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -390,7 +391,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -401,7 +402,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('organizePdf.reorderTitle') || 'Drag to Reorder Pages'}
+              {tTools('organizePdf.reorderTitle')}
             </h3>
             <div className="flex gap-2">
               <Button
@@ -410,7 +411,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
                 onClick={handleReverseOrder}
                 disabled={isProcessing}
               >
-                {tTools('organizePdf.reverseOrder') || 'Reverse Order'}
+                {tTools('organizePdf.reverseOrder')}
               </Button>
               <Button
                 variant="ghost"
@@ -418,13 +419,13 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
                 onClick={handleResetOrder}
                 disabled={isProcessing || !hasOrderChanged()}
               >
-                {tTools('organizePdf.resetOrder') || 'Reset Order'}
+                {tTools('organizePdf.resetOrder')}
               </Button>
             </div>
           </div>
 
           <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-4">
-            {tTools('organizePdf.reorderHint') || 'Drag and drop pages to reorder them. Use the arrows to move pages up or down.'}
+            {tTools('organizePdf.reorderHint')}
           </p>
 
           {isLoadingPreviews ? (
@@ -432,7 +433,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
               <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-8 border-2 border-[hsl(var(--color-primary))] border-t-transparent rounded-full animate-spin" />
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {t('status.loading') || 'Loading previews...'}
+                  {t('status.loading')}
                 </p>
               </div>
             </div>
@@ -458,7 +459,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
                     {preview?.thumbnail ? (
                       <img
                         src={preview.thumbnail}
-                        alt={`Page ${pageNum}`}
+                        alt={tUi('dynamicUi.pageNumber', { page: pageNum })}
                         className="w-full h-full object-cover"
                         draggable={false}
                       />
@@ -487,7 +488,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
                         onClick={(e) => { e.stopPropagation(); handleMovePage(index, index - 1); }}
                         disabled={index === 0 || isProcessing}
                         className="w-5 h-5 bg-white/90 rounded flex items-center justify-center hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed"
-                        aria-label="Move up"
+                        aria-label={tUi('common.accessibility.moveUp')}
                       >
                         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                           <path d="M18 15l-6-6-6 6" />
@@ -498,7 +499,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
                         onClick={(e) => { e.stopPropagation(); handleMovePage(index, index + 1); }}
                         disabled={index === pageOrder.length - 1 || isProcessing}
                         className="w-5 h-5 bg-white/90 rounded flex items-center justify-center hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed"
-                        aria-label="Move down"
+                        aria-label={tUi('common.accessibility.moveDown')}
                       >
                         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                           <path d="M6 9l6 6 6-6" />
@@ -513,8 +514,8 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
                         onClick={(e) => { e.stopPropagation(); handleDuplicatePage(index); }}
                         disabled={isProcessing}
                         className="w-5 h-5 bg-blue-500/90 rounded flex items-center justify-center hover:bg-blue-600 text-white disabled:opacity-30 disabled:cursor-not-allowed"
-                        aria-label="Duplicate page"
-                        title="Duplicate"
+                        aria-label={tUi('interfaceText.duplicatePage')}
+                        title={tUi('tools.pdfMultiTool.duplicate')}
                       >
                         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -526,8 +527,8 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
                         onClick={(e) => { e.stopPropagation(); handleDeletePage(index); }}
                         disabled={pageOrder.length <= 1 || isProcessing}
                         className="w-5 h-5 bg-red-500/90 rounded flex items-center justify-center hover:bg-red-600 text-white disabled:opacity-30 disabled:cursor-not-allowed"
-                        aria-label="Delete page"
-                        title="Delete"
+                        aria-label={tUi('interfaceText.deletePage')}
+                        title={tUi('common.buttons.delete')}
                       >
                         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <polyline points="3,6 5,6 21,6" />
@@ -546,7 +547,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
           {hasOrderChanged() && (
             <div className="mt-4 p-3 rounded-[var(--radius-md)] bg-blue-50 border border-blue-200">
               <p className="text-sm text-blue-700">
-                {tTools('organizePdf.orderChanged') || 'Page order has been changed. Click "Apply Changes" to save.'}
+                {tTools('organizePdf.orderChanged')}
               </p>
             </div>
           )}
@@ -575,8 +576,8 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
             loading={isProcessing}
           >
             {isProcessing
-              ? (t('status.processing') || 'Processing...')
-              : (tTools('organizePdf.applyButton') || 'Apply Changes')
+              ? (t('status.processing'))
+              : (tTools('organizePdf.applyButton'))
             }
           </Button>
 
@@ -599,7 +600,7 @@ export function OrganizePDFTool({ className = '' }: OrganizePDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('organizePdf.successMessage') || 'PDF pages reorganized successfully! Click the download button to save your file.'}
+            {tTools('organizePdf.successMessage')}
           </p>
         </div>
       )}

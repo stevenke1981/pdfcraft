@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 
 export function BookletFoldingSimulatorTool() {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools.bookletFoldingSimulator');
 
@@ -59,11 +60,11 @@ export function BookletFoldingSimulatorTool() {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to generate booklet layout.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToGenerateBookletLayout'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during processing.');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurredDuringProcessing'));
       setStatus('error');
     }
   };
@@ -237,7 +238,7 @@ export function BookletFoldingSimulatorTool() {
                     backfaceVisibility: 'hidden',
                   }}
                 >
-                  <div className="text-[10px] text-neutral-400 border-b pb-1 font-mono">SHEET FRONT</div>
+                  <div className="text-[10px] text-neutral-400 border-b pb-1 font-mono">{tUi('interfaceText.sheetFront')}</div>
                   <div className="text-center font-bold text-lg">P4</div>
                   <div className="text-[9px] text-neutral-400 text-center">{t('bookletFoldingSimulator.leftPageHalf')}</div>
                 </div>
@@ -253,7 +254,7 @@ export function BookletFoldingSimulatorTool() {
                       : '0 4px 6px rgba(0,0,0,0.1)'
                   }}
                 >
-                  <div className="text-[10px] text-neutral-400 border-b pb-1 text-right font-mono">PAGE 1</div>
+                  <div className="text-[10px] text-neutral-400 border-b pb-1 text-right font-mono">{tUi('interfaceText.page1')}</div>
                   <div className="text-center font-bold text-lg">P1</div>
                   <div className="text-[9px] text-neutral-400 text-center">{t('bookletFoldingSimulator.rightPageHalf')}</div>
                 </div>

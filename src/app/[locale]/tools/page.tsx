@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
@@ -29,10 +30,11 @@ interface ToolsPageProps {
 }
 
 function ToolsPageFallback() {
+  const tUi = useTranslations();
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="animate-pulse text-[hsl(var(--color-muted-foreground))]">
-        Loading...
+        {tUi('common.status.loading')}
       </div>
     </div>
   );

@@ -32,6 +32,7 @@ export interface ImageToPDFToolProps {
  * Converts images to PDF with support for multiple formats.
  */
 export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -252,7 +253,7 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
           setBatchResult(output.result);
           setStatus('complete');
         } else {
-          setError(output.error?.message || 'Failed to create batch PDFs.');
+          setError(output.error?.message || tUi('interfaceFeedback.failedToCreateBatchPdfs'));
           setStatus('error');
         }
       } else {
@@ -277,17 +278,17 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
           setResult(output.result as Blob);
           setStatus('complete');
         } else {
-          setError(output.error?.message || 'Failed to convert images to PDF.');
+          setError(output.error?.message || tUi('interfaceFeedback.failedToConvertImagesToPdf'));
           setStatus('error');
         }
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [files, pageSize, orientation, margin, centerImage, scaleToFit, svgScale, batchMode, imagesPerPdf, tFeedback]);
+  }, [tUi, files, pageSize, orientation, margin, centerImage, scaleToFit, svgScale, batchMode, imagesPerPdf, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -320,8 +321,8 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('imageToPdf.uploadLabel') || 'Upload Images'}
-        description={tTools('imageToPdf.uploadDescription') || 'Drag and drop images here, or click to browse. Supports JPG, PNG, WebP, BMP, TIFF, SVG, HEIC.'}
+        label={tTools('imageToPdf.uploadLabel')}
+        description={tTools('imageToPdf.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -339,7 +340,7 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('imageToPdf.imagesTitle') || 'Images'} ({files.length})
+              {tTools('imageToPdf.imagesTitle')} ({files.length})
             </h3>
             <Button
               variant="ghost"
@@ -347,12 +348,12 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
               onClick={handleClearAll}
               disabled={isProcessing}
             >
-              {t('buttons.clearAll') || 'Clear All'}
+              {t('buttons.clearAll')}
             </Button>
           </div>
 
           <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-4">
-            {tTools('imageToPdf.reorderHint') || 'Drag and drop to reorder images. Images will appear in the PDF in the order shown.'}
+            {tTools('imageToPdf.reorderHint')}
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -394,7 +395,7 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
                   onClick={() => handleRemoveFile(file.id)}
                   disabled={isProcessing}
                   className="absolute top-2 right-2 p-1 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-30"
-                  aria-label={`Remove ${file.file.name}`}
+                  aria-label={tUi('dynamicUi.removeFileName', { filename: file.file.name })}
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M18 6L6 18M6 6l12 12" />
@@ -421,14 +422,14 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
       {files.length >= 1 && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('imageToPdf.optionsTitle') || 'PDF Options'}
+            {tTools('imageToPdf.optionsTitle')}
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Page Size */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('imageToPdf.pageSize') || 'Page Size'}
+                {tTools('imageToPdf.pageSize')}
               </label>
               <Select
                 value={pageSize}
@@ -436,44 +437,44 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
                 disabled={isProcessing}
               >
                 <option value="A4">A4</option>
-                <option value="LETTER">Letter</option>
-                <option value="LEGAL">Legal</option>
+                <option value="LETTER">{tUi('interfaceText.letter')}</option>
+                <option value="LEGAL">{tUi('interfaceText.legal')}</option>
                 <option value="A3">A3</option>
                 <option value="A5">A5</option>
-                <option value="FIT">Fit to Image</option>
+                <option value="FIT">{tUi('tools.imageToPdf.fitToImage')}</option>
               </Select>
             </div>
 
             {/* Orientation */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('imageToPdf.orientation') || 'Orientation'}
+                {tTools('imageToPdf.orientation')}
               </label>
               <Select
                 value={orientation}
                 onChange={(e) => setOrientation(e.target.value as 'portrait' | 'landscape' | 'auto')}
                 disabled={isProcessing}
               >
-                <option value="auto">{tTools('imageToPdf.orientationAuto') || 'Auto (match image)'}</option>
-                <option value="portrait">{tTools('imageToPdf.orientationPortrait') || 'Portrait'}</option>
-                <option value="landscape">{tTools('imageToPdf.orientationLandscape') || 'Landscape'}</option>
+                <option value="auto">{tTools('imageToPdf.orientationAuto')}</option>
+                <option value="portrait">{tTools('imageToPdf.orientationPortrait')}</option>
+                <option value="landscape">{tTools('imageToPdf.orientationLandscape')}</option>
               </Select>
             </div>
 
             {/* Margin */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('imageToPdf.margin') || 'Margin'}
+                {tTools('imageToPdf.margin')}
               </label>
               <Select
                 value={margin}
                 onChange={(e) => setMargin(Number(e.target.value))}
                 disabled={isProcessing}
               >
-                <option value="0">{tTools('imageToPdf.marginNone') || 'None'}</option>
-                <option value="18">{tTools('imageToPdf.marginSmall') || 'Small (0.25")'}</option>
-                <option value="36">{tTools('imageToPdf.marginMedium') || 'Medium (0.5")'}</option>
-                <option value="72">{tTools('imageToPdf.marginLarge') || 'Large (1")'}</option>
+                <option value="0">{tTools('imageToPdf.marginNone')}</option>
+                <option value="18">{tTools('imageToPdf.marginSmall')}</option>
+                <option value="36">{tTools('imageToPdf.marginMedium')}</option>
+                <option value="72">{tTools('imageToPdf.marginLarge')}</option>
               </Select>
             </div>
           </div>
@@ -488,7 +489,7 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
                 className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
               />
               <span className="text-sm text-[hsl(var(--color-foreground))]">
-                {tTools('imageToPdf.centerImage') || 'Center images on page'}
+                {tTools('imageToPdf.centerImage')}
               </span>
             </label>
 
@@ -501,7 +502,7 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
                 className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
               />
               <span className="text-sm text-[hsl(var(--color-foreground))]">
-                {tTools('imageToPdf.scaleToFit') || 'Scale images to fit page'}
+                {tTools('imageToPdf.scaleToFit')}
               </span>
             </label>
           </div>
@@ -518,14 +519,14 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm font-medium text-[hsl(var(--color-foreground))]">
-                  {tTools('imageToPdf.batchMode') || 'Split into multiple PDFs'}
+                  {tTools('imageToPdf.batchMode')}
                 </span>
               </label>
 
               {batchMode && (
                 <div className="ml-7 space-y-2">
                   <label className="block text-sm text-[hsl(var(--color-foreground))]">
-                    {tTools('imageToPdf.imagesPerPdf') || 'Images per PDF'}
+                    {tTools('imageToPdf.imagesPerPdf')}
                   </label>
                   <input
                     type="number"
@@ -549,7 +550,7 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
           {(imageType === 'svg' || files.some(f => f.file.name.toLowerCase().endsWith('.svg') || f.file.type === 'image/svg+xml')) && (
             <div className="mt-4 pt-4 border-t border-[hsl(var(--color-border))]">
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('imageToPdf.svgQuality') || 'SVG Export Quality'}
+                {tTools('imageToPdf.svgQuality')}
               </label>
               <Select
                 value={svgScale}
@@ -557,13 +558,13 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
                 disabled={isProcessing}
                 className="w-full sm:w-auto"
               >
-                <option value="1">{tTools('imageToPdf.svgQualityLow') || 'Low (1x - smaller file)'}</option>
-                <option value="2">{tTools('imageToPdf.svgQualityMedium') || 'Medium (2x - balanced)'}</option>
-                <option value="3">{tTools('imageToPdf.svgQualityHigh') || 'High (3x - better quality)'}</option>
-                <option value="4">{tTools('imageToPdf.svgQualityVeryHigh') || 'Very High (4x - best quality)'}</option>
+                <option value="1">{tTools('imageToPdf.svgQualityLow')}</option>
+                <option value="2">{tTools('imageToPdf.svgQualityMedium')}</option>
+                <option value="3">{tTools('imageToPdf.svgQualityHigh')}</option>
+                <option value="4">{tTools('imageToPdf.svgQualityVeryHigh')}</option>
               </Select>
               <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                {tTools('imageToPdf.svgQualityHint') || 'Higher quality produces sharper images but larger file sizes.'}
+                {tTools('imageToPdf.svgQualityHint')}
               </p>
             </div>
           )}
@@ -591,8 +592,8 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
           loading={isProcessing}
         >
           {isProcessing
-            ? (t('status.processing') || 'Processing...')
-            : (tTools('imageToPdf.convertButton') || 'Convert to PDF')
+            ? (t('status.processing'))
+            : (tTools('imageToPdf.convertButton'))
           }
         </Button>
 
@@ -624,7 +625,7 @@ export function ImageToPDFTool({ className = '', imageType }: ImageToPDFToolProp
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('imageToPdf.successMessage') || 'Images converted to PDF successfully! Click the download button to save your file.'}
+            {tTools('imageToPdf.successMessage')}
           </p>
         </div>
       )}

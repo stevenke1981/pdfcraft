@@ -1,7 +1,18 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render as renderUI, screen, fireEvent, waitFor } from '@testing-library/react';
+import { NextIntlClientProvider } from 'next-intl';
+import type { ReactElement, ReactNode } from 'react';
+import en from '../../../../messages/en.json';
 import userEvent from '@testing-library/user-event';
 import { Modal } from '@/components/ui/Modal';
+
+function render(ui: ReactElement) {
+  return renderUI(ui, {
+    wrapper: ({ children }: { children: ReactNode }) => (
+      <NextIntlClientProvider locale="en" messages={en}>{children}</NextIntlClientProvider>
+    ),
+  });
+}
 
 describe('Modal', () => {
   beforeEach(() => {

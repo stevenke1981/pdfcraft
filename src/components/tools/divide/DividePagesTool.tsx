@@ -23,6 +23,7 @@ export interface DividePagesToolProps {
  * Provides the UI for dividing PDF pages into multiple sections.
  */
 export function DividePagesTool({ className = '' }: DividePagesToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -132,16 +133,16 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to divide PDF pages.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToDividePdfPages'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, divisionType, tFeedback]);
+  }, [tUi, file, divisionType, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -194,8 +195,8 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('dividePages.uploadLabel') || 'Upload PDF File'}
-          description={tTools('dividePages.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('dividePages.uploadLabel')}
+          description={tTools('dividePages.uploadDescription')}
         />
       )}
 
@@ -222,7 +223,7 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -232,7 +233,7 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -242,14 +243,14 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
       {file && totalPages > 0 && (
         <Card variant="outlined" size="lg">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('dividePages.optionsTitle') || 'Division Options'}
+            {tTools('dividePages.optionsTitle')}
           </h3>
 
           <div className="space-y-4">
             {/* Division Type */}
             <div>
               <label htmlFor="divisionType" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('dividePages.divisionType') || 'Division Type'}
+                {tTools('dividePages.divisionType')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {/* Vertical Split */}
@@ -269,9 +270,9 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
                       <div className="flex-1" />
                     </div>
                     <span className="text-xs font-medium">
-                      {tTools('dividePages.vertical') || 'Vertical'}
+                      {tTools('dividePages.vertical')}
                     </span>
-                    <span className="text-xs text-[hsl(var(--color-muted-foreground))]">2 parts</span>
+                    <span className="text-xs text-[hsl(var(--color-muted-foreground))]">{tUi('interfaceText.2Parts')}</span>
                   </div>
                 </button>
 
@@ -292,9 +293,9 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
                       <div className="flex-1" />
                     </div>
                     <span className="text-xs font-medium">
-                      {tTools('dividePages.horizontal') || 'Horizontal'}
+                      {tTools('dividePages.horizontal')}
                     </span>
-                    <span className="text-xs text-[hsl(var(--color-muted-foreground))]">2 parts</span>
+                    <span className="text-xs text-[hsl(var(--color-muted-foreground))]">{tUi('interfaceText.2Parts')}</span>
                   </div>
                 </button>
 
@@ -317,9 +318,9 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
                       <div />
                     </div>
                     <span className="text-xs font-medium">
-                      {tTools('dividePages.grid2x2') || '2×2 Grid'}
+                      {tTools('dividePages.grid2x2')}
                     </span>
-                    <span className="text-xs text-[hsl(var(--color-muted-foreground))]">4 parts</span>
+                    <span className="text-xs text-[hsl(var(--color-muted-foreground))]">{tUi('interfaceText.4Parts')}</span>
                   </div>
                 </button>
 
@@ -344,9 +345,9 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
                       ))}
                     </div>
                     <span className="text-xs font-medium">
-                      {tTools('dividePages.grid3x3') || '3×3 Grid'}
+                      {tTools('dividePages.grid3x3')}
                     </span>
-                    <span className="text-xs text-[hsl(var(--color-muted-foreground))]">9 parts</span>
+                    <span className="text-xs text-[hsl(var(--color-muted-foreground))]">{tUi('interfaceText.9Parts')}</span>
                   </div>
                 </button>
               </div>
@@ -386,8 +387,8 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
             loading={isProcessing}
           >
             {isProcessing 
-              ? (t('status.processing') || 'Processing...') 
-              : (tTools('dividePages.divideButton') || 'Divide Pages')
+              ? (t('status.processing'))
+              : (tTools('dividePages.divideButton'))
             }
           </Button>
 
@@ -410,7 +411,7 @@ export function DividePagesTool({ className = '' }: DividePagesToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('dividePages.successMessage') || 'Pages divided successfully! Click the download button to save your file.'}
+            {tTools('dividePages.successMessage')}
           </p>
         </div>
       )}

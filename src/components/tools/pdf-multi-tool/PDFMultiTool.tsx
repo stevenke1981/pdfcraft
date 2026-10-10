@@ -38,6 +38,7 @@ interface HistoryState {
  * All-in-one PDF editor with multi-file support
  */
 export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -403,7 +404,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
 
     try {
       setProgress(5);
-      setProgressMessage('Loading PDF library...');
+      setProgressMessage(tUi('interfaceText.loadingPdfLibrary'));
 
       const pdfLib = await import('pdf-lib');
 
@@ -413,7 +414,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
       }
 
       setProgress(10);
-      setProgressMessage('Loading source files...');
+      setProgressMessage(tUi('interfaceText.loadingSourceFiles'));
 
       // Load all source PDFs
       const loadedPdfs: any[] = [];
@@ -424,7 +425,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
       }
 
       setProgress(20);
-      setProgressMessage('Creating new document...');
+      setProgressMessage(tUi('interfaceText.creatingNewDocument'));
 
       const newPdf = await pdfLib.PDFDocument.create();
       const progressPerPage = 70 / pagePreviews.length;
@@ -437,7 +438,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
 
         const pageInfo = pagePreviews[i];
         setProgress(20 + (i * progressPerPage));
-        setProgressMessage(`Processing page ${i + 1} of ${pagePreviews.length}...`);
+        setProgressMessage(tUi('interfaceFeedback.processingPage', { page: i + 1, total: pagePreviews.length }));
 
         if (pageInfo.sourceFileIndex >= 0) {
           const sourcePdf = loadedPdfs[pageInfo.sourceFileIndex];
@@ -455,23 +456,23 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
       }
 
       setProgress(90);
-      setProgressMessage('Saving PDF...');
+      setProgressMessage(tUi('interfaceText.savingPdf'));
 
       const pdfBytes = await newPdf.save();
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' });
 
       setProgress(100);
-      setProgressMessage('Complete!');
+      setProgressMessage(tUi('interfaceText.complete'));
       setResult(blob);
       setStatus('complete');
 
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [sourceFiles, pagePreviews, tFeedback]);
+  }, [tUi, sourceFiles, pagePreviews, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;
@@ -503,10 +504,10 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
         onError={handleUploadError}
         disabled={isProcessing}
         label={sourceFiles.length > 0
-          ? (tTools('pdfMultiTool.addMoreFiles') || 'Add More PDF Files')
-          : (tTools('pdfMultiTool.uploadLabel') || 'Upload PDF Files')
+          ? (tTools('pdfMultiTool.addMoreFiles'))
+          : (tTools('pdfMultiTool.uploadLabel'))
         }
-        description={tTools('pdfMultiTool.uploadDescription') || 'Drag and drop PDF files here, or click to browse. You can upload multiple files.'}
+        description={tTools('pdfMultiTool.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -528,36 +529,36 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                 size="sm"
                 onClick={handleUndo}
                 disabled={!canUndo || isProcessing}
-                title="Undo"
+                title={tUi('common.editPdf.undoBtn')}
               >
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                 </svg>
-                {tTools('pdfMultiTool.undo') || 'Undo'}
+                {tTools('pdfMultiTool.undo')}
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleRedo}
                 disabled={!canRedo || isProcessing}
-                title="Redo"
+                title={tUi('common.editPdf.redoBtn')}
               >
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6" />
                 </svg>
-                {tTools('pdfMultiTool.redo') || 'Redo'}
+                {tTools('pdfMultiTool.redo')}
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleReset}
                 disabled={isProcessing}
-                title="Reset"
+                title={tUi('common.buttons.reset')}
               >
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                {tTools('pdfMultiTool.reset') || 'Reset'}
+                {tTools('pdfMultiTool.reset')}
               </Button>
             </div>
 
@@ -566,10 +567,10 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
             {/* Selection Actions */}
             <div className="flex items-center gap-1">
               <Button variant="ghost" size="sm" onClick={handleSelectAll} disabled={isProcessing}>
-                {tTools('pdfMultiTool.selectAll') || 'Select All'}
+                {tTools('pdfMultiTool.selectAll')}
               </Button>
               <Button variant="ghost" size="sm" onClick={handleDeselectAll} disabled={selectedCount === 0 || isProcessing}>
-                {tTools('pdfMultiTool.deselectAll') || 'Deselect'}
+                {tTools('pdfMultiTool.deselectAll')}
               </Button>
             </div>
 
@@ -581,13 +582,13 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8M3 3v5h5" />
                 </svg>
-                {tTools('pdfMultiTool.rotateLeft') || 'Left'}
+                {tTools('pdfMultiTool.rotateLeft')}
               </Button>
               <Button variant="ghost" size="sm" onClick={() => handleRotateSelected(90)} disabled={isProcessing}>
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-9-9 9.75 9.75 0 016.74 2.74L21 8M21 3v5h-5" />
                 </svg>
-                {tTools('pdfMultiTool.rotateRight') || 'Right'}
+                {tTools('pdfMultiTool.rotateRight')}
               </Button>
             </div>
 
@@ -600,7 +601,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                   <rect x="9" y="9" width="13" height="13" rx="2" strokeWidth={2} />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                 </svg>
-                {tTools('pdfMultiTool.duplicate') || 'Duplicate'}
+                {tTools('pdfMultiTool.duplicate')}
               </Button>
               <Button
                 variant="ghost"
@@ -611,7 +612,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                {tTools('pdfMultiTool.addBlank') || 'Add Blank'}
+                {tTools('pdfMultiTool.addBlank')}
               </Button>
             </div>
 
@@ -628,7 +629,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
-              {tTools('pdfMultiTool.delete') || 'Delete'}
+              {tTools('pdfMultiTool.delete')}
             </Button>
 
             {/* Spacer */}
@@ -636,13 +637,13 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
 
             {/* Info */}
             <div className="text-sm text-[hsl(var(--color-muted-foreground))]">
-              {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+              {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
               {selectedCount > 0 && ` • ${selectedCount} selected`}
             </div>
 
             {/* Clear All */}
             <Button variant="ghost" size="sm" onClick={handleClearAll} disabled={isProcessing}>
-              {tTools('pdfMultiTool.clearAll') || 'Clear All'}
+              {tTools('pdfMultiTool.clearAll')}
             </Button>
           </div>
 
@@ -652,7 +653,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
               <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-8 border-2 border-[hsl(var(--color-primary))] border-t-transparent rounded-full animate-spin" />
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {t('status.loading') || 'Loading previews...'}
+                  {t('status.loading')}
                 </p>
               </div>
             </div>
@@ -686,7 +687,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                     {page.thumbnail ? (
                       <img
                         src={page.thumbnail}
-                        alt={`Page ${index + 1}`}
+                        alt={tUi('dynamicUi.pageNumber', { page: index + 1 })}
                         className="w-full h-full object-contain bg-white dark:bg-slate-800"
                         style={{ transform: `rotate(${page.rotation}deg)` }}
                         draggable={false}
@@ -715,8 +716,8 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                         onClick={(e) => { e.stopPropagation(); handleMovePage(index, index - 1); }}
                         disabled={index === 0 || isProcessing}
                         className="w-5 h-5 bg-white/90 dark:bg-slate-800/90 rounded shadow flex items-center justify-center hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed"
-                        aria-label="Move left"
-                        title="Move left"
+                        aria-label={tUi('interfaceText.moveLeft')}
+                        title={tUi('interfaceText.moveLeft')}
                       >
                         <svg className="w-3 h-3 text-slate-700 dark:text-slate-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -727,8 +728,8 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                         onClick={(e) => { e.stopPropagation(); handleMovePage(index, index + 1); }}
                         disabled={index === pagePreviews.length - 1 || isProcessing}
                         className="w-5 h-5 bg-white/90 dark:bg-slate-800/90 rounded shadow flex items-center justify-center hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed"
-                        aria-label="Move right"
-                        title="Move right"
+                        aria-label={tUi('interfaceText.moveRight')}
+                        title={tUi('interfaceText.moveRight')}
                       >
                         <svg className="w-3 h-3 text-slate-700 dark:text-slate-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -755,7 +756,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                     <button
                       onClick={(e) => { e.stopPropagation(); handleRotatePage(index, -90); }}
                       className="w-6 h-6 bg-white/90 dark:bg-slate-800/90 rounded shadow flex items-center justify-center hover:bg-white dark:hover:bg-slate-700"
-                      title="Rotate left"
+                      title={tUi('interfaceText.rotateLeft')}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8M3 3v5h5" />
@@ -764,7 +765,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                     <button
                       onClick={(e) => { e.stopPropagation(); handleRotatePage(index, 90); }}
                       className="w-6 h-6 bg-white/90 dark:bg-slate-800/90 rounded shadow flex items-center justify-center hover:bg-white dark:hover:bg-slate-700"
-                      title="Rotate right"
+                      title={tUi('interfaceText.rotateRight')}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-9-9 9.75 9.75 0 016.74 2.74L21 8M21 3v5h-5" />
@@ -773,7 +774,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                     <button
                       onClick={(e) => { e.stopPropagation(); handleDuplicatePage(index); }}
                       className="w-6 h-6 bg-white/90 dark:bg-slate-800/90 rounded shadow flex items-center justify-center hover:bg-white dark:hover:bg-slate-700"
-                      title="Duplicate"
+                      title={tUi('tools.pdfMultiTool.duplicate')}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <rect x="9" y="9" width="13" height="13" rx="2" strokeWidth={2} />
@@ -783,7 +784,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
                     <button
                       onClick={(e) => { e.stopPropagation(); handleDeletePage(index); }}
                       className="w-6 h-6 bg-red-500/90 rounded shadow flex items-center justify-center hover:bg-red-600 text-white"
-                      title="Delete"
+                      title={tUi('common.buttons.delete')}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -806,7 +807,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              {tTools('pdfMultiTool.downloadSelected') || 'Download Selected'}
+              {tTools('pdfMultiTool.downloadSelected')}
             </Button>
 
             <Button
@@ -817,8 +818,8 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
               loading={isProcessing}
             >
               {isProcessing
-                ? (t('status.processing') || 'Processing...')
-                : (tTools('pdfMultiTool.exportPDF') || 'Export PDF')
+                ? (t('status.processing'))
+                : (tTools('pdfMultiTool.exportPDF'))
               }
             </Button>
 
@@ -844,12 +845,12 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             <h3 className="text-lg font-semibold mb-4">
-              {tTools('pdfMultiTool.addBlankPageTitle') || 'Add Blank Pages'}
+              {tTools('pdfMultiTool.addBlankPageTitle')}
             </h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2 text-[hsl(var(--color-muted-foreground))]">
-                  {tTools('pdfMultiTool.numberOfPages') || 'Number of pages'}
+                  {tTools('pdfMultiTool.numberOfPages')}
                 </label>
                 <input
                   type="number"
@@ -862,7 +863,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2 text-[hsl(var(--color-muted-foreground))]">
-                  {tTools('pdfMultiTool.insertPosition') || 'Insert at position'}
+                  {tTools('pdfMultiTool.insertPosition')}
                 </label>
                 <input
                   type="number"
@@ -875,10 +876,10 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
               </div>
               <div className="flex gap-3 mt-6">
                 <Button variant="outline" onClick={() => setShowAddBlankModal(false)} className="flex-1">
-                  {t('buttons.cancel') || 'Cancel'}
+                  {t('buttons.cancel')}
                 </Button>
                 <Button variant="primary" onClick={handleAddBlankPage} className="flex-1">
-                  {t('buttons.add') || 'Add'}
+                  {t('buttons.add')}
                 </Button>
               </div>
             </div>
@@ -901,7 +902,7 @@ export function PDFMultiTool({ className = '' }: PDFMultiToolProps) {
       {status === 'complete' && result && (
         <Card variant="outlined" className="!bg-green-50 dark:!bg-green-900/20 !border-green-200 dark:!border-green-800">
           <p className="text-sm font-medium text-green-700 dark:text-green-400">
-            {tTools('pdfMultiTool.successMessage') || 'PDF processed successfully! Click the download button to save your file.'}
+            {tTools('pdfMultiTool.successMessage')}
           </p>
         </Card>
       )}

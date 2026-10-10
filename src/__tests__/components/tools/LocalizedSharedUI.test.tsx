@@ -9,10 +9,23 @@ import { ProcessingProgress } from '@/components/tools/ProcessingProgress';
 import { DownloadButton } from '@/components/tools/DownloadButton';
 import { EditPDFTool } from '@/components/tools/edit-pdf/EditPDFTool';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { Modal } from '@/components/ui/Modal';
+import { FormField } from '@/components/ui/FormField';
 
 const catalogs = { en, ja, 'zh-TW': zhTW };
 describe.each(['en', 'ja', 'zh-TW'] as const)('shared UI in %s', (locale) => {
   const messages = catalogs[locale];
+  it('localizes modal close and required field accessibility labels', () => {
+    render(<NextIntlClientProvider locale={locale} messages={messages}>
+      <Modal isOpen onClose={() => {}} title="Synthetic">
+        <FormField label="Synthetic field" required error="Synthetic error"><input /></FormField>
+      </Modal>
+    </NextIntlClientProvider>);
+    expect(screen.getByRole('button', { name: messages.interfaceText.closeModal })).toBeVisible();
+    expect(screen.getByRole('textbox')).toHaveAccessibleName('Synthetic field ' + messages.interfaceText.required);
+    expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByRole('textbox')).toHaveAccessibleDescription('Synthetic error');
+  });
   it('localizes theme button actions and accessibility labels', () => {
     document.documentElement.classList.remove('dark');
     render(<NextIntlClientProvider locale={locale} messages={messages}><ThemeToggle /></NextIntlClientProvider>);

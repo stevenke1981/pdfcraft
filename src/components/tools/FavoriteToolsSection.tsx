@@ -29,6 +29,7 @@ export function FavoriteToolsSection({
     maxItems = 6,
     localizedToolsContent = {},
 }: FavoriteToolsSectionProps) {
+  const tUi = useTranslations();
     const t = useTranslations();
     const { favorites, isLoaded, favoritesCount } = useFavorites();
 
@@ -68,7 +69,7 @@ export function FavoriteToolsSection({
                             {t('tools.favorite.title')}
                         </h2>
                         <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                            {favoritesCount} {favoritesCount === 1 ? 'tool' : 'tools'}
+                            {favoritesCount} {favoritesCount === 1 ? tUi('interfaceText.tool') : tUi('interfaceText.tools')}
                         </p>
                     </div>
                 </div>

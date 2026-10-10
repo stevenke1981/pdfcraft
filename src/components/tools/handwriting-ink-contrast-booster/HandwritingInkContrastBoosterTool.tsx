@@ -16,6 +16,7 @@ export interface HandwritingInkContrastBoosterToolProps {
 }
 
 export function HandwritingInkContrastBoosterTool({ className = '' }: HandwritingInkContrastBoosterToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [threshold, setThreshold] = useState(200);
@@ -62,7 +63,7 @@ export function HandwritingInkContrastBoosterTool({ className = '' }: Handwritin
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Purifying ink grids...');
+            setProgressMessage(message || tUi('interfaceFeedback.purifyingInkGrids'));
           }
         }
       );
@@ -76,12 +77,12 @@ export function HandwritingInkContrastBoosterTool({ className = '' }: Handwritin
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to boost handwriting ink.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToBoostHandwritingInk'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error purifying ink.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorPurifyingInk'));
         setStatus('error');
       }
     }
@@ -162,7 +163,7 @@ export function HandwritingInkContrastBoosterTool({ className = '' }: Handwritin
                       }}
                     >
                       <div className="text-center font-serif font-black italic text-primary scale-125">
-                        Pure Ink
+                        {tUi('interfaceText.pureInk')}
                       </div>
                     </div>
                   )}

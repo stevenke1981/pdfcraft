@@ -3,105 +3,17 @@ import * as appModule from './app.js';
 import { setupFormatDock, setupFindSheet } from './dock.js';
 window.appModule = appModule;
 
+import { editorMessages, localizeEditorUI } from './i18n.js';
+
 // URL params and locale setup
 const urlParams = new URLSearchParams(window.location.search);
-const currentLang = (urlParams.get('lang') || navigator.language || 'en').toLowerCase();
-const isZh = currentLang.startsWith('zh');
 
-// Translations
-const I18N = {
-  zh: {
-    back: '返回上传',
-    open: '打开',
-    export: '导出 (⌘S)',
-    undo: '撤销 (⌘Z)',
-    redo: '重做 (⇧⌘Z)',
-    editAll: '编辑全部',
-    editText: '仅编辑正文',
-    editImages: '仅编辑图片',
-    editShapes: '仅编辑形状',
-    addText: '添加文本框',
-    find: '查找与替换',
-    docInfo: '文档属性',
-    fitPage: '适合页面',
-    fitWidth: '适合宽度',
-    saved: '保存成功！文件已导出。',
-    loading: '正在加载 PDF 编辑引擎...',
-    errLoad: '加载 PDF 失败，请检查文件格式。',
-    font: '字体',
-    size: '字号',
-    color: '颜色',
-    align: '对齐',
-    spacing: '间距',
-    lineSp: '行距',
-    paraSp: '段距',
-    charSp: '字距',
-    wordSp: '词距',
-    rotate: '旋转',
-    flip: '翻转',
-    replaceImg: '替换图片',
-    toFront: '置于顶层',
-    toBack: '置于底层',
-    duplicate: '复制',
-    delete: '删除'
-  },
-  en: {
-    back: 'Back to upload',
-    open: 'Open',
-    export: 'Export (⌘S)',
-    undo: 'Undo (⌘Z)',
-    redo: 'Redo (⇧⌘Z)',
-    editAll: 'Edit All',
-    editText: 'Edit Text',
-    editImages: 'Edit Images',
-    editShapes: 'Edit Shapes',
-    addText: 'Add Text',
-    find: 'Find & Replace',
-    docInfo: 'Document Properties',
-    fitPage: 'Fit to Page',
-    fitWidth: 'Fit to Width',
-    saved: 'Saved successfully! File exported.',
-    loading: 'Loading PDF editor engine...',
-    errLoad: 'Failed to load PDF, please check file format.',
-    font: 'Font',
-    size: 'Size',
-    color: 'Color',
-    align: 'Alignment',
-    spacing: 'Spacing',
-    lineSp: 'Line',
-    paraSp: 'Paragraph',
-    charSp: 'Character',
-    wordSp: 'Word',
-    rotate: 'Rotate',
-    flip: 'Flip',
-    replaceImg: 'Replace Image',
-    toFront: 'Bring to Front',
-    toBack: 'Send to Back',
-    duplicate: 'Duplicate',
-    delete: 'Delete'
-  }
-};
-
-const t = isZh ? I18N.zh : I18N.en;
+const t = editorMessages.main;
 
 function applyI18n() {
-  if (!isZh) return;
-  const exitBtn = document.getElementById('exitEditor');
-  if (exitBtn) exitBtn.title = t.back;
-  
-  const openLabel = document.querySelector('label[for="file"] span');
-  if (openLabel) openLabel.textContent = t.open;
-  
-  const saveBtn = document.querySelector('#save span');
-  if (saveBtn) saveBtn.textContent = isZh ? '导出' : 'Export';
-  
-  const addTextBtn = document.querySelector('[data-tool="addText"] span');
-  if (addTextBtn) addTextBtn.textContent = t.addText;
-  
+  localizeEditorUI(document);
   const editLabel = document.getElementById('editLabel');
-  if (editLabel && editLabel.textContent.includes('Edit All')) {
-    editLabel.textContent = t.editAll;
-  }
+  if (editLabel) editLabel.textContent = t.editAll;
 }
 
 // Menu helper
@@ -147,9 +59,9 @@ function menuItem(label, checked, onPick, icon) {
 }
 
 const SCOPES = [
-  ['text', isZh ? '编辑文本' : 'Edit Text', 'ph-text-t'],
-  ['image', isZh ? '编辑图片' : 'Edit Images', 'ph-image'],
-  ['shape', isZh ? '编辑形状' : 'Edit Shapes', 'ph-shapes'],
+  ['text', t.editText, 'ph-text-t'],
+  ['image', t.editImages, 'ph-image'],
+  ['shape', t.editShapes, 'ph-shapes'],
 ];
 
 function setupEditMenu() {
@@ -168,10 +80,10 @@ function setupEditMenu() {
     scopeSel.value = value;
     scopeSel.dispatchEvent(new Event('change'));
     label.textContent = picked.has('all')
-      ? (isZh ? '编辑全部' : 'Edit All')
-      : (isZh ? '编辑 ' : 'Edit ') +
+      ? (t.editAll)
+      :
         SCOPES.filter(([k]) => picked.has(k))
-          .map(([, l]) => l.replace(/^(编辑|Edits*)/, ''))
+          .map(([, label]) => label)
           .join(' + ');
   };
   let open = null;
@@ -199,7 +111,7 @@ function setupEditMenu() {
       menu.replaceChildren();
       menu.appendChild(
         menuItem(
-          isZh ? '编辑全部' : 'Edit All',
+          t.editAll,
           picked.has('all'),
           () => {
             picked = new Set(['all']);
@@ -349,7 +261,8 @@ function setupDocPanel() {
     title.textContent = t.docInfo;
     const x = document.createElement('button');
     x.className = 'btn icon';
-    x.title = 'Close';
+    x.title = t.close;
+    x.setAttribute('aria-label', t.close);
     const xi = document.createElement('i');
     xi.className = 'ph ph-x';
     x.appendChild(xi);
@@ -543,11 +456,11 @@ async function loadBundledChineseFont() {
     if (sel) {
       const cur = sel.value;
       const PREFERRED = [
-        ['Noto Sans SC', isZh ? '思源黑体 (Noto Sans SC)' : 'Noto Sans SC'],
-        ['Microsoft YaHei', isZh ? '微软雅黑 (Microsoft YaHei)' : 'Microsoft YaHei'],
-        ['SimSun', isZh ? '宋体 (SimSun)' : 'SimSun'],
-        ['SimHei', isZh ? '黑体 (SimHei)' : 'SimHei'],
-        ['KaiTi', isZh ? '楷体 (KaiTi)' : 'KaiTi'],
+        ['Noto Sans SC', t.fontNoto],
+        ['Microsoft YaHei', t.fontYaHei],
+        ['SimSun', t.fontSimSun],
+        ['SimHei', t.fontSimHei],
+        ['KaiTi', t.fontKaiTi],
         ['Helvetica', 'Helvetica'],
         ['Arial', 'Arial'],
         ['Times New Roman', 'Times New Roman'],

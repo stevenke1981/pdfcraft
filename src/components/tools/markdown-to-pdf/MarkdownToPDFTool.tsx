@@ -26,6 +26,7 @@ type InputMode = 'upload' | 'manual';
  * Supports both file upload and manual markdown input with live preview.
  */
 export function MarkdownToPDFTool({ className = '' }: MarkdownToPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -153,14 +154,14 @@ Enjoy converting your Markdown to PDF!
             if (output.success && output.result) {
                 setResultBlob(output.result as Blob);
             } else {
-                setError(output.error?.message || 'Failed to convert Markdown.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToConvertMarkdown'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [inputMode, file, manualMarkdown, pageSize, theme, gfm, syntaxHighlight, tFeedback]);
+    }, [tUi, inputMode, file, manualMarkdown, pageSize, theme, gfm, syntaxHighlight, tFeedback]);
 
     /**
      * Reset state
@@ -192,7 +193,7 @@ Enjoy converting your Markdown to PDF!
                     `}
                 >
                     <Type className="w-4 h-4" />
-                    {tTools('markdownToPdf.manualInput') || 'Write Markdown'}
+                    {tTools('markdownToPdf.manualInput')}
                 </button>
                 <button
                     type="button"
@@ -207,7 +208,7 @@ Enjoy converting your Markdown to PDF!
                     `}
                 >
                     <Upload className="w-4 h-4" />
-                    {tTools('markdownToPdf.uploadFile') || 'Upload File'}
+                    {tTools('markdownToPdf.uploadFile')}
                 </button>
             </div>
 
@@ -220,8 +221,8 @@ Enjoy converting your Markdown to PDF!
                     onFilesSelected={handleFilesSelected}
                     onError={handleUploadError}
                     disabled={isProcessing}
-                    label={tTools('markdownToPdf.uploadLabel') || 'Upload Markdown File'}
-                    description={tTools('markdownToPdf.uploadDescription') || 'Drag and drop a .md or .markdown file to convert to PDF.'}
+                    label={tTools('markdownToPdf.uploadLabel')}
+                    description={tTools('markdownToPdf.uploadDescription')}
                 />
             )}
 
@@ -239,7 +240,7 @@ Enjoy converting your Markdown to PDF!
                                     </p>
                                 </div>
                                 <Button variant="ghost" size="sm" onClick={handleReset} disabled={isProcessing}>
-                                    {t('buttons.clear') || 'Clear'}
+                                    {t('buttons.clear')}
                                 </Button>
                             </div>
                         </Card>
@@ -254,8 +255,8 @@ Enjoy converting your Markdown to PDF!
                         >
                             {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                             {showPreview
-                                ? (tTools('markdownToPdf.hidePreview') || 'Hide Preview')
-                                : (tTools('markdownToPdf.showPreview') || 'Show Preview')
+                                ? (tTools('markdownToPdf.hidePreview'))
+                                : (tTools('markdownToPdf.showPreview'))
                             }
                         </button>
                     </div>
@@ -265,7 +266,7 @@ Enjoy converting your Markdown to PDF!
                         {/* Markdown Editor */}
                         <div className="space-y-2">
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))]">
-                                {tTools('markdownToPdf.editorLabel') || 'Markdown Editor'}
+                                {tTools('markdownToPdf.editorLabel')}
                             </label>
                             <textarea
                                 value={manualMarkdown}
@@ -274,7 +275,7 @@ Enjoy converting your Markdown to PDF!
                                     setResultBlob(null);
                                 }}
                                 disabled={isProcessing}
-                                placeholder="# Enter your Markdown here..."
+                                placeholder={tUi('interfaceText.enterYourMarkdownHere')}
                                 className="
                                     w-full h-[400px] p-4 
                                     font-mono text-sm
@@ -294,7 +295,7 @@ Enjoy converting your Markdown to PDF!
                         {showPreview && (
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-[hsl(var(--color-foreground))]">
-                                    {tTools('markdownToPdf.previewLabel') || 'Preview'}
+                                    {tTools('markdownToPdf.previewLabel')}
                                 </label>
                                 <div
                                     className={`
@@ -325,14 +326,14 @@ Enjoy converting your Markdown to PDF!
             {/* Conversion Options */}
             <Card variant="outlined">
                 <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                    {tTools('markdownToPdf.optionsTitle') || 'Conversion Options'}
+                    {tTools('markdownToPdf.optionsTitle')}
                 </h3>
 
                 <div className="space-y-4">
                     {/* Theme */}
                     <div>
                         <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                            {tTools('markdownToPdf.themeLabel') || 'Theme'}
+                            {tTools('markdownToPdf.themeLabel')}
                         </label>
                         <div className="grid grid-cols-3 gap-2">
                             {(['light', 'dark', 'github'] as MarkdownTheme[]).map((th) => (
@@ -360,7 +361,7 @@ Enjoy converting your Markdown to PDF!
                     {/* Page Size */}
                     <div>
                         <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                            {tTools('markdownToPdf.pageSizeLabel') || 'Page Size'}
+                            {tTools('markdownToPdf.pageSizeLabel')}
                         </label>
                         <div className="grid grid-cols-3 gap-2">
                             {(['a4', 'letter', 'legal'] as MarkdownPageSize[]).map((size) => (
@@ -395,7 +396,7 @@ Enjoy converting your Markdown to PDF!
                             className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                         />
                         <span className="text-sm text-[hsl(var(--color-foreground))]">
-                            {tTools('markdownToPdf.gfmLabel') || 'Enable GitHub Flavored Markdown (tables, task lists, etc.)'}
+                            {tTools('markdownToPdf.gfmLabel')}
                         </span>
                     </label>
 
@@ -409,7 +410,7 @@ Enjoy converting your Markdown to PDF!
                             className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                         />
                         <span className="text-sm text-[hsl(var(--color-foreground))]">
-                            {tTools('markdownToPdf.syntaxHighlightLabel') || 'Enable syntax highlighting for code blocks'}
+                            {tTools('markdownToPdf.syntaxHighlightLabel')}
                         </span>
                     </label>
                 </div>
@@ -420,7 +421,7 @@ Enjoy converting your Markdown to PDF!
                 <ProcessingProgress
                     progress={progress}
                     status="processing"
-                    message="Converting Markdown to PDF..."
+                    message={tUi('interfaceFeedback.convertingMarkdown')}
                     showPercentage
                 />
             )}
@@ -436,8 +437,8 @@ Enjoy converting your Markdown to PDF!
                 >
                     <FileType className="w-4 h-4 mr-2" />
                     {isProcessing
-                        ? (t('status.processing') || 'Processing...')
-                        : (tTools('markdownToPdf.convertButton') || 'Convert to PDF')
+                        ? (t('status.processing'))
+                        : (tTools('markdownToPdf.convertButton'))
                     }
                 </Button>
 
@@ -458,7 +459,7 @@ Enjoy converting your Markdown to PDF!
                     role="status"
                 >
                     <p className="text-sm font-medium">
-                        {tTools('markdownToPdf.successMessage') || 'PDF created successfully! Click download to save.'}
+                        {tTools('markdownToPdf.successMessage')}
                     </p>
                 </div>
             )}

@@ -22,6 +22,7 @@ export interface PDFToPDFAToolProps {
  * Converts PDF files to PDF/A archival format.
  */
 export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -125,8 +126,8 @@ export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('pdfToPdfa.uploadLabel') || 'Upload PDF Files'}
-                description={tTools('pdfToPdfa.uploadDescription') || 'Drag and drop PDF files to convert to PDF/A format.'}
+                label={tTools('pdfToPdfa.uploadLabel')}
+                description={tTools('pdfToPdfa.uploadDescription')}
             />
 
             {error && (
@@ -139,11 +140,11 @@ export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
                 <Card variant="outlined" size="lg">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                            {tTools('pdfToPdfa.filesTitle') || 'Files to Convert'} ({files.length})
+                            {tTools('pdfToPdfa.filesTitle')} ({files.length})
                         </h3>
                         <Button variant="ghost" size="sm" onClick={clearFiles} disabled={isProcessing}>
                             <Trash2 className="w-4 h-4 mr-1" />
-                            {t('buttons.clearAll') || 'Clear All'}
+                            {t('buttons.clearAll')}
                         </Button>
                     </div>
 
@@ -166,7 +167,7 @@ export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
                                     <DownloadButton file={batchFile.result} filename={`${batchFile.file.name.replace('.pdf', '')}_pdfa.pdf`} variant="ghost" size="sm" />
                                 )}
                                 {batchFile.status === 'pending' && !isProcessing && (
-                                    <button onClick={() => removeFile(batchFile.id)} className="p-1 text-[hsl(var(--color-muted-foreground))] hover:text-red-500 transition-colors" aria-label="Remove file">
+                                    <button onClick={() => removeFile(batchFile.id)} className="p-1 text-[hsl(var(--color-muted-foreground))] hover:text-red-500 transition-colors" aria-label={tUi('interfaceText.removeFile')}>
                                         <X className="w-4 h-4" />
                                     </button>
                                 )}
@@ -179,13 +180,13 @@ export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
             {hasFiles && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('pdfToPdfa.optionsTitle') || 'PDF/A Options'}
+                        {tTools('pdfToPdfa.optionsTitle')}
                     </h3>
 
                     <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('pdfToPdfa.levelLabel') || 'PDF/A Level'}
+                                {tTools('pdfToPdfa.levelLabel')}
                             </label>
                             <div className="grid grid-cols-3 gap-2">
                                 {(Object.keys(PDFA_LEVEL_INFO) as PdfALevel[]).map((lvl) => (
@@ -218,7 +219,7 @@ export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
                                 className="w-4 h-4 rounded"
                             />
                             <span className="text-sm text-[hsl(var(--color-foreground))]">
-                                {tTools('pdfToPdfa.embedFontsLabel') || 'Embed all fonts'}
+                                {tTools('pdfToPdfa.embedFontsLabel')}
                             </span>
                         </label>
 
@@ -231,7 +232,7 @@ export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
                                 className="w-4 h-4 rounded"
                             />
                             <span className="text-sm text-[hsl(var(--color-foreground))]">
-                                {tTools('pdfToPdfa.flattenTransparencyLabel') || 'Flatten transparency (required for PDF/A-1b)'}
+                                {tTools('pdfToPdfa.flattenTransparencyLabel')}
                             </span>
                         </label>
                     </div>
@@ -251,13 +252,13 @@ export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
             <div className="flex flex-wrap items-center gap-4">
                 <Button variant="primary" size="lg" onClick={handleConvert} disabled={!canProcess} loading={isProcessing}>
                     <Archive className="w-4 h-4 mr-2" />
-                    {isProcessing ? (t('status.processing') || 'Processing...') : (tTools('pdfToPdfa.convertButton') || 'Convert to PDF/A')}
+                    {isProcessing ? (t('status.processing')) : (tTools('pdfToPdfa.convertButton'))}
                 </Button>
 
                 {hasCompletedFiles && (
                     <Button variant="secondary" size="lg" onClick={handleDownloadZip} disabled={isProcessing}>
                         <FileArchive className="w-4 h-4 mr-2" />
-                        {tTools('pdfToPdfa.downloadAllZip') || 'Download All as ZIP'}
+                        {tTools('pdfToPdfa.downloadAllZip')}
                     </Button>
                 )}
             </div>
@@ -267,7 +268,7 @@ export function PDFToPDFATool({ className = '' }: PDFToPDFAToolProps) {
                     <p className="text-sm font-medium">
                         {tTools('pdfToPdfa.successMessage') || `Successfully converted ${completedCount} file(s) to PDF/A!`}
                     </p>
-                    {errorCount > 0 && <p className="text-sm text-red-600 mt-1">{errorCount} file(s) failed.</p>}
+                    {errorCount > 0 && <p className="text-sm text-red-600 mt-1">{errorCount} {tUi('interfaceText.fileSFailed')}</p>}
                 </div>
             )}
         </div>

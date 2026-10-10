@@ -41,6 +41,7 @@ interface PagePreview {
  * Provides the UI for splitting PDF files with page range input and preview.
  */
 export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tErrors = useTranslations('errors');
   const tTools = useTranslations('tools');
@@ -434,8 +435,8 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('splitPdf.uploadLabel') || 'Upload PDF File'}
-          description={tTools('splitPdf.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('splitPdf.uploadLabel')}
+          description={tTools('splitPdf.uploadDescription')}
         />
       )}
 
@@ -462,7 +463,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -472,7 +473,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -482,14 +483,14 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
       {file && totalPages > 0 && (
         <Card variant="outlined" size="lg">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('splitPdf.splitModeTitle') || 'Split Method'}
+            {tTools('splitPdf.splitModeTitle')}
           </h3>
 
           <div className="space-y-4">
             {/* Mode Selection - Card-based selector */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-3">
-                {tTools('splitPdf.splitModeLabel') || 'Split Mode'}
+                {tTools('splitPdf.splitModeLabel')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {/* Range Mode */}
@@ -593,7 +594,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                     </svg>
                   </div>
                   <span className={`text-sm font-medium text-center ${splitMode === 'visual' ? 'text-[hsl(var(--color-primary))]' : 'text-[hsl(var(--color-foreground))]'}`}>
-                    {tTools('splitPdf.modeVisualShort') || 'Visual Select'}
+                    {tTools('splitPdf.modeVisualShort')}
                   </span>
                   {splitMode === 'visual' && (
                     <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[hsl(var(--color-primary))] flex items-center justify-center">
@@ -621,7 +622,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                     </svg>
                   </div>
                   <span className={`text-sm font-medium text-center ${splitMode === 'bookmarks' ? 'text-[hsl(var(--color-primary))]' : 'text-[hsl(var(--color-foreground))]'}`}>
-                    {tTools('splitPdf.modeBookmarksShort') || 'Bookmarks'}
+                    {tTools('splitPdf.modeBookmarksShort')}
                   </span>
                   {pdfBookmarks.length > 0 && (
                     <span className="absolute -top-1 -left-1 px-1.5 py-0.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold">
@@ -654,7 +655,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                     </svg>
                   </div>
                   <span className={`text-sm font-medium text-center ${splitMode === 'n-times' ? 'text-[hsl(var(--color-primary))]' : 'text-[hsl(var(--color-foreground))]'}`}>
-                    {tTools('splitPdf.modeNTimesShort') || 'Split N Parts'}
+                    {tTools('splitPdf.modeNTimesShort')}
                   </span>
                   {splitMode === 'n-times' && (
                     <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[hsl(var(--color-primary))] flex items-center justify-center">
@@ -675,19 +676,19 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                     htmlFor="page-ranges"
                     className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1"
                   >
-                    {tTools('splitPdf.rangeInputLabel') || 'Page Ranges'}
+                    {tTools('splitPdf.rangeInputLabel')}
                   </label>
                   <input
                     id="page-ranges"
                     type="text"
                     value={rangeInput}
                     onChange={(e) => setRangeInput(e.target.value)}
-                    placeholder="e.g., 1-5, 8, 10-15"
+                    placeholder={tUi('interfaceText.eG1581015')}
                     disabled={isProcessing}
                     className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] placeholder:text-[hsl(var(--color-muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                   />
                   <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                    {tTools('splitPdf.rangeInputHint') || 'Enter page numbers or ranges separated by commas. Leave empty to export all pages as one file.'}
+                    {tTools('splitPdf.rangeInputHint')}
                   </p>
                 </div>
               </div>
@@ -697,7 +698,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
               <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                    {tTools('splitPdf.evenOddLabel') || 'Extract Pages'}
+                    {tTools('splitPdf.evenOddLabel')}
                   </label>
                   <div className="flex flex-wrap gap-2">
                     <button
@@ -709,7 +710,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                         : 'bg-[hsl(var(--color-muted))] text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted)/0.8)]'
                         }`}
                     >
-                      {tTools('splitPdf.oddPagesOnly') || 'Odd Pages Only'}
+                      {tTools('splitPdf.oddPagesOnly')}
                     </button>
                     <button
                       type="button"
@@ -720,7 +721,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                         : 'bg-[hsl(var(--color-muted))] text-[hsl(var(--color-foreground))] hover:bg-[hsl(var(--color-muted)/0.8)]'
                         }`}
                     >
-                      {tTools('splitPdf.evenPagesOnly') || 'Even Pages Only'}
+                      {tTools('splitPdf.evenPagesOnly')}
                     </button>
                     <button
                       type="button"
@@ -735,7 +736,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                     </button>
                   </div>
                   <p className="mt-2 text-xs text-[hsl(var(--color-muted-foreground))]">
-                    {tTools('splitPdf.evenOddHint') || 'Odd pages: 1, 3, 5... Even pages: 2, 4, 6...'}
+                    {tTools('splitPdf.evenOddHint')}
                   </p>
                 </div>
               </div>
@@ -755,7 +756,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                       {totalPages} {tTools('splitPdf.separateFiles')}
                     </p>
                     <p className="text-xs text-blue-600 mt-0.5">
-                      {tTools('splitPdf.everyPageInfo', { count: totalPages }) || 'Each page will be extracted as a separate PDF file'}
+                      {tTools('splitPdf.everyPageInfo', { count: totalPages })}
                     </p>
                   </div>
                 </div>
@@ -776,7 +777,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                       {tTools('splitPdf.visualSelection')}
                     </p>
                     <p className="text-xs text-purple-600 mt-0.5">
-                      {tTools('splitPdf.visualInfo') || 'Click on page thumbnails below to select pages for extraction'}
+                      {tTools('splitPdf.visualInfo')}
                     </p>
                   </div>
                 </div>
@@ -862,7 +863,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                           {tTools('splitPdf.noBookmarks')}
                         </p>
                         <p className="text-xs text-amber-600 mt-0.5">
-                          {tTools('splitPdf.bookmarksNotice') || 'This PDF does not contain bookmarks. The entire document will be returned as a single file.'}
+                          {tTools('splitPdf.bookmarksNotice')}
                         </p>
                       </div>
                     </div>
@@ -877,7 +878,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                   htmlFor="split-count"
                   className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1"
                 >
-                  {tTools('splitPdf.splitCountLabel') || 'Number of Parts'}
+                  {tTools('splitPdf.splitCountLabel')}
                 </label>
                 <input
                   id="split-count"
@@ -906,15 +907,15 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('splitPdf.pagePreviewTitle') || 'Select Pages'}
+              {tTools('splitPdf.pagePreviewTitle')}
               {selectedPages.size > 0 && ` (${selectedPages.size} selected)`}
             </h3>
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={handleSelectAll} disabled={isProcessing}>
-                {t('buttons.selectAll') || 'Select All'}
+                {t('buttons.selectAll')}
               </Button>
               <Button variant="ghost" size="sm" onClick={handleDeselectAll} disabled={isProcessing}>
-                {t('buttons.deselectAll') || 'Deselect All'}
+                {t('buttons.deselectAll')}
               </Button>
             </div>
           </div>
@@ -924,7 +925,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
               <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-8 border-2 border-[hsl(var(--color-primary))] border-t-transparent rounded-full animate-spin" />
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {t('status.loading') || 'Loading previews...'}
+                  {t('status.loading')}
                 </p>
               </div>
             </div>
@@ -940,12 +941,12 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                     ? 'border-[hsl(var(--color-primary))] ring-2 ring-[hsl(var(--color-primary)/0.3)]'
                     : 'border-[hsl(var(--color-border))] hover:border-[hsl(var(--color-primary)/0.5)]'
                     }`}
-                  aria-label={`Page ${preview.pageNumber}${selectedPages.has(preview.pageNumber) ? ' (selected)' : ''}`}
+                  aria-label={tUi(selectedPages.has(preview.pageNumber) ? 'dynamicUi.pageSelected' : 'dynamicUi.pageNumber', { page: preview.pageNumber })}
                 >
                   {preview.thumbnail ? (
                     <img
                       src={preview.thumbnail}
-                      alt={`Page ${preview.pageNumber}`}
+                      alt={tUi('dynamicUi.pageNumber', { page: preview.pageNumber })}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -994,8 +995,8 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
             loading={isProcessing}
           >
             {isProcessing
-              ? (t('status.processing') || 'Processing...')
-              : (tTools('splitPdf.splitButton') || 'Split PDF')
+              ? (t('status.processing'))
+              : (tTools('splitPdf.splitButton'))
             }
           </Button>
         </div>
@@ -1005,7 +1006,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
       {status === 'complete' && results.length > 0 && (
         <Card variant="outlined" size="lg">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('splitPdf.resultsTitle') || 'Split Results'} ({results.length} {results.length === 1 ? 'file' : 'files'})
+            {tTools('splitPdf.resultsTitle')} ({results.length} {results.length === 1 ? tUi('interfaceText.file2') : tUi('common.savedProjects.files')})
           </h3>
 
           {/* Download ZIP button if multiple files */}
@@ -1028,7 +1029,7 @@ export function SplitPDFTool({ className = '' }: SplitPDFToolProps) {
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
-                {tTools('splitPdf.downloadZip') || 'Download All as ZIP'}
+                {tTools('splitPdf.downloadZip')}
               </Button>
             </div>
           )}

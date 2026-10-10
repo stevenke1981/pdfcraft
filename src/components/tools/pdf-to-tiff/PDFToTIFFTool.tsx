@@ -25,6 +25,7 @@ export interface PDFToTIFFToolProps {
 }
 
 export function PDFToTIFFTool({ className = '' }: PDFToTIFFToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -70,7 +71,7 @@ export function PDFToTIFFTool({ className = '' }: PDFToTIFFToolProps) {
     } finally {
       setIsLoadingFile(false);
     }
-  }, []);
+  }, [t]);
 
   const handleClearFile = () => {
     setFile(null);
@@ -168,7 +169,7 @@ export function PDFToTIFFTool({ className = '' }: PDFToTIFFToolProps) {
                   {file.name}
                 </p>
                 <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                  {totalPages > 0 ? t('pdfToTiff.uploadSuccess', { count: totalPages, size: (file.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata') || 'Loading...')}
+                  {totalPages > 0 ? t('pdfToTiff.uploadSuccess', { count: totalPages, size: (file.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata'))}
                 </p>
               </div>
             </div>
@@ -378,7 +379,7 @@ export function PDFToTIFFTool({ className = '' }: PDFToTIFFToolProps) {
                 <Info className="w-4 h-4 text-[hsl(var(--color-primary))] shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold text-[hsl(var(--color-foreground))]">{t('pdfToTiff.tipTitle')}</span>
-                  {t('pdfToTiff.tipDesc') || 'TIFF recommendations:'} <span className="text-[hsl(var(--color-primary))] font-extrabold mx-0.5">{t('pdfToTiff.tipRecommend') || '300 DPI'}</span> {t('pdfToTiff.tipTail') || 'to ensure clean edges.'}
+                  {t('pdfToTiff.tipDesc')} <span className="text-[hsl(var(--color-primary))] font-extrabold mx-0.5">{t('pdfToTiff.tipRecommend')}</span> {tUi('interfaceText.tiffCleanEdges')}
                 </div>
               </div>
 
@@ -394,7 +395,7 @@ export function PDFToTIFFTool({ className = '' }: PDFToTIFFToolProps) {
                 className="w-full py-4 font-bold shadow-lg shadow-[hsl(var(--color-primary)/0.15)] flex items-center justify-center gap-2"
               >
                 <Printer className="w-5 h-5" />
-                {isProcessing ? (t('pdfToTiff.processing') || 'Processing...') : t('pdfToTiff.processButton')}
+                {isProcessing ? (tUi('common.status.processing')) : t('pdfToTiff.processButton')}
               </Button>
 
               {result && (

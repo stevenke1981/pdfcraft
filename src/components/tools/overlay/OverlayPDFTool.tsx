@@ -15,6 +15,7 @@ export interface OverlayPDFToolProps {
 }
 
 export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -123,7 +124,7 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Processing page composition...');
+            setProgressMessage(message || tUi('interfaceFeedback.processingPageComposition'));
           }
         }
       );
@@ -137,12 +138,12 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to overlay pages.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToOverlayPages'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
@@ -172,14 +173,14 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
                 <svg className="w-10 h-10 text-[hsl(var(--color-primary))]" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
                   <path d="M14 2v6h6" fill="white" />
-                  <text x="7" y="17" fontSize="6" fill="white" fontWeight="bold">BASE</text>
+                  <text x="7" y="17" fontSize="6" fill="white" fontWeight="bold">{tUi('interfaceText.base')}</text>
                 </svg>
                 <div>
                   <p className="font-semibold text-sm text-[hsl(var(--color-foreground))] truncate max-w-[200px]" title={baseFile.name}>
                     {baseFile.name}
                   </p>
                   <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                    {basePages > 0 ? t('overlayPdf.uploadBaseSuccess', { count: basePages, size: (baseFile.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata') || 'Loading...')}
+                    {basePages > 0 ? t('overlayPdf.uploadBaseSuccess', { count: basePages, size: (baseFile.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata'))}
                   </p>
                 </div>
               </div>
@@ -218,14 +219,14 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
                 <svg className="w-10 h-10 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
                   <path d="M14 2v6h6" fill="white" />
-                  <text x="7" y="17" fontSize="5.5" fill="white" fontWeight="bold">LAYER</text>
+                  <text x="7" y="17" fontSize="5.5" fill="white" fontWeight="bold">{tUi('interfaceText.layer')}</text>
                 </svg>
                 <div>
                   <p className="font-semibold text-sm text-[hsl(var(--color-foreground))] truncate max-w-[200px]" title={layerFile.name}>
                     {layerFile.name}
                   </p>
                   <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                    {layerPages > 0 ? t('overlayPdf.uploadLayerSuccess', { count: layerPages, size: (layerFile.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata') || 'Loading...')}
+                    {layerPages > 0 ? t('overlayPdf.uploadLayerSuccess', { count: layerPages, size: (layerFile.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata'))}
                   </p>
                 </div>
               </div>
@@ -293,7 +294,7 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
                 >
                   <div className="text-center">
                     <p className="text-sm">{t('overlayPdf.basePageLabel')}</p>
-                    <p className="text-[10px] opacity-60">Base Document</p>
+                    <p className="text-[10px] opacity-60">{tUi('interfaceText.baseDocument')}</p>
                   </div>
                 </div>
 
@@ -310,7 +311,7 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
                 >
                   <div className="text-center">
                     <p className="text-sm">{t('overlayPdf.layerPageLabel')}</p>
-                    <p className="text-[10px] opacity-70">Overlay Layer</p>
+                    <p className="text-[10px] opacity-70">{tUi('interfaceText.overlayLayer')}</p>
                   </div>
                 </div>
               </div>
@@ -416,7 +417,7 @@ export function OverlayPDFTool({ className = '' }: OverlayPDFToolProps) {
                 disabled={isProcessing}
                 className="w-full py-4 font-bold shadow-lg shadow-[hsl(var(--color-primary)/0.15)]"
               >
-                {isProcessing ? (t('overlayPdf.processing') || 'Processing...') : t('overlayPdf.processButton')}
+                {isProcessing ? (tUi('common.status.processing')) : t('overlayPdf.processButton')}
               </Button>
 
               {result && (

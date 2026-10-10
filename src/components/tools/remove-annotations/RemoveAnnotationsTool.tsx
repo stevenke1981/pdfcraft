@@ -13,6 +13,7 @@ import type { ProcessOutput } from '@/types/pdf';
 export interface RemoveAnnotationsToolProps { className?: string; }
 
 export function RemoveAnnotationsTool({ className = '' }: RemoveAnnotationsToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   const [file, setFile] = useState<File | null>(null);
@@ -30,9 +31,9 @@ export function RemoveAnnotationsTool({ className = '' }: RemoveAnnotationsToolP
     try {
       const output: ProcessOutput = await removeAnnotations(file, { removeAll, pages: 'all' }, (prog) => { if (!cancelledRef.current) setProgress(prog); });
       if (output.success && output.result) { setResult(output.result as Blob); setStatus('complete'); }
-      else { setError(output.error?.message || 'Failed.'); setStatus('error'); }
-    } catch (err) { setError(err instanceof Error ? err.message : 'Error'); setStatus('error'); }
-  }, [file, removeAll]);
+      else { setError(output.error?.message || tUi('interfaceFeedback.failed')); setStatus('error'); }
+    } catch (err) { setError(err instanceof Error ? err.message : tUi('common.status.error')); setStatus('error'); }
+  }, [tUi, file, removeAll]);
 
   const isProcessing = status === 'processing';
 
@@ -44,17 +45,17 @@ export function RemoveAnnotationsTool({ className = '' }: RemoveAnnotationsToolP
         <>
           <Card variant="outlined"><div className="flex items-center justify-between"><p className="font-medium">{file.name}</p><Button variant="ghost" size="sm" onClick={() => { setFile(null); setResult(null); }} disabled={isProcessing}>{t('buttons.remove')}</Button></div></Card>
           <Card variant="outlined" size="lg">
-            <h3 className="text-lg font-medium mb-4">{tTools('removeAnnotations.optionsTitle') || 'Options'}</h3>
+            <h3 className="text-lg font-medium mb-4">{tTools('removeAnnotations.optionsTitle')}</h3>
             <label className="flex items-center gap-2">
               <input type="checkbox" checked={removeAll} onChange={(e) => setRemoveAll(e.target.checked)} disabled={isProcessing} className="w-4 h-4" />
-              <span>{tTools('removeAnnotations.removeAllLabel') || 'Remove all annotations (comments, highlights, links, etc.)'}</span>
+              <span>{tTools('removeAnnotations.removeAllLabel')}</span>
             </label>
           </Card>
         </>
       )}
       {isProcessing && <ProcessingProgress progress={progress} status={status} onCancel={() => { cancelledRef.current = true; setStatus('idle'); }} showPercentage />}
-      {file && <div className="flex flex-wrap items-center gap-4"><Button variant="primary" size="lg" onClick={handleProcess} disabled={!file || isProcessing} loading={isProcessing}>{isProcessing ? t('status.processing') : tTools('removeAnnotations.processButton') || 'Remove Annotations'}</Button>{result && <DownloadButton file={result} filename={file.name.replace('.pdf', '_no_annotations.pdf')} variant="secondary" size="lg" showFileSize />}</div>}
-      {status === 'complete' && result && <div className="p-4 rounded bg-green-50 border border-green-200 text-green-700"><p className="text-sm font-medium">{tTools('removeAnnotations.successMessage') || 'Annotations removed successfully!'}</p></div>}
+      {file && <div className="flex flex-wrap items-center gap-4"><Button variant="primary" size="lg" onClick={handleProcess} disabled={!file || isProcessing} loading={isProcessing}>{isProcessing ? t('status.processing') : tTools('removeAnnotations.processButton')}</Button>{result && <DownloadButton file={result} filename={file.name.replace('.pdf', '_no_annotations.pdf')} variant="secondary" size="lg" showFileSize />}</div>}
+      {status === 'complete' && result && <div className="p-4 rounded bg-green-50 border border-green-200 text-green-700"><p className="text-sm font-medium">{tTools('removeAnnotations.successMessage')}</p></div>}
     </div>
   );
 }

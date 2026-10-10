@@ -20,6 +20,7 @@ export interface EPUBToPDFToolProps {
 }
 
 export function EPUBToPDFTool({ className = '' }: EPUBToPDFToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -60,7 +61,7 @@ export function EPUBToPDFTool({ className = '' }: EPUBToPDFToolProps) {
 
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError(t('errors.uploadFile') || 'Please upload an EPUB file.');
+            setError(tUi('interfaceFeedback.pleaseUploadAnEpubFile'));
             return;
         }
 
@@ -91,16 +92,16 @@ export function EPUBToPDFTool({ className = '' }: EPUBToPDFToolProps) {
                 setResult(output.result);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || 'Failed to convert EPUB to PDF.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToConvertEpubToPdf'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, t]);
+    }, [tUi, file]);
 
     const handleCancel = useCallback(() => {
         cancelledRef.current = true;
@@ -126,8 +127,8 @@ export function EPUBToPDFTool({ className = '' }: EPUBToPDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('epubToPdf.uploadLabel') || 'Upload EPUB File'}
-                description={tTools('epubToPdf.uploadDescription') || 'Drag and drop an EPUB file here, or click to browse.'}
+                label={tTools('epubToPdf.uploadLabel')}
+                description={tTools('epubToPdf.uploadDescription')}
             />
 
             {error && (
@@ -163,7 +164,7 @@ export function EPUBToPDFTool({ className = '' }: EPUBToPDFToolProps) {
             <div className="flex flex-wrap items-center justify-center gap-4">
                 <Button variant="primary" size="lg" onClick={handleConvert} disabled={!canConvert} loading={isProcessing} className="min-w-[200px] shadow-lg hover:shadow-primary/25 transition-all hover:-translate-y-0.5">
                     {!isProcessing && <RefreshCw className="w-5 h-5 mr-2" />}
-                    {isProcessing ? (t('status.processing') || 'Converting...') : (tTools('epubToPdf.convertButton') || 'Convert to PDF')}
+                    {isProcessing ? (t('status.processing')) : (tTools('epubToPdf.convertButton'))}
                 </Button>
 
                 {result && !Array.isArray(result) && (
@@ -176,9 +177,9 @@ export function EPUBToPDFTool({ className = '' }: EPUBToPDFToolProps) {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
                         <CheckCircle2 className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle') || 'Conversion Successful!'}</h3>
+                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle')}</h3>
                     <p className="text-green-800/80 max-w-md mx-auto">
-                        {tTools('epubToPdf.successMessage') || 'Your EPUB file has been converted to PDF.'}
+                        {tTools('epubToPdf.successMessage')}
                     </p>
                 </div>
             )}

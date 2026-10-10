@@ -15,6 +15,7 @@ export interface RepairPDFToolProps {
 }
 
 export function RepairPDFTool({ className = '' }: RepairPDFToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -52,14 +53,14 @@ export function RepairPDFTool({ className = '' }: RepairPDFToolProps) {
                 setResult(output.result as Blob);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || 'Failed to repair PDF.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToRepairPdf'));
                 setStatus('error');
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred2'));
             setStatus('error');
         }
-    }, [files]);
+    }, [tUi, files]);
 
     const handleRemoveFile = useCallback((index: number) => {
         setFiles(prev => prev.filter((_, i) => i !== index));
@@ -84,8 +85,8 @@ export function RepairPDFTool({ className = '' }: RepairPDFToolProps) {
                     onFilesSelected={handleFilesSelected}
                     onError={setError}
                     disabled={isProcessing}
-                    label={tTools('repairPdf.uploadLabel') || 'Upload PDF Files'}
-                    description={tTools('repairPdf.uploadDescription') || 'Drag and drop PDF files to repair.'}
+                    label={tTools('repairPdf.uploadLabel')}
+                    description={tTools('repairPdf.uploadDescription')}
                 />
             )}
 
@@ -99,9 +100,9 @@ export function RepairPDFTool({ className = '' }: RepairPDFToolProps) {
                 <>
                     <Card variant="outlined">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="font-medium">{tTools('repairPdf.filesTitle') || 'Files to Repair'} ({files.length})</h3>
+                            <h3 className="font-medium">{tTools('repairPdf.filesTitle')} ({files.length})</h3>
                             <Button variant="ghost" size="sm" onClick={handleClear} disabled={isProcessing}>
-                                {t('buttons.clearAll') || 'Clear All'}
+                                {t('buttons.clearAll')}
                             </Button>
                         </div>
                         <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -130,8 +131,8 @@ export function RepairPDFTool({ className = '' }: RepairPDFToolProps) {
                             loading={isProcessing}
                         >
                             {isProcessing
-                                ? (t('status.processing') || 'Processing...')
-                                : (tTools('repairPdf.repairButton') || 'Repair PDFs')
+                                ? (t('status.processing'))
+                                : (tTools('repairPdf.repairButton'))
                             }
                         </Button>
                     </div>
@@ -151,7 +152,7 @@ export function RepairPDFTool({ className = '' }: RepairPDFToolProps) {
                 <div className="p-4 rounded-[var(--radius-md)] bg-green-50 border border-green-200">
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="text-green-700 font-medium">
-                            {tTools('repairPdf.successMessage') || 'PDF repaired successfully!'}
+                            {tTools('repairPdf.successMessage')}
                         </div>
                         <DownloadButton
                             file={result}

@@ -170,6 +170,7 @@ const formTemplates: FormTemplate[] = [
 ];
 
 export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -880,14 +881,14 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to create form.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToCreateForm'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
       setStatus('error');
     }
-  }, [file, fields, flattenForm]);
+  }, [tUi, file, fields, flattenForm]);
 
   const formatSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
@@ -961,14 +962,14 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
             onFilesSelected={handleFilesSelected}
             onError={setError}
             disabled={isProcessing}
-            label={tTools('formCreator.uploadLabel') || 'Upload PDF File'}
-            description={tTools('formCreator.uploadDescription') || 'Drag and drop a PDF file here.'}
+            label={tTools('formCreator.uploadLabel')}
+            description={tTools('formCreator.uploadDescription')}
           />
 
           {/* Or create blank PDF */}
           <div className="flex items-center gap-4">
             <div className="flex-1 h-px bg-gray-200" />
-            <span className="text-sm text-gray-400">{tTools('formCreator.orCreateBlank') || 'Or'}</span>
+            <span className="text-sm text-gray-400">{tTools('formCreator.orCreateBlank')}</span>
             <div className="flex-1 h-px bg-gray-200" />
           </div>
 
@@ -977,7 +978,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
             className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-colors"
           >
             <FilePlus2 className="w-5 h-5 text-blue-500" />
-            <span className="text-sm font-medium text-gray-600">{tTools('formCreator.createBlankPdf') || 'Create Blank PDF'}</span>
+            <span className="text-sm font-medium text-gray-600">{tTools('formCreator.createBlankPdf')}</span>
           </button>
 
           {/* Templates */}
@@ -995,7 +996,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
           </div>
 
           <p className="text-xs text-gray-400 text-center">
-            {tTools('formCreator.templateHint') || 'Or choose a template to get started quickly'}
+            {tTools('formCreator.templateHint')}
           </p>
         </div>
       )}
@@ -1014,20 +1015,20 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
             <div className="flex flex-wrap items-center gap-3 p-2 bg-white border border-gray-200 rounded-lg shadow-sm">
               {/* Tool Selector */}
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-gray-500">{tTools('formCreator.addField') || 'Add'}:</span>
+                <span className="text-xs font-medium text-gray-500">{tTools('formCreator.addField')}:</span>
                 <select
                   value={currentTool}
                   onChange={(e) => setCurrentTool(e.target.value as FieldType | 'select')}
                   className="px-2 py-1.5 text-sm border rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="select">↖ {tTools('formCreator.selectTool')}</option>
-                  <optgroup label={tTools('formCreator.basicTools') || 'Basic'}>
+                  <optgroup label={tTools('formCreator.basicTools')}>
                     <option value="text">📝 {tTools('formCreator.textFieldTool')}</option>
                     <option value="checkbox">☑ {tTools('formCreator.checkboxTool')}</option>
                     <option value="dropdown">▼ {tTools('formCreator.dropdownTool')}</option>
                     <option value="radio">◉ {tTools('formCreator.radioTool')}</option>
                   </optgroup>
-                  <optgroup label={tTools('formCreator.advancedTools') || 'Advanced'}>
+                  <optgroup label={tTools('formCreator.advancedTools')}>
                     <option value="button">🔘 {tTools('formCreator.buttonTool')}</option>
                     <option value="signature">✍ {tTools('formCreator.signatureTool')}</option>
                     <option value="date">📅 {tTools('formCreator.dateTool')}</option>
@@ -1038,7 +1039,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
 
               {/* Template Selector */}
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-gray-500">{tTools('formCreator.templates') || 'Template'}:</span>
+                <span className="text-xs font-medium text-gray-500">{tTools('formCreator.templates')}:</span>
                 <select
                   value=""
                   onChange={(e) => {
@@ -1059,7 +1060,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                   }}
                   className="px-2 py-1.5 text-sm border rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option value="">{tTools('formCreator.selectTemplate') || 'Select...'}</option>
+                  <option value="">{tTools('formCreator.selectTemplate')}</option>
                   {formTemplates.map(template => (
                     <option key={template.id} value={template.id}>
                       {template.icon} {tTools(`formCreator.template.${template.id}`) || template.name}
@@ -1076,7 +1077,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                   onClick={handleUndo}
                   disabled={historyIndex <= 0}
                   className={`p-1.5 rounded transition-colors ${historyIndex > 0 ? 'hover:bg-gray-100 text-gray-600' : 'text-gray-300 cursor-not-allowed'}`}
-                  title={tTools('formCreator.undo') || 'Undo'}
+                  title={tTools('formCreator.undo')}
                 >
                   <Undo2 className="w-4 h-4" />
                 </button>
@@ -1084,7 +1085,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                   onClick={handleRedo}
                   disabled={historyIndex >= history.length - 1}
                   className={`p-1.5 rounded transition-colors ${historyIndex < history.length - 1 ? 'hover:bg-gray-100 text-gray-600' : 'text-gray-300 cursor-not-allowed'}`}
-                  title={tTools('formCreator.redo') || 'Redo'}
+                  title={tTools('formCreator.redo')}
                 >
                   <Redo2 className="w-4 h-4" />
                 </button>
@@ -1093,14 +1094,14 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                     <button
                       onClick={handleDuplicateField}
                       className="p-1.5 rounded hover:bg-gray-100 text-gray-600 transition-colors"
-                      title={tTools('formCreator.duplicate') || 'Duplicate'}
+                      title={tTools('formCreator.duplicate')}
                     >
                       <Copy className="w-4 h-4" />
                     </button>
                     <button
                       onClick={handleDeleteField}
                       className="p-1.5 rounded hover:bg-red-50 text-red-500 transition-colors"
-                      title={tTools('formCreator.deleteTool') || 'Delete'}
+                      title={tTools('formCreator.deleteTool')}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -1148,7 +1149,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                 >
                   <button
                     className={`p-1.5 rounded transition-colors ${isAddingPage ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100 text-gray-600'}`}
-                    title={tTools('formCreator.addBlankPage') || 'Add Blank Page'}
+                    title={tTools('formCreator.addBlankPage')}
                     disabled={isAddingPage}
                   >
                     <FilePlus2 className="w-4 h-4" />
@@ -1159,21 +1160,21 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                       disabled={isAddingPage}
                       className="w-full px-3 py-1.5 text-left text-sm hover:bg-gray-50 disabled:opacity-50"
                     >
-                      {tTools('formCreator.addPageBefore') || 'Before current'}
+                      {tTools('formCreator.addPageBefore')}
                     </button>
                     <button
                       onClick={() => { addBlankPage('after'); setShowAddPageMenu(false); }}
                       disabled={isAddingPage}
                       className="w-full px-3 py-1.5 text-left text-sm hover:bg-gray-50 disabled:opacity-50"
                     >
-                      {tTools('formCreator.addPageAfter') || 'After current'}
+                      {tTools('formCreator.addPageAfter')}
                     </button>
                     <button
                       onClick={() => { addBlankPage('end'); setShowAddPageMenu(false); }}
                       disabled={isAddingPage}
                       className="w-full px-3 py-1.5 text-left text-sm hover:bg-gray-50 disabled:opacity-50"
                     >
-                      {tTools('formCreator.addPageEnd') || 'At end'}
+                      {tTools('formCreator.addPageEnd')}
                     </button>
                   </div>
                 </div>
@@ -1238,7 +1239,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
               <p className="text-xs text-gray-400 text-center mt-2">
                 {currentTool === 'select'
                   ? tTools('formCreator.selectHint')
-                  : tTools('formCreator.clickToAdd') || 'Click on PDF to add field'
+                  : tTools('formCreator.clickToAdd')
                 }
               </p>
             </Card>
@@ -1250,7 +1251,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
             <div className="flex items-center justify-between px-3 py-2 border-b border-gray-100 bg-gray-50">
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-sm truncate">{file.name}</p>
-                <p className="text-xs text-gray-500">{formatSize(file.size)} • {totalPages} {tTools('formCreator.pages') || 'pages'}</p>
+                <p className="text-xs text-gray-500">{formatSize(file.size)} • {totalPages} {tTools('formCreator.pages')}</p>
               </div>
               <Button variant="ghost" size="sm" onClick={handleClearFile} disabled={isProcessing} className="shrink-0 ml-2">
                 ✕
@@ -1266,7 +1267,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                   }`}
               >
-                {tTools('formCreator.properties') || 'Properties'}
+                {tTools('formCreator.properties')}
               </button>
               <button
                 onClick={() => setActiveTab('fields')}
@@ -1275,7 +1276,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                   }`}
               >
-                {tTools('formCreator.fieldsTab') || 'Fields'} ({fields.length})
+                {tTools('formCreator.fieldsTab')} ({fields.length})
               </button>
               <button
                 onClick={() => setActiveTab('options')}
@@ -1284,7 +1285,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                   }`}
               >
-                {tTools('formCreator.optionsTab') || 'Options'}
+                {tTools('formCreator.optionsTab')}
               </button>
             </div>
 
@@ -1324,12 +1325,12 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
 
                       {/* Label */}
                       <div>
-                        <label className="block text-sm font-medium mb-1">{tTools('formCreator.fieldLabel') || 'Label'}</label>
+                        <label className="block text-sm font-medium mb-1">{tTools('formCreator.fieldLabel')}</label>
                         <input
                           type="text"
                           value={selectedField.label || ''}
                           onChange={(e) => updateSelectedField({ label: e.target.value })}
-                          placeholder={tTools('formCreator.fieldLabelPlaceholder') || 'Enter label text...'}
+                          placeholder={tTools('formCreator.fieldLabelPlaceholder')}
                           className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                         />
                       </div>
@@ -1337,7 +1338,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                       {/* Label Position */}
                       {selectedField.label && (
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-gray-500">{tTools('formCreator.labelPosition') || 'Position'}:</span>
+                          <span className="text-sm text-gray-500">{tTools('formCreator.labelPosition')}:</span>
                           <label className="flex items-center gap-1 text-sm">
                             <input
                               type="radio"
@@ -1346,7 +1347,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                               onChange={() => updateSelectedField({ labelPosition: 'above' })}
                               className="w-3 h-3"
                             />
-                            {tTools('formCreator.labelAbove') || 'Above'}
+                            {tTools('formCreator.labelAbove')}
                           </label>
                           <label className="flex items-center gap-1 text-sm">
                             <input
@@ -1356,7 +1357,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                               onChange={() => updateSelectedField({ labelPosition: 'left' })}
                               className="w-3 h-3"
                             />
-                            {tTools('formCreator.labelLeft') || 'Left'}
+                            {tTools('formCreator.labelLeft')}
                           </label>
                         </div>
                       )}
@@ -1391,12 +1392,12 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                       {/* Default value for text fields */}
                       {selectedField.type === 'text' && (
                         <div>
-                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.defaultValue') || 'Default Value'}</label>
+                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.defaultValue')}</label>
                           <input
                             type="text"
                             value={String(selectedField.defaultValue || '')}
                             onChange={(e) => updateSelectedField({ defaultValue: e.target.value })}
-                            placeholder={tTools('formCreator.defaultValuePlaceholder') || 'Enter default text...'}
+                            placeholder={tTools('formCreator.defaultValuePlaceholder')}
                             className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                           />
                         </div>
@@ -1411,7 +1412,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                             onChange={(e) => updateSelectedField({ defaultValue: e.target.checked })}
                             className="w-4 h-4"
                           />
-                          <span className="text-sm">{tTools('formCreator.defaultChecked') || 'Checked by default'}</span>
+                          <span className="text-sm">{tTools('formCreator.defaultChecked')}</span>
                         </label>
                       )}
 
@@ -1430,13 +1431,13 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                       {/* Default selection for dropdown/radio/listbox */}
                       {(selectedField.type === 'dropdown' || selectedField.type === 'radio' || selectedField.type === 'listbox') && selectedField.options && selectedField.options.length > 0 && (
                         <div>
-                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.defaultSelection') || 'Default Selection'}</label>
+                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.defaultSelection')}</label>
                           <select
                             value={String(selectedField.defaultValue || '')}
                             onChange={(e) => updateSelectedField({ defaultValue: e.target.value })}
                             className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                           >
-                            <option value="">{tTools('formCreator.noDefault') || '-- None --'}</option>
+                            <option value="">{tTools('formCreator.noDefault')}</option>
                             {selectedField.options.map((opt, idx) => (
                               <option key={idx} value={opt}>{opt}</option>
                             ))}
@@ -1453,19 +1454,19 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                             onChange={(e) => updateSelectedField({ multiSelect: e.target.checked })}
                             className="w-4 h-4"
                           />
-                          <span className="text-sm">{tTools('formCreator.multiSelect') || 'Allow multiple selection'}</span>
+                          <span className="text-sm">{tTools('formCreator.multiSelect')}</span>
                         </label>
                       )}
 
                       {/* Button label */}
                       {selectedField.type === 'button' && (
                         <div>
-                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.buttonLabel') || 'Button Label'}</label>
+                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.buttonLabel')}</label>
                           <input
                             type="text"
                             value={selectedField.buttonLabel || ''}
                             onChange={(e) => updateSelectedField({ buttonLabel: e.target.value })}
-                            placeholder={tTools('formCreator.buttonLabelPlaceholder') || 'Submit'}
+                            placeholder={tTools('formCreator.buttonLabelPlaceholder')}
                             className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                           />
                         </div>
@@ -1474,12 +1475,12 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                       {/* Signature label */}
                       {selectedField.type === 'signature' && (
                         <div>
-                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.signatureLabel') || 'Signature Label'}</label>
+                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.signatureLabel')}</label>
                           <input
                             type="text"
                             value={selectedField.signatureLabel || ''}
                             onChange={(e) => updateSelectedField({ signatureLabel: e.target.value })}
-                            placeholder={tTools('formCreator.signatureLabelPlaceholder') || 'Sign here'}
+                            placeholder={tTools('formCreator.signatureLabelPlaceholder')}
                             className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                           />
                         </div>
@@ -1488,7 +1489,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                       {/* Date format */}
                       {selectedField.type === 'date' && (
                         <div>
-                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.dateFormat') || 'Date Format'}</label>
+                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.dateFormat')}</label>
                           <select
                             value={selectedField.dateFormat || 'YYYY-MM-DD'}
                             onChange={(e) => updateSelectedField({ dateFormat: e.target.value })}
@@ -1505,7 +1506,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                       {/* Date default value */}
                       {selectedField.type === 'date' && (
                         <div>
-                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.defaultDate') || 'Default Date'}</label>
+                          <label className="block text-sm font-medium mb-1">{tTools('formCreator.defaultDate')}</label>
                           <input
                             type="date"
                             value={String(selectedField.defaultValue || '')}
@@ -1523,7 +1524,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                           onChange={(e) => updateSelectedField({ required: e.target.checked })}
                           className="w-4 h-4"
                         />
-                        <span className="text-sm">{tTools('formCreator.required') || 'Required field'}</span>
+                        <span className="text-sm">{tTools('formCreator.required')}</span>
                       </label>
 
                       <button
@@ -1588,7 +1589,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                       className="w-4 h-4 mt-0.5 rounded border-gray-300"
                     />
                     <div>
-                      <span className="text-sm font-medium">{tTools('formCreator.flattenForm') || 'Flatten Form'}</span>
+                      <span className="text-sm font-medium">{tTools('formCreator.flattenForm')}</span>
                       <p className="text-xs text-gray-500">{tTools('formCreator.flattenFormHint')}</p>
                     </div>
                   </label>
@@ -1601,7 +1602,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                       className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded disabled:opacity-50"
                     >
                       <Save className="w-4 h-4" />
-                      {tTools('formCreator.saveProject') || 'Save Project'}
+                      {tTools('formCreator.saveProject')}
                     </button>
                   </div>
 
@@ -1616,7 +1617,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                         >
                           <div className="flex-1 min-w-0 mr-2">
                             <p className="font-medium truncate">{project.name}</p>
-                            <p className="text-gray-400 truncate">{project.fields.length} fields</p>
+                            <p className="text-gray-400 truncate">{project.fields.length} {tUi('interfaceText.fields')}</p>
                           </div>
                           <div className="flex gap-1">
                             <button
@@ -1649,7 +1650,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                 disabled={isProcessing || fields.length === 0}
                 className="w-full"
               >
-                {isProcessing ? (tTools('formCreator.processingButton') || 'Processing...') : tTools('formCreator.createButton')}
+                {isProcessing ? (tTools('formCreator.processingButton')) : tTools('formCreator.createButton')}
               </Button>
             </div>
           </div>
@@ -1671,7 +1672,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
       {status === 'complete' && result && (
         <div className="flex items-center gap-4 p-4 rounded-lg bg-green-50 border border-green-200">
           <p className="text-sm font-medium text-green-700">
-            {tTools('formCreator.successMessage') || 'Form created successfully!'}
+            {tTools('formCreator.successMessage')}
           </p>
           <DownloadButton
             file={result}
@@ -1687,15 +1688,15 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
       {showSaveDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <Card variant="outlined" size="lg" className="w-full max-w-md mx-4 bg-white shadow-xl">
-            <h3 className="text-lg font-medium mb-4">{tTools('formCreator.saveProjectTitle') || 'Save Project'}</h3>
+            <h3 className="text-lg font-medium mb-4">{tTools('formCreator.saveProjectTitle')}</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">{tTools('formCreator.projectName') || 'Project Name'}</label>
+                <label className="block text-sm font-medium mb-1">{tTools('formCreator.projectName')}</label>
                 <input
                   type="text"
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
-                  placeholder={tTools('formCreator.projectNamePlaceholder') || 'Enter project name...'}
+                  placeholder={tTools('formCreator.projectNamePlaceholder')}
                   className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   autoFocus
                 />
@@ -1712,7 +1713,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                     setProjectName('');
                   }}
                 >
-                  {tTools('formCreator.cancelButton') || 'Cancel'}
+                  {tTools('formCreator.cancelButton')}
                 </Button>
                 <Button
                   variant="primary"
@@ -1721,7 +1722,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                   disabled={fields.length === 0}
                 >
                   <Save className="w-4 h-4 mr-2" />
-                  {tTools('formCreator.saveButton') || 'Save'}
+                  {tTools('formCreator.saveButton')}
                 </Button>
               </div>
             </div>
@@ -1735,20 +1736,20 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
           <Card variant="outlined" size="lg" className="w-full max-w-md mx-4 bg-white shadow-xl">
             <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
               <FilePlus2 className="w-5 h-5 text-blue-500" />
-              {tTools('formCreator.createBlankPdfTitle') || 'Create Blank PDF'}
+              {tTools('formCreator.createBlankPdfTitle')}
             </h3>
             <div className="space-y-4">
               {/* Page Size */}
               <div>
-                <label className="block text-sm font-medium mb-1">{tTools('formCreator.pageSize') || 'Page Size'}</label>
+                <label className="block text-sm font-medium mb-1">{tTools('formCreator.pageSize')}</label>
                 <select
                   value={blankPdfPageSize}
                   onChange={(e) => setBlankPdfPageSize(e.target.value as 'A4' | 'Letter' | 'Legal' | 'A3' | 'A5')}
                   className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                 >
                   <option value="A4">A4 (210 × 297 mm)</option>
-                  <option value="Letter">Letter (8.5 × 11 in)</option>
-                  <option value="Legal">Legal (8.5 × 14 in)</option>
+                  <option value="Letter">{tUi('interfaceText.letter8511In')}</option>
+                  <option value="Legal">{tUi('interfaceText.legal8514In')}</option>
                   <option value="A3">A3 (297 × 420 mm)</option>
                   <option value="A5">A5 (148 × 210 mm)</option>
                 </select>
@@ -1756,7 +1757,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
 
               {/* Page Count */}
               <div>
-                <label className="block text-sm font-medium mb-1">{tTools('formCreator.pageCount') || 'Number of Pages'}</label>
+                <label className="block text-sm font-medium mb-1">{tTools('formCreator.pageCount')}</label>
                 <input
                   type="number"
                   min="1"
@@ -1768,7 +1769,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
               </div>
 
               <div className="text-xs text-gray-500">
-                <p>{tTools('formCreator.blankPdfNote') || 'A blank PDF will be created for you to add form fields.'}</p>
+                <p>{tTools('formCreator.blankPdfNote')}</p>
               </div>
 
               <div className="flex justify-end gap-2">
@@ -1781,7 +1782,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                     setBlankPdfPageCount(1);
                   }}
                 >
-                  {tTools('formCreator.cancelButton') || 'Cancel'}
+                  {tTools('formCreator.cancelButton')}
                 </Button>
                 <Button
                   variant="primary"
@@ -1789,7 +1790,7 @@ export function FormCreatorTool({ className = '' }: FormCreatorToolProps) {
                   onClick={createBlankPdf}
                 >
                   <FilePlus2 className="w-4 h-4 mr-2" />
-                  {tTools('formCreator.createButton') || 'Create'}
+                  {tTools('formCreator.createButton')}
                 </Button>
               </div>
             </div>

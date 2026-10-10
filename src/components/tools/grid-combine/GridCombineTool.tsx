@@ -37,6 +37,7 @@ export interface GridCombineToolProps {
  * Provides the UI for combining multiple PDFs into a grid layout.
  */
 export function GridCombineTool({ className = '' }: GridCombineToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -238,7 +239,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
      */
     const handleCombine = useCallback(async () => {
         if (files.length < 2) {
-            setError(tTools('gridCombine.minFilesError') || 'Please add at least 2 PDF files to combine.');
+            setError(tTools('gridCombine.minFilesError'));
             return;
         }
 
@@ -282,7 +283,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                 setResult(output.result as Blob);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || 'Failed to combine PDF files.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToCombinePdfFiles'));
                 setErrorDetails(output.error?.details || null);
                 setStatus('error');
             }
@@ -295,7 +296,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                 setStatus('error');
             }
         }
-    }, [files, gridLayout, pageSize, orientation, useMargins, addBorder, borderColor, spacing, fillMode, pageMode, tTools]);
+    }, [tUi, files, gridLayout, pageSize, orientation, useMargins, addBorder, borderColor, spacing, fillMode, pageMode, tTools]);
 
     /**
      * Handle cancel operation
@@ -338,8 +339,8 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('gridCombine.uploadLabel') || 'Upload PDF Files'}
-                description={tTools('gridCombine.uploadDescription') || 'Drag and drop multiple PDF files here.'}
+                label={tTools('gridCombine.uploadLabel')}
+                description={tTools('gridCombine.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -349,7 +350,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                     {errorDetails && (
                         <details className="mt-2">
                             <summary className="text-xs cursor-pointer hover:underline text-red-500">
-                                {tTools('gridCombine.showErrorDetails') || 'Show error details'}
+                                {tUi('interfaceText.showErrorDetails')}
                             </summary>
                             <pre className="mt-2 p-2 text-xs bg-red-100 rounded overflow-x-auto whitespace-pre-wrap break-all max-h-40 overflow-y-auto">{errorDetails}</pre>
                         </details>
@@ -381,15 +382,15 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                         <Card variant="outlined" size="lg">
                             <div className="flex items-center justify-between mb-4">
                                 <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                                    {tTools('gridCombine.filesTitle') || 'Files to Combine'} ({files.length})
+                                    {tTools('gridCombine.filesTitle')} ({files.length})
                                 </h3>
                                 <Button variant="ghost" size="sm" onClick={handleClearAll} disabled={isProcessing}>
-                                    {t('buttons.clearAll') || 'Clear All'}
+                                    {t('buttons.clearAll')}
                                 </Button>
                             </div>
 
                             <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-4">
-                                {tTools('gridCombine.reorderHint') || 'Drag and drop to reorder files.'}
+                                {tTools('gridCombine.reorderHint')}
                             </p>
 
                             <ul className="space-y-2 max-h-[500px] overflow-y-auto pr-2" role="list">
@@ -445,7 +446,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                             </p>
                                             <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
                                                 {formatSize(file.file.size)}
-                                                {file.pageCount && ` • ${file.pageCount} ${file.pageCount === 1 ? (tTools('gridCombine.page') || 'page') : (tTools('gridCombine.pages') || 'pages')}`}
+                                                {file.pageCount && ` • ${file.pageCount} ${file.pageCount === 1 ? (tTools('gridCombine.page')) : (tTools('gridCombine.pages'))}`}
                                             </p>
                                         </div>
 
@@ -496,14 +497,14 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                     {files.length > 0 && (
                         <Card variant="outlined" className="sticky top-4">
                             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                                {tTools('gridCombine.optionsTitle') || 'Layout Options'}
+                                {tTools('gridCombine.optionsTitle')}
                             </h3>
 
                             <div className="space-y-4">
                                 {/* Grid Layout */}
                                 <div>
                                     <label htmlFor="gridLayout" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                                        {tTools('gridCombine.gridLayout') || 'Grid Layout'}
+                                        {tTools('gridCombine.gridLayout')}
                                     </label>
                                     <select
                                         id="gridLayout"
@@ -512,19 +513,19 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                         disabled={isProcessing}
                                         className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                                     >
-                                        <option value="1x2">1×2 (2 {tTools('gridCombine.cells') || 'cells'})</option>
-                                        <option value="2x1">2×1 (2 {tTools('gridCombine.cells') || 'cells'})</option>
-                                        <option value="2x2">2×2 (4 {tTools('gridCombine.cells') || 'cells'})</option>
-                                        <option value="2x3">2×3 (6 {tTools('gridCombine.cells') || 'cells'})</option>
-                                        <option value="3x2">3×2 (6 {tTools('gridCombine.cells') || 'cells'})</option>
-                                        <option value="3x3">3×3 (9 {tTools('gridCombine.cells') || 'cells'})</option>
-                                        <option value="4x4">4×4 (16 {tTools('gridCombine.cells') || 'cells'})</option>
+                                        <option value="1x2">1×2 (2 {tTools('gridCombine.cells')})</option>
+                                        <option value="2x1">2×1 (2 {tTools('gridCombine.cells')})</option>
+                                        <option value="2x2">2×2 (4 {tTools('gridCombine.cells')})</option>
+                                        <option value="2x3">2×3 (6 {tTools('gridCombine.cells')})</option>
+                                        <option value="3x2">3×2 (6 {tTools('gridCombine.cells')})</option>
+                                        <option value="3x3">3×3 (9 {tTools('gridCombine.cells')})</option>
+                                        <option value="4x4">4×4 (16 {tTools('gridCombine.cells')})</option>
                                     </select>
 
                                     {/* 布局可视化预览 - 带缩略图 */}
                                     <div className="mt-3 p-3 bg-[hsl(var(--color-muted)/0.3)] rounded-[var(--radius-md)]">
                                         <p className="text-xs text-[hsl(var(--color-muted-foreground))] mb-2">
-                                            {tTools('gridCombine.layoutPreview') || 'Layout Preview'}:
+                                            {tTools('gridCombine.layoutPreview')}:
                                         </p>
                                         <div
                                             className="grid mx-auto border border-[hsl(var(--color-border))] rounded bg-white transition-all duration-300 ease-in-out"
@@ -577,7 +578,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                             })}
                                         </div>
                                         <p className="text-xs text-center text-[hsl(var(--color-muted-foreground))] mt-2">
-                                            {cols} {tTools('gridCombine.columns') || 'columns'} × {rows} {tTools('gridCombine.rows') || 'rows'}
+                                            {cols} {tTools('gridCombine.columns')} × {rows} {tTools('gridCombine.rows')}
                                         </p>
                                     </div>
                                 </div>
@@ -585,7 +586,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                 {/* Page Mode */}
                                 <div>
                                     <label htmlFor="pageMode" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                                        {tTools('gridCombine.pageMode') || 'Page Mode'}
+                                        {tTools('gridCombine.pageMode')}
                                     </label>
                                     <select
                                         id="pageMode"
@@ -594,13 +595,13 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                         disabled={isProcessing}
                                         className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                                     >
-                                        <option value="first-page-only">{tTools('gridCombine.firstPageOnly') || 'First page only'}</option>
-                                        <option value="all-pages">{tTools('gridCombine.allPages') || 'All pages'}</option>
+                                        <option value="first-page-only">{tTools('gridCombine.firstPageOnly')}</option>
+                                        <option value="all-pages">{tTools('gridCombine.allPages')}</option>
                                     </select>
                                     <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
                                         {pageMode === 'all-pages'
-                                            ? (tTools('gridCombine.allPagesHint') || 'Include all pages from each PDF in the grid.')
-                                            : (tTools('gridCombine.firstPageOnlyHint') || 'Only use the first page from each PDF.')
+                                            ? (tTools('gridCombine.allPagesHint'))
+                                            : (tTools('gridCombine.firstPageOnlyHint'))
                                         }
                                     </p>
                                 </div>
@@ -608,7 +609,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                 {/* Fill Mode */}
                                 <div>
                                     <label htmlFor="fillMode" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                                        {tTools('gridCombine.fillMode') || 'Fill Mode'}
+                                        {tTools('gridCombine.fillMode')}
                                     </label>
                                     <select
                                         id="fillMode"
@@ -617,19 +618,19 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                         disabled={isProcessing}
                                         className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                                     >
-                                        <option value="leave-empty">{tTools('gridCombine.leaveEmpty') || 'Leave empty cells'}</option>
-                                        <option value="repeat">{tTools('gridCombine.repeat') || 'Repeat from start'}</option>
-                                        <option value="stretch-last">{tTools('gridCombine.stretchLast') || 'Repeat last page'}</option>
+                                        <option value="leave-empty">{tTools('gridCombine.leaveEmpty')}</option>
+                                        <option value="repeat">{tTools('gridCombine.repeat')}</option>
+                                        <option value="stretch-last">{tTools('gridCombine.stretchLast')}</option>
                                     </select>
                                     <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                                        {tTools('gridCombine.fillModeHint') || 'How to fill empty cells when files are fewer than grid cells.'}
+                                        {tTools('gridCombine.fillModeHint')}
                                     </p>
                                 </div>
 
                                 {/* Page Size */}
                                 <div>
                                     <label htmlFor="pageSize" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                                        {tTools('gridCombine.pageSize') || 'Page Size'}
+                                        {tTools('gridCombine.pageSize')}
                                     </label>
                                     <select
                                         id="pageSize"
@@ -639,8 +640,8 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                         className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                                     >
                                         <option value="A4">A4</option>
-                                        <option value="Letter">Letter</option>
-                                        <option value="Legal">Legal</option>
+                                        <option value="Letter">{tUi('interfaceText.letter')}</option>
+                                        <option value="Legal">{tUi('interfaceText.legal')}</option>
                                         <option value="A3">A3</option>
                                     </select>
                                 </div>
@@ -648,7 +649,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                 {/* Orientation */}
                                 <div>
                                     <label htmlFor="orientation" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                                        {tTools('gridCombine.orientation') || 'Orientation'}
+                                        {tTools('gridCombine.orientation')}
                                     </label>
                                     <select
                                         id="orientation"
@@ -657,15 +658,15 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                         disabled={isProcessing}
                                         className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))]"
                                     >
-                                        <option value="landscape">{t('options.landscape') || 'Landscape'}</option>
-                                        <option value="portrait">{t('options.portrait') || 'Portrait'}</option>
+                                        <option value="landscape">{t('options.landscape')}</option>
+                                        <option value="portrait">{t('options.portrait')}</option>
                                     </select>
                                 </div>
 
                                 {/* Spacing */}
                                 <div>
                                     <label htmlFor="spacing" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                                        {tTools('gridCombine.spacing') || 'Spacing'} ({spacing}px)
+                                        {tTools('gridCombine.spacing')} ({spacing}px)
                                     </label>
                                     <input
                                         type="range"
@@ -692,7 +693,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                             className="w-4 h-4 rounded border-[hsl(var(--color-border))]"
                                         />
                                         <label htmlFor="useMargins" className="text-sm text-[hsl(var(--color-foreground))]">
-                                            {tTools('gridCombine.useMargins') || 'Add margins'}
+                                            {tTools('gridCombine.useMargins')}
                                         </label>
                                     </div>
 
@@ -706,14 +707,14 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                                             className="w-4 h-4 rounded border-[hsl(var(--color-border))]"
                                         />
                                         <label htmlFor="addBorder" className="text-sm text-[hsl(var(--color-foreground))]">
-                                            {tTools('gridCombine.addBorder') || 'Add borders'}
+                                            {tTools('gridCombine.addBorder')}
                                         </label>
                                     </div>
 
                                     {addBorder && (
                                         <div className="pl-6">
                                             <label htmlFor="borderColor" className="block text-xs text-[hsl(var(--color-muted-foreground))] mb-1">
-                                                {tTools('gridCombine.borderColor') || 'Border Color'}
+                                                {tTools('gridCombine.borderColor')}
                                             </label>
                                             <input
                                                 type="color"
@@ -754,8 +755,8 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
                         loading={isProcessing}
                     >
                         {isProcessing
-                            ? (t('status.processing') || 'Processing...')
-                            : (tTools('gridCombine.combineButton') || 'Combine PDFs')
+                            ? (t('status.processing'))
+                            : (tTools('gridCombine.combineButton'))
                         }
                     </Button>
 
@@ -775,7 +776,7 @@ export function GridCombineTool({ className = '' }: GridCombineToolProps) {
             {status === 'complete' && result && (
                 <div className="p-4 rounded-[var(--radius-md)] bg-green-50 border border-green-200 text-green-700" role="status">
                     <p className="text-sm font-medium">
-                        {tTools('gridCombine.successMessage') || 'PDFs combined successfully! Click the download button to save your file.'}
+                        {tTools('gridCombine.successMessage')}
                     </p>
                 </div>
             )}

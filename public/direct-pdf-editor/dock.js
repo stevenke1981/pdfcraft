@@ -1,25 +1,26 @@
+import { translateEditorText } from './i18n.js';
 const TEXT_SECTIONS = [
-    { id: 'font', title: 'Font', icon: 'ph-text-aa' },
-    { id: 'size', title: 'Font Size', icon: 'ph-text-t' },
-    { id: 'color', title: 'Text Color', icon: 'ph-palette' },
-    { id: 'align', title: 'Alignment', icon: 'ph-text-align-left' },
-    { id: 'spacing', title: 'Spacing', icon: 'ph-arrows-out-line-vertical' },
-    { id: 'lists', title: 'Lists', icon: 'ph-list-bullets' },
-    { id: 'more', title: 'More', icon: 'ph-dots-three' },
+    { id: 'font', title: translateEditorText("Font"), icon: 'ph-text-aa' },
+    { id: 'size', title: translateEditorText("Font Size"), icon: 'ph-text-t' },
+    { id: 'color', title: translateEditorText("Text Color"), icon: 'ph-palette' },
+    { id: 'align', title: translateEditorText("Alignment"), icon: 'ph-text-align-left' },
+    { id: 'spacing', title: translateEditorText("Spacing"), icon: 'ph-arrows-out-line-vertical' },
+    { id: 'lists', title: translateEditorText("Lists"), icon: 'ph-list-bullets' },
+    { id: 'more', title: translateEditorText("More"), icon: 'ph-dots-three' },
 ];
 const SCOPE_SECTION = {
     id: 'scope',
-    title: 'Edit Scope',
+    title: translateEditorText("Edit Scope"),
     icon: 'ph-pencil-simple',
 };
 const STROKE_SECTION = {
     id: 'stroke',
-    title: 'Path Stroke',
+    title: translateEditorText("Path Stroke"),
     icon: 'ph-path',
 };
 const MULTI_SECTION = {
     id: 'alignMulti',
-    title: 'Align Objects',
+    title: translateEditorText("Align Objects"),
     icon: 'ph-align-left',
 };
 const OBJ_BTN_IDS = [
@@ -35,15 +36,15 @@ const OBJ_BTN_IDS = [
     'dupe',
 ];
 const SLIDER_FIELDS = [
-    ['fLine', 'Line'],
-    ['fPara', 'Paragraph'],
-    ['fChar', 'Character'],
-    ['fWordSp', 'Word'],
+    ['fLine', translateEditorText("Line")],
+    ['fPara', translateEditorText("Paragraph")],
+    ['fChar', translateEditorText("Character")],
+    ['fWordSp', translateEditorText("Word")],
 ];
 const MORE_FIELDS = [
-    ['fHScale', 'H-Scale %'],
-    ['fFirstInd', 'First Indent'],
-    ['fHangInd', 'Hanging Indent'],
+    ['fHScale', translateEditorText("H-Scale %")],
+    ['fFirstInd', translateEditorText("First Indent")],
+    ['fHangInd', translateEditorText("Hanging Indent")],
 ];
 const q = (id) => document.getElementById(id);
 const ph = (name) => {
@@ -60,6 +61,7 @@ const mkBtn = (cls, label) => {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = cls;
+    label = translateEditorText(label);
     b.title = label;
     b.setAttribute('aria-label', label);
     b.addEventListener('mousedown', (e) => e.preventDefault());
@@ -83,7 +85,7 @@ function setupPagePill() {
     const app = q('text-editor-app');
     if (!save || !pageLabel || !app || !save.parentElement)
         return;
-    const pill = mkBtn('dpagepill', 'Go to page');
+    const pill = mkBtn('dpagepill', translateEditorText("Go to page"));
     pill.textContent = '– / –';
     save.parentElement.insertBefore(pill, save);
     const syncPill = () => {
@@ -118,10 +120,10 @@ function setupPagePill() {
         menu.style.right = '8px';
         menu.addEventListener('click', (e) => e.stopPropagation());
         const nav = div('dpagenav');
-        const prevB = mkBtn('dnavbtn', 'Previous page');
+        const prevB = mkBtn('dnavbtn', translateEditorText("Previous page"));
         prevB.appendChild(ph('ph-caret-left'));
         prevB.addEventListener('click', () => q('prev')?.click());
-        const nextB = mkBtn('dnavbtn', 'Next page');
+        const nextB = mkBtn('dnavbtn', translateEditorText("Next page"));
         nextB.appendChild(ph('ph-caret-right'));
         nextB.addEventListener('click', () => q('next')?.click());
         const inp = document.createElement('input');
@@ -155,15 +157,15 @@ function setupPagePill() {
             e.preventDefault();
             go();
         });
-        const goBtn = mkBtn('dnavbtn dgo', 'Go to page');
-        goBtn.textContent = 'Go';
+        const goBtn = mkBtn('dnavbtn dgo', translateEditorText("Go to page"));
+        goBtn.textContent = translateEditorText("Go");
         goBtn.addEventListener('click', go);
         nav.append(prevB, inp, goBtn, nextB);
         menu.appendChild(nav);
         menu.appendChild(document.createElement('hr'));
-        const props = mkBtn('ecmenu-item', 'Document properties');
+        const props = mkBtn('ecmenu-item', translateEditorText("Document properties"));
         const propLabel = document.createElement('span');
-        propLabel.textContent = 'Document properties';
+        propLabel.textContent = translateEditorText("Document properties");
         props.append(ph('ph-info'), propLabel);
         props.addEventListener('click', () => {
             closeMenu();
@@ -206,7 +208,7 @@ export function setupFormatDock() {
     const dticon = document.createElement('span');
     const dtext = document.createElement('span');
     dtitle.append(dticon, dtext);
-    const dclose = mkBtn('dclose', 'Close panel');
+    const dclose = mkBtn('dclose', translateEditorText("Close panel"));
     dclose.appendChild(ph('ph-x'));
     head.append(dtitle, dclose);
     const slotsWrap = div('dockslots');
@@ -216,7 +218,7 @@ export function setupFormatDock() {
     const rail = div('dockrail');
     const chipsWrap = div('dockchips');
     const acts = div('dockacts');
-    const delChip = mkBtn('dchip ddel', 'Delete');
+    const delChip = mkBtn('dchip ddel', translateEditorText("Delete"));
     delChip.appendChild(ph('ph-trash'));
     delChip.addEventListener('click', () => q('del')?.click());
     acts.appendChild(delChip);
@@ -296,7 +298,7 @@ export function setupFormatDock() {
     if (alignRow)
         alignSlot.appendChild(alignRow);
     const dirLab = div('dlab dsublab');
-    dirLab.textContent = 'Direction';
+    dirLab.textContent = translateEditorText("Direction");
     alignSlot.appendChild(dirLab);
     const dirRow = rowOf(q('fDir'));
     if (dirRow)
@@ -313,7 +315,7 @@ export function setupFormatDock() {
         listsSlot.appendChild(listsRow);
     const moreSlot = mkSlot('more');
     const outLab = div('dlab dsublab');
-    outLab.textContent = 'Outline';
+    outLab.textContent = translateEditorText("Outline");
     moreSlot.appendChild(outLab);
     const outlineRow = rowOf(q('fStrokeColor'));
     if (outlineRow)
@@ -332,10 +334,10 @@ export function setupFormatDock() {
     scopeSlot.appendChild(scopeWrap);
     let picked = new Set(['all']);
     const scopeDefs = [
-        ['all', 'All'],
-        ['text', 'Text'],
-        ['image', 'Images'],
-        ['shape', 'Shapes'],
+        ['all', translateEditorText("All")],
+        ['text', translateEditorText("Text")],
+        ['image', translateEditorText("Images")],
+        ['shape', translateEditorText("Shapes")],
     ];
     const renderScope = () => {
         scopeWrap.replaceChildren();
@@ -476,9 +478,9 @@ export function setupFormatDock() {
         }
         if ('queryLocalFonts' in window) {
             fontListEl.appendChild(div('ddivider'));
-            const sys = mkBtn('dfrow dfsys', 'Load system fonts');
+            const sys = mkBtn('dfrow dfsys', translateEditorText("Load system fonts"));
             const label = document.createElement('span');
-            label.textContent = 'Load system fonts…';
+            label.textContent = translateEditorText("Load system fonts…");
             sys.appendChild(label);
             sys.addEventListener('click', () => q('sysFonts')?.click());
             fontListEl.appendChild(sys);
@@ -566,7 +568,7 @@ export function setupFormatDock() {
         return b;
     };
     const proxyChip = (src) => {
-        const b = mkBtn('dchip', src.title || 'Action');
+        const b = mkBtn('dchip', src.title || translateEditorText("Action"));
         b.dataset.proxy = src.id;
         const icon = src.querySelector('i');
         b.appendChild(icon ? icon.cloneNode(true) : ph('ph-circle'));
@@ -583,7 +585,7 @@ export function setupFormatDock() {
     let lastMode = null;
     const togglesRow = q('fToggles');
     const toggleChip = (src) => {
-        const b = mkBtn('dchip', src.title || 'Toggle style');
+        const b = mkBtn('dchip', src.title || translateEditorText("Toggle style"));
         b.dataset.tog = src.dataset.t ?? '';
         const icon = src.querySelector('i');
         b.appendChild(icon ? icon.cloneNode(true) : ph('ph-circle'));

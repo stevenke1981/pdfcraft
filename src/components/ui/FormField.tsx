@@ -7,6 +7,7 @@
 
 'use client';
 
+import { useTranslations } from 'next-intl';
 import React, { forwardRef, useId } from 'react';
 
 export interface FormFieldProps {
@@ -45,6 +46,7 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
     },
     ref
   ) => {
+  const tUi = useTranslations();
     // Generate unique IDs for accessibility
     const generatedId = useId();
     const fieldId = name || generatedId;
@@ -81,7 +83,7 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
               *
             </span>
           )}
-          {required && <span className="sr-only"> (required)</span>}
+          {required && <span className="sr-only"> {tUi('interfaceText.required')}</span>}
         </label>
 
         {/* Input */}

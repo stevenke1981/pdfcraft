@@ -34,6 +34,7 @@ export interface AddAttachmentsToolProps {
  * Provides the UI for adding attachments to PDF files.
  */
 export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -145,16 +146,16 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to add attachments.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToAddAttachments'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [pdfFile, attachmentFiles, attachmentLevel, pageRange, tFeedback]);
+  }, [tUi, pdfFile, attachmentFiles, attachmentLevel, pageRange, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -182,7 +183,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
       {/* PDF File Upload */}
       <Card variant="outlined" size="lg">
         <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-          {tTools('addAttachments.pdfFileTitle') || '1. Select PDF File'}
+          {tTools('addAttachments.pdfFileTitle')}
         </h3>
         <FileUploader
           accept={['application/pdf', '.pdf']}
@@ -191,8 +192,8 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
           onFilesSelected={handlePdfSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('addAttachments.pdfUploadLabel') || 'Upload PDF File'}
-          description={tTools('addAttachments.pdfUploadDescription') || 'Select the PDF file to add attachments to.'}
+          label={tTools('addAttachments.pdfUploadLabel')}
+          description={tTools('addAttachments.pdfUploadDescription')}
         />
         {pdfFile && (
           <div className="mt-4 flex items-center gap-3 p-3 rounded-[var(--radius-md)] bg-[hsl(var(--color-muted)/0.3)]">
@@ -214,7 +215,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
               onClick={() => setPdfFile(null)}
               disabled={isProcessing}
               className="p-1 rounded hover:bg-red-100 text-[hsl(var(--color-muted-foreground))] hover:text-red-600"
-              aria-label="Remove PDF"
+              aria-label={tUi('interfaceText.removePdf')}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 6L6 18M6 6l12 12" />
@@ -227,7 +228,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
       {/* Attachment Files Upload */}
       <Card variant="outlined" size="lg">
         <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-          {tTools('addAttachments.attachmentsTitle') || '2. Select Files to Attach'}
+          {tTools('addAttachments.attachmentsTitle')}
         </h3>
         <FileUploader
           accept={['*/*']}
@@ -236,15 +237,15 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
           onFilesSelected={handleAttachmentsSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('addAttachments.attachmentsUploadLabel') || 'Upload Attachments'}
-          description={tTools('addAttachments.attachmentsUploadDescription') || 'Select files to embed in the PDF. Any file type is supported.'}
+          label={tTools('addAttachments.attachmentsUploadLabel')}
+          description={tTools('addAttachments.attachmentsUploadDescription')}
         />
         
         {attachmentFiles.length > 0 && (
           <div className="mt-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                {attachmentFiles.length} file(s) selected
+                {attachmentFiles.length} {tUi('interfaceText.fileSSelected')}
               </span>
               <Button
                 variant="ghost"
@@ -252,7 +253,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
                 onClick={() => setAttachmentFiles([])}
                 disabled={isProcessing}
               >
-                {t('buttons.clearAll') || 'Clear All'}
+                {t('buttons.clearAll')}
               </Button>
             </div>
             <ul className="space-y-2" role="list">
@@ -277,7 +278,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
                     onClick={() => handleRemoveAttachment(item.id)}
                     disabled={isProcessing}
                     className="p-1 rounded hover:bg-red-100 text-[hsl(var(--color-muted-foreground))] hover:text-red-600"
-                    aria-label={`Remove ${item.file.name}`}
+                    aria-label={tUi('dynamicUi.removeFileName', { filename: item.file.name })}
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M18 6L6 18M6 6l12 12" />
@@ -294,13 +295,13 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
       {pdfFile && attachmentFiles.length > 0 && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('addAttachments.optionsTitle') || 'Attachment Options'}
+            {tTools('addAttachments.optionsTitle')}
           </h3>
           
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('addAttachments.attachmentLevel') || 'Attachment Level'}
+                {tTools('addAttachments.attachmentLevel')}
               </label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -313,7 +314,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
                     disabled={isProcessing}
                     className="w-4 h-4"
                   />
-                  <span className="text-sm">{tTools('addAttachments.documentLevel') || 'Document Level'}</span>
+                  <span className="text-sm">{tTools('addAttachments.documentLevel')}</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -325,7 +326,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
                     disabled={isProcessing}
                     className="w-4 h-4"
                   />
-                  <span className="text-sm">{tTools('addAttachments.pageLevel') || 'Page Level'}</span>
+                  <span className="text-sm">{tTools('addAttachments.pageLevel')}</span>
                 </label>
               </div>
             </div>
@@ -333,18 +334,18 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
             {attachmentLevel === 'page' && (
               <div>
                 <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                  {tTools('addAttachments.pageRange') || 'Page Range'}
+                  {tTools('addAttachments.pageRange')}
                 </label>
                 <input
                   type="text"
                   value={pageRange}
                   onChange={(e) => setPageRange(e.target.value)}
-                  placeholder="e.g., 1-3, 5, 7-9"
+                  placeholder={tUi('tools.splitPdf.pageRangesPlaceholder')}
                   disabled={isProcessing}
                   className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-sm"
                 />
                 <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                  {tTools('addAttachments.pageRangeHint') || 'Specify which pages to attach files to.'}
+                  {tTools('addAttachments.pageRangeHint')}
                 </p>
               </div>
             )}
@@ -383,8 +384,8 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('addAttachments.addButton') || 'Add Attachments')
+            ? (t('status.processing'))
+            : (tTools('addAttachments.addButton'))
           }
         </Button>
 
@@ -404,7 +405,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
             size="lg"
             onClick={handleClearAll}
           >
-            {t('buttons.clearAll') || 'Clear All'}
+            {t('buttons.clearAll')}
           </Button>
         )}
       </div>
@@ -416,7 +417,7 @@ export function AddAttachmentsTool({ className = '' }: AddAttachmentsToolProps) 
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('addAttachments.successMessage') || 'Attachments added successfully! Click the download button to save your file.'}
+            {tTools('addAttachments.successMessage')}
           </p>
         </div>
       )}

@@ -16,6 +16,7 @@ export interface BatchWatermarkRemoverToolProps {
 }
 
 export function BatchWatermarkRemoverTool({ className = '' }: BatchWatermarkRemoverToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [watermarkText, setWatermarkText] = useState('Confidential');
@@ -52,7 +53,7 @@ export function BatchWatermarkRemoverTool({ className = '' }: BatchWatermarkRemo
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Erasing watermark signatures...');
+            setProgressMessage(message || tUi('interfaceFeedback.erasingWatermarkSignatures'));
           }
         }
       );
@@ -66,12 +67,12 @@ export function BatchWatermarkRemoverTool({ className = '' }: BatchWatermarkRemo
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to scrub watermark elements.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToScrubWatermarkElements'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error cleaning watermarks.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorCleaningWatermarks'));
         setStatus('error');
       }
     }
@@ -155,7 +156,7 @@ export function BatchWatermarkRemoverTool({ className = '' }: BatchWatermarkRemo
                       type="text"
                       value={watermarkText}
                       onChange={(e) => setWatermarkText(e.target.value)}
-                      placeholder="e.g. Confidential"
+                      placeholder={tUi('interfaceText.eGConfidential')}
                       className="w-full text-xs bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3"
                     />
                   </div>

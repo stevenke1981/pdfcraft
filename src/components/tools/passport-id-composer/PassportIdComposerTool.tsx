@@ -16,6 +16,7 @@ export interface PassportIdComposerToolProps {
 }
 
 export function PassportIdComposerTool({ className = '' }: PassportIdComposerToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [files, setFiles] = useState<File[]>([]);
   const [watermark, setWatermark] = useState<string>('FOR COPY ONLY');
@@ -54,7 +55,7 @@ export function PassportIdComposerTool({ className = '' }: PassportIdComposerToo
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Composing ID page...');
+            setProgressMessage(message || tUi('interfaceFeedback.composingIdPage'));
           }
         }
       );
@@ -68,12 +69,12 @@ export function PassportIdComposerTool({ className = '' }: PassportIdComposerToo
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to compose ID card layout.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToComposeIdCardLayout'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error composing ID.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorComposingId'));
         setStatus('error');
       }
     }
@@ -200,7 +201,7 @@ export function PassportIdComposerTool({ className = '' }: PassportIdComposerToo
                     onClick={handleCompose}
                     disabled={status === 'processing'}
                   >
-                    {status === 'processing' ? 'Processing...' : t('passportIdComposer.processButton')}
+                    {status === 'processing' ? tUi('common.status.processing') : t('passportIdComposer.processButton')}
                   </Button>
                 )}
               </div>

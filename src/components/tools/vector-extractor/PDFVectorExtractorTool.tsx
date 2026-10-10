@@ -27,6 +27,7 @@ export interface PDFVectorExtractorToolProps {
 }
 
 export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -107,7 +108,7 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Compiling path coordinates...');
+            setProgressMessage(message || tUi('interfaceFeedback.compilingPathCoordinates'));
           }
         }
       );
@@ -122,12 +123,12 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to extract vector details.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToExtractVectorDetails'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error extracting vector paths.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorExtractingVectorPaths'));
         setStatus('error');
       }
     }
@@ -281,7 +282,7 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
               </p>
               <div className="flex items-center gap-4 mt-0.5">
                 <span className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                  {totalPages > 0 ? t('comparePdfs.totalAligned', { count: totalPages }) : t('status.loading')} • {(file.size / (1024 * 1024)).toFixed(2)} MB
+                  {totalPages > 0 ? tUi('interfaceText.pagesAligned', { count: totalPages }) : t('status.loading')} • {(file.size / (1024 * 1024)).toFixed(2)} MB
                 </span>
                 
                 {/* Page Selector */}
@@ -294,7 +295,7 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
                     >
                       ◀
                     </button>
-                    <span className="text-[11px] font-bold">{t('comparePdfs.pageNumber', { page: targetPage })}</span>
+                    <span className="text-[11px] font-bold">{tUi('common.comparePdfs.pageIndex', { page: targetPage })}</span>
                     <button 
                       onClick={() => handlePageChange(targetPage + 1)}
                       disabled={targetPage >= totalPages}
@@ -324,10 +325,10 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
               <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
                 <span className="text-xs font-bold text-[hsl(var(--color-foreground))] flex items-center gap-1.5">
                   <Search className="w-4 h-4 text-zinc-400" />
-                  {tTools('vectorExtractor.previewHelp')}
+                  {tUi('common.vectorExtractor.magnifierTitle')}
                 </span>
                 <span className="text-[10px] text-zinc-400">
-                  {hoveredElementId ? `Hovered: ${hoveredElementId}` : 'Awaiting Selection'}
+                  {hoveredElementId ? `Hovered: ${hoveredElementId}` : tUi('interfaceText.awaitingSelection')}
                 </span>
               </div>
 
@@ -357,22 +358,22 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
                 <div className="border-b border-[hsl(var(--color-border))] pb-3">
                   <h3 className="text-base font-bold text-[hsl(var(--color-foreground))] flex items-center gap-2">
                     <Settings2 className="w-5 h-5 text-[hsl(var(--color-primary))]" />
-                    {tTools('vectorExtractor.propertiesTitle')}
+                    {tUi('common.vectorExtractor.propertiesTitle')}
                   </h3>
                 </div>
 
                 {!selectedElementHtml ? (
                   <div className="text-center p-6 text-[hsl(var(--color-muted-foreground))] space-y-2">
                     <Layers className="w-12 h-12 text-zinc-400 mx-auto opacity-50" />
-                    <h4 className="text-xs font-bold text-[hsl(var(--color-foreground))]">{tTools('vectorExtractor.emptyTitle')}</h4>
-                    <p className="text-[10px]">{tTools('vectorExtractor.emptyDescription')}</p>
+                    <h4 className="text-xs font-bold text-[hsl(var(--color-foreground))]">{tUi('common.vectorExtractor.emptyPropertiesTitle')}</h4>
+                    <p className="text-[10px]">{tUi('common.vectorExtractor.emptyPropertiesDesc')}</p>
                   </div>
                 ) : (
                   <div className="space-y-5 animate-in fade-in zoom-in-95 duration-200">
                     
                     {/* SVG Preview Box */}
                     <div className="border border-[hsl(var(--color-border))] rounded-2xl p-4 bg-white flex items-center justify-center aspect-video shadow-sm relative overflow-hidden">
-                      <div className="absolute top-2 left-2 text-[8px] font-bold text-zinc-400">Preview</div>
+                      <div className="absolute top-2 left-2 text-[8px] font-bold text-zinc-400">{tUi('workflow.preview')}</div>
                       <div 
                         className="w-20 h-20 flex items-center justify-center"
                         dangerouslySetInnerHTML={{ __html: `<svg viewBox="0 0 100 100" width="100%" height="100%">${selectedElementHtml}</svg>` }}
@@ -382,7 +383,7 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
                     {/* Recolor panel */}
                     <div className="space-y-2">
                       <label className="text-[11px] font-bold text-[hsl(var(--color-muted-foreground))] flex items-center gap-1.5">
-                        <Palette className="w-4 h-4" /> {tTools('vectorExtractor.colorFill')}
+                        <Palette className="w-4 h-4" /> {tUi('common.vectorExtractor.rgbColor')}
                       </label>
                       <div className="flex items-center gap-3">
                         <input
@@ -406,7 +407,7 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
                         onClick={handleCopyCode}
                       >
                         {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                        {copied ? tTools('vectorExtractor.copied') : tTools('vectorExtractor.copyCode')}
+                        {copied ? tUi('common.vectorExtractor.codeCopied') : tUi('common.vectorExtractor.copyCode')}
                       </Button>
 
                       {/* Download element */}
@@ -417,7 +418,7 @@ export function PDFVectorExtractorTool({ className = '' }: PDFVectorExtractorToo
                         onClick={handleDownloadSelected}
                       >
                         <Download className="w-4 h-4" />
-                        {tTools('vectorExtractor.downloadSelected')}
+                        {tUi('common.vectorExtractor.downloadSvg')}
                       </Button>
 
                     </div>

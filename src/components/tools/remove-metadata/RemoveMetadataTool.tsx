@@ -22,6 +22,7 @@ export interface RemoveMetadataToolProps {
  * Provides the UI for removing metadata from PDF files.
  */
 export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -142,16 +143,16 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
           setRemovedFields(output.metadata.removedFields as string[]);
         }
       } else {
-        setError(output.error?.message || 'Failed to remove metadata.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToRemoveMetadata'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, options, tFeedback]);
+  }, [tUi, file, options, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;
@@ -169,14 +170,14 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
   const canProcess = file && !isProcessing;
 
   const metadataFields = [
-    { key: 'removeTitle' as const, label: tTools('removeMetadata.title') || 'Title' },
-    { key: 'removeAuthor' as const, label: tTools('removeMetadata.author') || 'Author' },
-    { key: 'removeSubject' as const, label: tTools('removeMetadata.subject') || 'Subject' },
-    { key: 'removeKeywords' as const, label: tTools('removeMetadata.keywords') || 'Keywords' },
-    { key: 'removeCreator' as const, label: tTools('removeMetadata.creator') || 'Creator' },
-    { key: 'removeProducer' as const, label: tTools('removeMetadata.producer') || 'Producer' },
-    { key: 'removeCreationDate' as const, label: tTools('removeMetadata.creationDate') || 'Creation Date' },
-    { key: 'removeModificationDate' as const, label: tTools('removeMetadata.modificationDate') || 'Modification Date' },
+    { key: 'removeTitle' as const, label: tTools('removeMetadata.title') },
+    { key: 'removeAuthor' as const, label: tTools('removeMetadata.author') },
+    { key: 'removeSubject' as const, label: tTools('removeMetadata.subject') },
+    { key: 'removeKeywords' as const, label: tTools('removeMetadata.keywords') },
+    { key: 'removeCreator' as const, label: tTools('removeMetadata.creator') },
+    { key: 'removeProducer' as const, label: tTools('removeMetadata.producer') },
+    { key: 'removeCreationDate' as const, label: tTools('removeMetadata.creationDate') },
+    { key: 'removeModificationDate' as const, label: tTools('removeMetadata.modificationDate') },
   ];
 
   return (
@@ -189,8 +190,8 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('removeMetadata.uploadLabel') || 'Upload PDF File'}
-        description={tTools('removeMetadata.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+        label={tTools('removeMetadata.uploadLabel')}
+        description={tTools('removeMetadata.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -230,7 +231,7 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -241,14 +242,14 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
         <Card variant="outlined">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('removeMetadata.optionsTitle') || 'Select Metadata to Remove'}
+              {tTools('removeMetadata.optionsTitle')}
             </h3>
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={selectAll} disabled={isProcessing}>
-                {tTools('removeMetadata.selectAll') || 'Select All'}
+                {tTools('removeMetadata.selectAll')}
               </Button>
               <Button variant="ghost" size="sm" onClick={deselectAll} disabled={isProcessing}>
-                {tTools('removeMetadata.deselectAll') || 'Deselect All'}
+                {tTools('removeMetadata.deselectAll')}
               </Button>
             </div>
           </div>
@@ -257,7 +258,7 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
             {/* Info */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-blue-50 border border-blue-200">
               <p className="text-sm text-blue-700">
-                {tTools('removeMetadata.info') || 'Removing metadata helps protect your privacy by stripping identifying information from the PDF.'}
+                {tTools('removeMetadata.info')}
               </p>
             </div>
 
@@ -303,8 +304,8 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('removeMetadata.removeButton') || 'Remove Metadata')
+            ? (t('status.processing'))
+            : (tTools('removeMetadata.removeButton'))
           }
         </Button>
 
@@ -326,11 +327,11 @@ export function RemoveMetadataTool({ className = '' }: RemoveMetadataToolProps) 
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('removeMetadata.successMessage') || 'Metadata removed successfully!'}
+            {tTools('removeMetadata.successMessage')}
           </p>
           {removedFields.length > 0 && (
             <p className="text-xs mt-1 text-green-600">
-              {tTools('removeMetadata.removedFields') || 'Removed:'} {removedFields.join(', ')}
+              {tTools('removeMetadata.removedFields')} {removedFields.join(', ')}
             </p>
           )}
         </div>

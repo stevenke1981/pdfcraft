@@ -13,6 +13,7 @@ import type { ProcessOutput } from '@/types/pdf';
 export interface TextColorToolProps { className?: string; }
 
 export function TextColorTool({ className = '' }: TextColorToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('tools.textColor');
   const tCommon = useTranslations('common.buttons');
   
@@ -43,9 +44,9 @@ export function TextColorTool({ className = '' }: TextColorToolProps) {
         threshold,
       }, (prog) => { if (!cancelledRef.current) setProgress(prog); });
       if (output.success && output.result) { setResult(output.result as Blob); setStatus('complete'); }
-      else { setError(output.error?.message || 'Failed.'); setStatus('error'); }
-    } catch (err) { setError(err instanceof Error ? err.message : 'Error'); setStatus('error'); }
-  }, [file, color, mode, threshold]);
+      else { setError(output.error?.message || tUi('interfaceFeedback.failed')); setStatus('error'); }
+    } catch (err) { setError(err instanceof Error ? err.message : tUi('common.status.error')); setStatus('error'); }
+  }, [tUi, file, color, mode, threshold]);
 
   const isProcessing = status === 'processing';
 
@@ -104,7 +105,7 @@ export function TextColorTool({ className = '' }: TextColorToolProps) {
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2">{t('modeLabel') || 'Mode'}</label>
+                <label className="block text-sm font-medium mb-2">{t('modeLabel')}</label>
                 <div className="flex gap-4">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input 
@@ -115,7 +116,7 @@ export function TextColorTool({ className = '' }: TextColorToolProps) {
                       onChange={() => setMode('dark')} 
                       disabled={isProcessing}
                     />
-                    <span className="text-sm">{t('modeDark') || 'Dark text (light background)'}</span>
+                    <span className="text-sm">{t('modeDark')}</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input 
@@ -126,14 +127,14 @@ export function TextColorTool({ className = '' }: TextColorToolProps) {
                       onChange={() => setMode('light')} 
                       disabled={isProcessing}
                     />
-                    <span className="text-sm">{t('modeLight') || 'Light text (dark background)'}</span>
+                    <span className="text-sm">{t('modeLight')}</span>
                   </label>
                 </div>
               </div>
               
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  {t('thresholdLabel') || 'Threshold'}: {threshold}
+                  {t('thresholdLabel')}: {threshold}
                 </label>
                 <input 
                   type="range" 
@@ -145,7 +146,7 @@ export function TextColorTool({ className = '' }: TextColorToolProps) {
                   disabled={isProcessing}
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  {t('thresholdHint') || 'Adjust to control which pixels are affected'}
+                  {t('thresholdHint')}
                 </p>
               </div>
             </div>

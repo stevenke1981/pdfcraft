@@ -44,6 +44,7 @@ export function ToolSidebar({
     isCollapsed = false,
     onToggleCollapse,
 }: ToolSidebarProps) {
+  const tUi = useTranslations();
     const tWorkflow = useTranslations('workflow');
     const locale = useLocale() as Locale;
 
@@ -251,7 +252,7 @@ export function ToolSidebar({
                 icon: categoryIcons[cat],
                 tools: categoryMap[cat],
             }));
-    }, [locale]);
+    }, [locale, tWorkflow]);
 
     // Filter tools based on search query
     const filteredCategories = useMemo(() => {
@@ -430,7 +431,7 @@ export function ToolSidebar({
                 <button
                     onClick={onToggleCollapse}
                     className="p-2 rounded-lg hover:bg-[hsl(var(--color-muted))] transition-colors mb-2"
-                    title={tWorkflow('toolbox') || 'Toolbox'}
+                    title={tWorkflow('toolbox')}
                 >
                     <PanelLeftOpen className="w-5 h-5 text-[hsl(var(--color-primary))]" />
                 </button>
@@ -459,16 +460,16 @@ export function ToolSidebar({
             <div className="p-4 border-b border-[hsl(var(--color-border))] flex items-center justify-between">
                 <div>
                     <h2 className="text-lg font-semibold text-[hsl(var(--color-foreground))]">
-                        {tWorkflow('toolbox') || 'Tool Box'}
+                        {tWorkflow('toolbox')}
                     </h2>
                     <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                        {tWorkflow('dragToAdd') || 'Drag or double-click a tool to add it to the workflow'}
+                        {tWorkflow('dragToAdd')}
                     </p>
                 </div>
                 <button
                     onClick={onToggleCollapse}
                     className="p-1.5 rounded-lg hover:bg-[hsl(var(--color-muted))] transition-colors"
-                    title="Collapse sidebar"
+                    title={tUi('workflow.collapseSidebar')}
                 >
                     <PanelLeftClose className="w-4 h-4 text-[hsl(var(--color-muted-foreground))]" />
                 </button>
@@ -480,7 +481,7 @@ export function ToolSidebar({
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(var(--color-muted-foreground))]" />
                     <input
                         type="text"
-                        placeholder={tWorkflow('searchTools') || 'Search tools...'}
+                        placeholder={tWorkflow('searchTools')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] placeholder:text-[hsl(var(--color-muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
@@ -522,8 +523,7 @@ export function ToolSidebar({
                                         const ToolIcon = getIcon(tool.icon);
 
                                         const toolName = getToolName(tool.id);
-                                        const hint = tWorkflow('addToWorkflowHint')
-                                            || 'Drag or double-click to add to workflow';
+                                        const hint = tWorkflow('addToWorkflowHint');
                                         return (
                                             <div
                                                 key={tool.id}
@@ -553,7 +553,7 @@ export function ToolSidebar({
             {/* Footer */}
             <div className="p-3 border-t border-[hsl(var(--color-border))] bg-[hsl(var(--color-muted)/0.3)]">
                 <p className="text-xs text-center text-[hsl(var(--color-muted-foreground))]">
-                    {tools.length} {tWorkflow('toolsAvailable') || 'tools available'}
+                    {tools.length} {tWorkflow('toolsAvailable')}
                 </p>
             </div>
         </div>

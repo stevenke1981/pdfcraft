@@ -29,6 +29,7 @@ export interface PDFToDocxToolProps {
  * Converts PDF files to Word documents (DOCX).
  */
 export function PDFToDocxTool({ className = '' }: PDFToDocxToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -84,7 +85,7 @@ export function PDFToDocxTool({ className = '' }: PDFToDocxToolProps) {
      */
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError(t('errors.uploadFile') || 'Please upload a PDF file.');
+            setError(tUi('common.toolFeedback.uploadPdf'));
             return;
         }
 
@@ -115,16 +116,16 @@ export function PDFToDocxTool({ className = '' }: PDFToDocxToolProps) {
                 setResult(output.result);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || t('errors.conversionFailed') || 'Failed to convert PDF to DOCX.');
+                setError(output.error?.message || tUi('errors.processingFailed') || tUi('interfaceFeedback.failedToConvertPdfToDocx'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : t('errors.unexpectedError') || 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, t, tTools]);
+    }, [tUi, file]);
 
     /**
      * Handle cancel operation
@@ -157,8 +158,8 @@ export function PDFToDocxTool({ className = '' }: PDFToDocxToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('pdfToDocx.uploadLabel') || 'Upload PDF'}
-                description={tTools('pdfToDocx.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+                label={tTools('pdfToDocx.uploadLabel')}
+                description={tTools('pdfToDocx.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -193,7 +194,7 @@ export function PDFToDocxTool({ className = '' }: PDFToDocxToolProps) {
                             className="text-[hsl(var(--color-muted-foreground))] hover:text-red-500 hover:bg-red-50"
                         >
                             <Trash2 className="w-5 h-5" />
-                            <span className="sr-only">{t('buttons.remove') || 'Remove'}</span>
+                            <span className="sr-only">{t('buttons.remove')}</span>
                         </Button>
                     </div>
                 </Card>
@@ -222,8 +223,8 @@ export function PDFToDocxTool({ className = '' }: PDFToDocxToolProps) {
                 >
                     {!isProcessing && <RefreshCw className="w-5 h-5 mr-2" />}
                     {isProcessing
-                        ? (t('status.processing') || 'Converting...')
-                        : (tTools('pdfToDocx.convertButton') || 'Convert to DOCX')
+                        ? (t('status.processing'))
+                        : (tTools('pdfToDocx.convertButton'))
                     }
                 </Button>
 
@@ -248,9 +249,9 @@ export function PDFToDocxTool({ className = '' }: PDFToDocxToolProps) {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
                         <CheckCircle2 className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle') || 'Conversion Successful!'}</h3>
+                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle')}</h3>
                     <p className="text-green-800/80 max-w-md mx-auto">
-                        {tTools('pdfToDocx.successMessage') || 'Your PDF has been converted to DOCX. You can now download the editable Word document.'}
+                        {tTools('pdfToDocx.successMessage')}
                     </p>
                 </div>
             )}

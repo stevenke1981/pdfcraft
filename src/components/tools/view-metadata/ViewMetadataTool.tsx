@@ -93,6 +93,7 @@ function parsePdfDate(pdfDate: string | Date | undefined): string {
  * Provides the UI for viewing PDF document metadata and properties.
  */
 export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -118,7 +119,7 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
     setMetadata(null);
 
     try {
-      setProgressMessage('Loading PDF library...');
+      setProgressMessage(tUi('interfaceText.loadingPdfLibrary'));
       setProgress(10);
 
       const pdfjsLib = await import('pdfjs-dist');
@@ -129,7 +130,7 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
         return;
       }
 
-      setProgressMessage('Reading PDF file...');
+      setProgressMessage(tUi('interfaceText.readingPdfFile'));
       setProgress(30);
 
       const arrayBuffer = await pdfFile.arrayBuffer();
@@ -139,7 +140,7 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
         return;
       }
 
-      setProgressMessage('Extracting metadata...');
+      setProgressMessage(tUi('interfaceText.extractingMetadata'));
       setProgress(50);
 
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -196,11 +197,11 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
     } catch (err) {
       if (!cancelledRef.current) {
         console.error('Failed to extract metadata:', err);
-        setError(err instanceof Error ? err.message : 'Failed to extract metadata from PDF.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.failedToExtractMetadataFromPdf'));
         setStatus('error');
       }
     }
-  }, []);
+  }, [tUi]);
 
   /**
    * Handle file selected from uploader
@@ -304,8 +305,8 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('viewMetadata.uploadLabel') || 'Upload PDF File'}
-          description={tTools('viewMetadata.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('viewMetadata.uploadLabel')}
+          description={tTools('viewMetadata.uploadDescription')}
         />
       )}
 
@@ -342,7 +343,7 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -366,43 +367,43 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
           <Card variant="outlined" size="lg">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                {tTools('viewMetadata.documentProperties') || 'Document Properties'}
+                {tTools('viewMetadata.documentProperties')}
               </h3>
             </div>
             
             <div className="space-y-1">
-              <MetadataRow label={tTools('viewMetadata.title') || 'Title'} value={metadata.title} />
-              <MetadataRow label={tTools('viewMetadata.author') || 'Author'} value={metadata.author} />
-              <MetadataRow label={tTools('viewMetadata.subject') || 'Subject'} value={metadata.subject} />
-              <MetadataRow label={tTools('viewMetadata.keywords') || 'Keywords'} value={metadata.keywords} />
-              <MetadataRow label={tTools('viewMetadata.creator') || 'Creator'} value={metadata.creator} />
-              <MetadataRow label={tTools('viewMetadata.producer') || 'Producer'} value={metadata.producer} />
+              <MetadataRow label={tTools('viewMetadata.title')} value={metadata.title} />
+              <MetadataRow label={tTools('viewMetadata.author')} value={metadata.author} />
+              <MetadataRow label={tTools('viewMetadata.subject')} value={metadata.subject} />
+              <MetadataRow label={tTools('viewMetadata.keywords')} value={metadata.keywords} />
+              <MetadataRow label={tTools('viewMetadata.creator')} value={metadata.creator} />
+              <MetadataRow label={tTools('viewMetadata.producer')} value={metadata.producer} />
             </div>
           </Card>
 
           {/* Dates */}
           <Card variant="outlined" size="lg">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-              {tTools('viewMetadata.dates') || 'Dates'}
+              {tTools('viewMetadata.dates')}
             </h3>
             
             <div className="space-y-1">
-              <MetadataRow label={tTools('viewMetadata.creationDate') || 'Creation Date'} value={metadata.creationDate} />
-              <MetadataRow label={tTools('viewMetadata.modificationDate') || 'Modification Date'} value={metadata.modificationDate} />
+              <MetadataRow label={tTools('viewMetadata.creationDate')} value={metadata.creationDate} />
+              <MetadataRow label={tTools('viewMetadata.modificationDate')} value={metadata.modificationDate} />
             </div>
           </Card>
 
           {/* Document Info */}
           <Card variant="outlined" size="lg">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-              {tTools('viewMetadata.documentInfo') || 'Document Information'}
+              {tTools('viewMetadata.documentInfo')}
             </h3>
             
             <div className="space-y-1">
-              <MetadataRow label={tTools('viewMetadata.pageCount') || 'Page Count'} value={metadata.pageCount} />
-              <MetadataRow label={tTools('viewMetadata.fileSize') || 'File Size'} value={formatSize(metadata.fileSize)} />
-              <MetadataRow label={tTools('viewMetadata.pdfVersion') || 'PDF Version'} value={metadata.pdfVersion} />
-              <MetadataRow label={tTools('viewMetadata.isLinearized') || 'Linearized (Fast Web View)'} value={metadata.isLinearized} />
+              <MetadataRow label={tTools('viewMetadata.pageCount')} value={metadata.pageCount} />
+              <MetadataRow label={tTools('viewMetadata.fileSize')} value={formatSize(metadata.fileSize)} />
+              <MetadataRow label={tTools('viewMetadata.pdfVersion')} value={metadata.pdfVersion} />
+              <MetadataRow label={tTools('viewMetadata.isLinearized')} value={metadata.isLinearized} />
             </div>
           </Card>
 
@@ -410,7 +411,7 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
           {metadata.customMetadata && Object.keys(metadata.customMetadata).length > 0 && (
             <Card variant="outlined" size="lg">
               <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                {tTools('viewMetadata.customMetadata') || 'Additional Metadata'}
+                {tTools('viewMetadata.customMetadata')}
               </h3>
               
               <div className="space-y-1">
@@ -428,7 +429,7 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
               size="lg"
               onClick={handleExportJson}
             >
-              {tTools('viewMetadata.exportJson') || 'Export as JSON'}
+              {tTools('viewMetadata.exportJson')}
             </Button>
           </div>
 
@@ -438,7 +439,7 @@ export function ViewMetadataTool({ className = '' }: ViewMetadataToolProps) {
             role="status"
           >
             <p className="text-sm font-medium">
-              {tTools('viewMetadata.successMessage') || 'Metadata extracted successfully! You can export it as JSON if needed.'}
+              {tTools('viewMetadata.successMessage')}
             </p>
           </div>
         </>

@@ -16,6 +16,7 @@ export interface BatchBarcodeInjectorToolProps {
 }
 
 export function BatchBarcodeInjectorTool({ className = '' }: BatchBarcodeInjectorToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [barcodeType, setBarcodeType] = useState<'qr' | 'code128'>('qr');
@@ -77,7 +78,7 @@ export function BatchBarcodeInjectorTool({ className = '' }: BatchBarcodeInjecto
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Injecting code layers...');
+            setProgressMessage(message || tUi('interfaceFeedback.injectingCodeLayers'));
           }
         }
       );
@@ -91,12 +92,12 @@ export function BatchBarcodeInjectorTool({ className = '' }: BatchBarcodeInjecto
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to inject barcodes into PDF.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToInjectBarcodesIntoPdf'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error injecting barcodes.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorInjectingBarcodes'));
         setStatus('error');
       }
     }
@@ -155,7 +156,7 @@ export function BatchBarcodeInjectorTool({ className = '' }: BatchBarcodeInjecto
                       height: `${Math.min(60, (height / 841.89) * 260)}px`,
                     }}
                   >
-                    [QR CODE]
+                    {tUi('interfaceText.qrCode')}
                   </div>
                 </div>
                 <span className="text-[10px] text-zinc-400 mt-2">
@@ -192,7 +193,7 @@ export function BatchBarcodeInjectorTool({ className = '' }: BatchBarcodeInjecto
                       type="text"
                       value={value}
                       onChange={(e) => setValue(e.target.value)}
-                      placeholder="e.g. https://pdfcraft.org"
+                      placeholder={tUi('interfaceText.eGHttpsPdfcraftOrg')}
                       className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3"
                     />
                   </div>

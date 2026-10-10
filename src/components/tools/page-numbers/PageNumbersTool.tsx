@@ -21,6 +21,7 @@ type Position = 'bottom-center' | 'bottom-left' | 'bottom-right' | 'top-center' 
 type Format = 'number' | 'roman' | 'page-of-total' | 'custom';
 
 export function PageNumbersTool({ className = '' }: PageNumbersToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -326,14 +327,14 @@ export function PageNumbersTool({ className = '' }: PageNumbersToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to add page numbers.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToAddPageNumbers'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
       setStatus('error');
     }
-  }, [file, position, format, customFormat, startNumber, fontSize, fontColor, margin, skipFirstPage, prefix, suffix, pageMode, oddPosition, evenPosition]);
+  }, [tUi, file, position, format, customFormat, startNumber, fontSize, fontColor, margin, skipFirstPage, prefix, suffix, pageMode, oddPosition, evenPosition]);
 
   const formatSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
@@ -344,6 +345,7 @@ export function PageNumbersTool({ className = '' }: PageNumbersToolProps) {
   const isProcessing = status === 'processing';
 
   // Position options with visual representation
+  const positionKeys: Record<string, string> = {"Top Left":"topLeft","Top Center":"topCenter","Top Right":"topRight","Center Left":"centerLeft","Center":"centerPosition","Center Right":"centerRight","Bottom Left":"bottomLeft","Bottom Center":"bottomCenter","Bottom Right":"bottomRight"};
   const positionOptions = [
     { value: 'top-left', label: 'Top Left', icon: '↖' },
     { value: 'top-center', label: 'Top Center', icon: '↑' },
@@ -388,7 +390,7 @@ export function PageNumbersTool({ className = '' }: PageNumbersToolProps) {
                   <div className="min-w-0">
                     <p className="font-medium text-sm truncate">{file.name}</p>
                     <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                      {formatSize(file.size)} • {totalPages} pages
+                      {formatSize(file.size)} • {totalPages} {tUi('tools.gridCombine.pages')}
                     </p>
                   </div>
                 </div>
@@ -420,7 +422,7 @@ export function PageNumbersTool({ className = '' }: PageNumbersToolProps) {
                     `}
                   >
                     <span className="text-base">{opt.icon}</span>
-                    <span className="block text-xs">{opt.label}</span>
+                    <span className="block text-xs">{tUi('dynamicUi.' + positionKeys[opt.label])}</span>
                   </button>
                 ))}
               </div>
@@ -440,8 +442,8 @@ export function PageNumbersTool({ className = '' }: PageNumbersToolProps) {
                   >
                     <option value="number">1, 2, 3...</option>
                     <option value="roman">I, II, III...</option>
-                    <option value="page-of-total">Page 1 of N</option>
-                    <option value="custom">Custom</option>
+                    <option value="page-of-total">{tUi('interfaceText.page1OfN')}</option>
+                    <option value="custom">{tUi('tools.txtToPdf.custom')}</option>
                   </select>
                 </div>
                 <div>
@@ -464,7 +466,7 @@ export function PageNumbersTool({ className = '' }: PageNumbersToolProps) {
                     type="text"
                     value={customFormat}
                     onChange={(e) => setCustomFormat(e.target.value)}
-                    placeholder="Page {page} of {total}"
+                    placeholder={tUi('interfaceText.pagePageOfTotal')}
                     className="w-full px-2 py-1.5 text-sm border rounded-md"
                     disabled={isProcessing}
                   />
@@ -479,7 +481,7 @@ export function PageNumbersTool({ className = '' }: PageNumbersToolProps) {
                     type="text"
                     value={prefix}
                     onChange={(e) => setPrefix(e.target.value)}
-                    placeholder="e.g., Page "
+                    placeholder={tUi('interfaceText.eGPage')}
                     className="w-full px-2 py-1.5 text-sm border rounded-md"
                     disabled={isProcessing}
                   />
@@ -490,7 +492,7 @@ export function PageNumbersTool({ className = '' }: PageNumbersToolProps) {
                     type="text"
                     value={suffix}
                     onChange={(e) => setSuffix(e.target.value)}
-                    placeholder="e.g., -"
+                    placeholder={tUi('interfaceText.eG')}
                     className="w-full px-2 py-1.5 text-sm border rounded-md"
                     disabled={isProcessing}
                   />

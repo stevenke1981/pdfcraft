@@ -38,6 +38,11 @@ interface ToolSettingsConfig {
     fields: FieldConfig[];
 }
 
+const positionKeys: Record<string, string> = {
+    'Top Left': 'topLeft', 'Top Center': 'topCenter', 'Top Right': 'topRight',
+    'Center Left': 'centerLeft', Center: 'centerPosition', 'Center Right': 'centerRight',
+    'Bottom Left': 'bottomLeft', 'Bottom Center': 'bottomCenter', 'Bottom Right': 'bottomRight',
+};
 const POSITION_GRID_ITEMS = [
     { value: 'top-left', label: 'TL', title: 'Top Left' },
     { value: 'top-center', label: 'TC', title: 'Top Center' },
@@ -2416,6 +2421,7 @@ const getToolSettingsConfig = (): Record<string, ToolSettingsConfig> => ({
  * Node Settings Panel Component
  */
 export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSettingsPanelProps) {
+  const tUi = useTranslations();
     const t = useTranslations('tools');
     const tWorkflow = useTranslations('workflow');
     const tCommon = useTranslations('common');
@@ -2626,14 +2632,14 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                     <div className="space-y-4">
                         <div className="p-3 rounded-lg bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-xs text-indigo-900 dark:text-indigo-200 leading-relaxed">
                             {locale === 'zh'
-                                ? '根据流经此节点的文件特征进行规则判定。满足条件的文件流向 True 端口，不满足的文件流向 False 端口。'
-                                : 'Evaluates files dynamically based on your rule. Matching files flow to the True port, otherwise to False.'}
+                                ? tUi('interfaceText.evaluatesFilesBasedOnThisRuleMatchingFilesFlowToTheTruePortOtherFilesFlowToTheFalsePort')
+                                : tUi('interfaceText.evaluatesFilesBasedOnThisRuleMatchingFilesFlowToTheTruePortOtherFilesFlowToTheFalsePort')}
                         </div>
 
                         {/* Condition Type */}
                         <div className="space-y-1.5">
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))]">
-                                {locale === 'zh' ? '判断维度 (Type)' : 'Dimension'}
+                                {locale === 'zh' ? tUi('interfaceText.dimension') : tUi('interfaceText.dimension')}
                             </label>
                             <select
                                 value={(settings.conditionType as string) || 'file-count'}
@@ -2648,16 +2654,16 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                                 }}
                                 className="w-full px-3 py-2 text-sm rounded-md border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                             >
-                                <option value="file-count">{locale === 'zh' ? '文件数量 (File Count)' : 'File Count'}</option>
-                                <option value="file-size">{locale === 'zh' ? '总文件体积 (File Size)' : 'Total File Size'}</option>
-                                <option value="file-format">{locale === 'zh' ? '文件格式 (File Format / Ext)' : 'File Format / Ext'}</option>
+                                <option value="file-count">{locale === 'zh' ? tUi('interfaceText.fileCount') : tUi('interfaceText.fileCount')}</option>
+                                <option value="file-size">{locale === 'zh' ? tUi('interfaceText.totalFileSize') : tUi('interfaceText.totalFileSize')}</option>
+                                <option value="file-format">{locale === 'zh' ? tUi('interfaceText.fileFormatExt') : tUi('interfaceText.fileFormatExt')}</option>
                             </select>
                         </div>
 
                         {/* Operator */}
                         <div className="space-y-1.5">
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))]">
-                                {locale === 'zh' ? '比较规则 (Operator)' : 'Operator'}
+                                {locale === 'zh' ? tUi('interfaceText.operator') : tUi('interfaceText.operator')}
                             </label>
                             <select
                                 value={(settings.operator as string) || (settings.conditionType === 'file-format' ? 'equals' : 'greater-than')}
@@ -2666,19 +2672,19 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                             >
                                 {settings.conditionType === 'file-format' ? (
                                     <>
-                                        <option value="equals">{locale === 'zh' ? '等于 (Equals)' : 'Equals'}</option>
-                                        <option value="not-equals">{locale === 'zh' ? '不等于 (Not Equals)' : 'Not Equals'}</option>
-                                        <option value="contains">{locale === 'zh' ? '包含 (Contains)' : 'Contains'}</option>
-                                        <option value="matches">{locale === 'zh' ? '正则匹配 (Regex Matches)' : 'Regex Matches'}</option>
+                                        <option value="equals">{locale === 'zh' ? tUi('interfaceText.equals') : tUi('interfaceText.equals')}</option>
+                                        <option value="not-equals">{locale === 'zh' ? tUi('interfaceText.notEquals') : tUi('interfaceText.notEquals')}</option>
+                                        <option value="contains">{locale === 'zh' ? tUi('interfaceText.contains') : tUi('interfaceText.contains')}</option>
+                                        <option value="matches">{locale === 'zh' ? tUi('interfaceText.regexMatches') : tUi('interfaceText.regexMatches')}</option>
                                     </>
                                 ) : (
                                     <>
-                                        <option value="greater-than">{locale === 'zh' ? '> 大于 (Greater Than)' : '> Greater Than'}</option>
-                                        <option value="less-than">{locale === 'zh' ? '< 小于 (Less Than)' : '< Less Than'}</option>
-                                        <option value="greater-or-equal">{locale === 'zh' ? '≥ 大于等于 (Greater or Equal)' : '≥ Greater or Equal'}</option>
-                                        <option value="less-or-equal">{locale === 'zh' ? '≤ 小于等于 (Less or Equal)' : '≤ Less or Equal'}</option>
-                                        <option value="equals">{locale === 'zh' ? '= 等于 (Equals)' : '= Equals'}</option>
-                                        <option value="not-equals">{locale === 'zh' ? '≠ 不等于 (Not Equals)' : '≠ Not Equals'}</option>
+                                        <option value="greater-than">{locale === 'zh' ? tUi('interfaceText.greaterThan') : tUi('interfaceText.greaterThan')}</option>
+                                        <option value="less-than">{locale === 'zh' ? tUi('interfaceText.lessThan') : tUi('interfaceText.lessThan')}</option>
+                                        <option value="greater-or-equal">{locale === 'zh' ? tUi('interfaceText.greaterOrEqual') : tUi('interfaceText.greaterOrEqual')}</option>
+                                        <option value="less-or-equal">{locale === 'zh' ? tUi('interfaceText.lessOrEqual') : tUi('interfaceText.lessOrEqual')}</option>
+                                        <option value="equals">{locale === 'zh' ? tUi('interfaceText.equals2') : tUi('interfaceText.equals2')}</option>
+                                        <option value="not-equals">{locale === 'zh' ? tUi('interfaceText.notEquals2') : tUi('interfaceText.notEquals2')}</option>
                                     </>
                                 )}
                             </select>
@@ -2687,7 +2693,7 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                         {/* Value Input */}
                         <div className="space-y-1.5">
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))]">
-                                {locale === 'zh' ? '目标阈值 (Target Value)' : 'Target Value'}
+                                {locale === 'zh' ? tUi('interfaceText.targetValue') : tUi('interfaceText.targetValue')}
                             </label>
 
                             {settings.conditionType === 'file-count' && (
@@ -2718,7 +2724,7 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                                     >
                                         <option value="MB">MB</option>
                                         <option value="KB">KB</option>
-                                        <option value="Bytes">Bytes</option>
+                                        <option value="Bytes">{tUi('interfaceText.bytes')}</option>
                                     </select>
                                 </div>
                             )}
@@ -2726,7 +2732,7 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                             {settings.conditionType === 'file-format' && (
                                 <input
                                     type="text"
-                                    placeholder="例如: pdf, docx, png, jpg"
+                                    placeholder={tUi('interfaceText.eGPdfDocxPngJpg')}
                                     value={(settings.value as string) || ''}
                                     onChange={(e) => handleFieldChange('value', e.target.value)}
                                     className="w-full px-3 py-2 text-sm rounded-md border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
@@ -2737,20 +2743,20 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                         {/* Branch Route Explanation */}
                         <div className="mt-4 p-3 rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-muted)/0.3)] space-y-2 text-xs">
                             <p className="font-medium text-[hsl(var(--color-foreground))]">
-                                {locale === 'zh' ? '分支流向指引:' : 'Routing Guide:'}
+                                {locale === 'zh' ? tUi('interfaceText.routingGuide') : tUi('interfaceText.routingGuide')}
                             </p>
                             <div className="flex items-start gap-1.5 text-emerald-700 dark:text-emerald-300">
-                                <span className="font-bold">✓ True:</span>
-                                <span>{locale === 'zh' ? '满足条件时流入此端口下游节点' : 'Files proceed here if condition is met'}</span>
+                                <span className="font-bold">{tUi('interfaceText.true2')}</span>
+                                <span>{locale === 'zh' ? tUi('interfaceText.filesProceedHereIfConditionIsMet') : tUi('interfaceText.filesProceedHereIfConditionIsMet')}</span>
                             </div>
                             <div className="flex items-start gap-1.5 text-amber-700 dark:text-amber-300">
-                                <span className="font-bold">✗ False:</span>
-                                <span>{locale === 'zh' ? '不满足条件时流入此端口下游节点' : 'Files proceed here if condition is not met'}</span>
+                                <span className="font-bold">{tUi('interfaceText.false2')}</span>
+                                <span>{locale === 'zh' ? tUi('interfaceText.filesProceedHereIfConditionIsNotMet') : tUi('interfaceText.filesProceedHereIfConditionIsNotMet')}</span>
                             </div>
                             <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] pt-1 border-t border-[hsl(var(--color-border)/0.5)]">
                                 {locale === 'zh'
-                                    ? '* 执行时未命中的下游分支将被自动跳过并置灰，无需担心额外开销。'
-                                    : '* Inactive branch nodes will be skipped during execution.'}
+                                    ? tUi('interfaceText.inactiveDownstreamBranchesAreSkippedAndDimmedDuringExecution')
+                                    : tUi('interfaceText.inactiveDownstreamBranchesAreSkippedAndDimmedDuringExecution')}
                             </p>
                         </div>
                     </div>
@@ -2758,7 +2764,7 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                     <div className="text-center py-8">
                         <Settings className="w-12 h-12 mx-auto text-[hsl(var(--color-muted-foreground))] opacity-50" />
                         <p className="mt-3 text-sm text-[hsl(var(--color-muted-foreground))]">
-                            {tWorkflow('noSettings') || 'No configurable settings for this tool'}
+                            {tWorkflow('noSettings')}
                         </p>
                     </div>
                 ) : (
@@ -2801,7 +2807,7 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                                     {field.key === 'filename' && (
                                         <div className="pt-1">
                                             <div className="flex items-center gap-1 text-[11px] text-[hsl(var(--color-muted-foreground))] mb-1">
-                                                <span>{locale === 'zh' ? '点击插入动态变量:' : 'Insert variable:'}</span>
+                                                <span>{locale === 'zh' ? tUi('interfaceText.insertVariable') : tUi('interfaceText.insertVariable')}</span>
                                             </div>
                                             <div className="flex flex-wrap gap-1">
                                                 {[
@@ -2856,7 +2862,7 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                                     {field.key === 'position' && field.options?.some(o => o.value === 'top-left' || o.value === 'center') && (
                                         <div className="mb-2 p-2 bg-[hsl(var(--color-muted)/0.4)] rounded-lg border border-[hsl(var(--color-border))]">
                                             <div className="text-[11px] text-[hsl(var(--color-muted-foreground))] mb-1.5 font-medium text-center">
-                                                {locale === 'zh' ? '九宫格快速定位' : 'Position Grid'}
+                                                {locale === 'zh' ? tUi('interfaceText.positionGrid') : tUi('interfaceText.positionGrid')}
                                             </div>
                                             <div className="grid grid-cols-3 gap-1.5 max-w-[150px] mx-auto">
                                                 {POSITION_GRID_ITEMS.map(pos => {
@@ -2874,7 +2880,7 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                                                         <button
                                                             key={pos.value}
                                                             type="button"
-                                                            title={getTranslation(field.options?.find(o => o.value === pos.value)?.labelKey || pos.title)}
+                                                            title={tUi('dynamicUi.' + positionKeys[pos.title])}
                                                             onClick={() => handleFieldChange(field.key, pos.value)}
                                                             className={`h-7 text-xs font-semibold rounded border transition-all flex items-center justify-center ${
                                                                 isSelected
@@ -3007,11 +3013,11 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                         onClick={handleReset}
                     >
                         <RotateCcw className="w-4 h-4 mr-1.5" />
-                        {tWorkflow('reset') || 'Reset'}
+                        {tWorkflow('reset')}
                     </Button>
                     <div className="flex items-center gap-2.5">
                         <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-                            {locale === 'zh' ? '即时已同步' : 'Auto-synced'}
+                            {locale === 'zh' ? tUi('interfaceText.autoSynced') : tUi('interfaceText.autoSynced')}
                         </span>
                         <Button
                             variant="primary"
@@ -3019,7 +3025,7 @@ export function NodeSettingsPanel({ node, onClose, onUpdateSettings }: NodeSetti
                             onClick={handleApply}
                         >
                             <Check className="w-4 h-4 mr-1.5" />
-                            {locale === 'zh' ? '完成' : (tWorkflow('done') || 'Done')}
+                            {locale === 'zh' ? tUi('common.status.complete') : (tUi('interfaceText.done'))}
                         </Button>
                     </div>
                 </div>

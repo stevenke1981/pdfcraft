@@ -29,6 +29,7 @@ export interface MergePDFToolProps {
  * Provides the UI for merging multiple PDF files with drag-to-reorder functionality.
  */
 export function MergePDFTool({ className = '' }: MergePDFToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tErrors = useTranslations('errors');
   const tA11y = useTranslations('common.accessibility');
@@ -248,8 +249,8 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('mergePdf.uploadLabel') || 'Upload PDF Files'}
-        description={tTools('mergePdf.uploadDescription') || 'Drag and drop PDF files here, or click to browse. You can add multiple files.'}
+        label={tTools('mergePdf.uploadLabel')}
+        description={tTools('mergePdf.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -267,7 +268,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('mergePdf.filesTitle') || 'Files to Merge'} ({files.length})
+              {tTools('mergePdf.filesTitle')} ({files.length})
             </h3>
             <Button
               variant="ghost"
@@ -275,12 +276,12 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
               onClick={handleClearAll}
               disabled={isProcessing}
             >
-              {t('buttons.clearAll') || 'Clear All'}
+              {t('buttons.clearAll')}
             </Button>
           </div>
 
           <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-4">
-            {tTools('mergePdf.reorderHint') || 'Drag and drop to reorder files. Files will be merged in the order shown.'}
+            {tTools('mergePdf.reorderHint')}
           </p>
 
           <ul className="space-y-2" role="list" aria-label={tTools('mergePdf.filesTitle')}>
@@ -371,7 +372,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
                   onClick={() => handleRemoveFile(file.id)}
                   disabled={isProcessing}
                   className="flex-shrink-0 p-1 rounded hover:bg-red-100 text-[hsl(var(--color-muted-foreground))] hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
-                  aria-label={`Remove ${file.file.name}`}
+                  aria-label={tUi('dynamicUi.removeFileName', { filename: file.file.name })}
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M18 6L6 18M6 6l12 12" />
@@ -387,7 +388,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
       {files.length >= 2 && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('mergePdf.optionsTitle') || 'Merge Options'}
+            {tTools('mergePdf.optionsTitle')}
           </h3>
           
           <label className="flex items-center gap-3 cursor-pointer">
@@ -401,7 +402,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
               className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
             />
             <span id="preserve-bookmarks-description" className="text-sm text-[hsl(var(--color-foreground))]">
-              {tTools('mergePdf.preserveBookmarks') || 'Preserve bookmarks (create bookmark for each file)'}
+              {tTools('mergePdf.preserveBookmarks')}
             </span>
           </label>
         </Card>
@@ -428,8 +429,8 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('mergePdf.mergeButton') || 'Merge PDFs')
+            ? (t('status.processing'))
+            : (tTools('mergePdf.mergeButton'))
           }
         </Button>
 
@@ -451,7 +452,7 @@ export function MergePDFTool({ className = '' }: MergePDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('mergePdf.successMessage') || 'PDFs merged successfully! Click the download button to save your file.'}
+            {tTools('mergePdf.successMessage')}
           </p>
         </div>
       )}

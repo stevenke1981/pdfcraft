@@ -1233,7 +1233,7 @@ function WorkflowEditorContent() {
                                     : 'opacity-35 text-[hsl(var(--color-muted-foreground))] cursor-not-allowed'
                                 }
                             `}
-                            title={`${tWorkflow('undo') || '撤销'} (Ctrl+Z)`}
+                            title={`${tWorkflow('undo')} (Ctrl+Z)`}
                         >
                             <Undo2 className="w-4 h-4" />
                         </button>
@@ -1247,7 +1247,7 @@ function WorkflowEditorContent() {
                                     : 'opacity-35 text-[hsl(var(--color-muted-foreground))] cursor-not-allowed'
                                 }
                             `}
-                            title={`${tWorkflow('redo') || '重做'} (Ctrl+Shift+Z)`}
+                            title={`${tWorkflow('redo')} (Ctrl+Shift+Z)`}
                         >
                             <Redo2 className="w-4 h-4" />
                         </button>
@@ -1264,7 +1264,7 @@ function WorkflowEditorContent() {
                                     : 'opacity-35 text-[hsl(var(--color-muted-foreground))] cursor-not-allowed'
                                 }
                             `}
-                            title={tWorkflow('autoLayout') || '自动整理布局 (Auto Layout)'}
+                            title={tWorkflow('autoLayout')}
                         >
                             <LayoutGrid className="w-4 h-4" />
                         </button>
@@ -1279,7 +1279,7 @@ function WorkflowEditorContent() {
                                     : 'opacity-35 text-[hsl(var(--color-muted-foreground))] cursor-not-allowed'
                                 }
                             `}
-                            title={`${tWorkflow('duplicateNode') || '复制节点 (Duplicate)'} (Ctrl+D)`}
+                            title={`${tWorkflow('duplicateNode')} (Ctrl+D)`}
                         >
                             <Copy className="w-4 h-4" />
                         </button>
@@ -1325,13 +1325,13 @@ function WorkflowEditorContent() {
                                         </svg>
                                     </div>
                                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                                        {tWorkflow('emptyTitle') || 'Create Your Workflow'}
+                                        {tWorkflow('emptyTitle')}
                                     </h3>
                                     <p className="text-sm text-[hsl(var(--color-muted-foreground))] mt-2 max-w-sm">
-                                        {tWorkflow('emptyDescription') || 'Drag tools from the sidebar to build your PDF processing pipeline. Connect nodes to define the processing order.'}
+                                        {tWorkflow('emptyDescription')}
                                     </p>
                                     <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-4">
-                                        {tWorkflow('clickHint') || 'Click a node to configure its settings'}
+                                        {tWorkflow('clickHint')}
                                     </p>
                                 </div>
                             </Panel>

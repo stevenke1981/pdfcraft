@@ -27,6 +27,7 @@ export interface AIPDFReflowerToolProps {
 }
 
 export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -107,7 +108,7 @@ export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Extracting semantic blocks...');
+            setProgressMessage(message || tUi('interfaceFeedback.extractingSemanticBlocks'));
           }
         }
       );
@@ -126,12 +127,12 @@ export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
           setParagraphs(output.metadata.paragraphs as any[]);
         }
       } else {
-        setError(output.error?.message || 'Failed to analyze and reflow PDF.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToAnalyzeAndReflowPdf'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Reflowing processing failed.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.reflowingProcessingFailed'));
         setStatus('error');
       }
     }
@@ -266,7 +267,7 @@ export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
                 {file.name}
               </p>
               <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                {totalPages > 0 ? `${totalPages} ${t('pdfToCbz.pagesLabel') || 'pages'}` : t('aiPdfReflower.scanningMetadata')} • {(file.size / (1024 * 1024)).toFixed(2)} MB
+                {totalPages > 0 ? `${totalPages} ${tUi('interfaceText.pages')}` : t('aiPdfReflower.scanningMetadata')} • {(file.size / (1024 * 1024)).toFixed(2)} MB
               </p>
             </div>
           </div>
@@ -276,7 +277,7 @@ export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
             onClick={handleClearFile}
             disabled={isProcessing}
           >
-            {t('buttons.remove') || 'Remove'}
+            {t('buttons.remove')}
           </Button>
         </Card>
       )}
@@ -372,11 +373,11 @@ export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
                   </Button>
                   <Button variant="secondary" className="text-xs font-bold flex flex-col gap-1 py-4" onClick={() => handleExportFormat('epub')}>
                     <BookOpen className="w-4 h-4 text-amber-500" />
-                    EPUB Ebook
+                    {tUi('interfaceText.epubEbook')}
                   </Button>
                   <Button variant="secondary" className="text-xs font-bold flex flex-col gap-1 py-4" onClick={() => handleExportFormat('json')}>
                     <AlignLeft className="w-4 h-4 text-blue-500" />
-                    Structured JSON
+                    {tUi('interfaceText.structuredJson')}
                   </Button>
                 </div>
 
@@ -423,9 +424,9 @@ export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
                 
                 {/* Simulated Header */}
                 <div className="px-5 pb-3 border-b border-inherit flex items-center justify-between text-xs font-bold opacity-60">
-                  <span>AI Reflow Reader</span>
+                  <span>{tUi('interfaceText.aiReflowReader')}</span>
                   <span className="flex items-center gap-1.5">
-                    <span>Page {paragraphs[0]?.pageNum || 1}</span>
+                    <span>{tUi('interfaceText.page')} {paragraphs[0]?.pageNum || 1}</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   </span>
                 </div>
@@ -470,7 +471,7 @@ export function AIPDFReflowerTool({ className = '' }: AIPDFReflowerToolProps) {
 
                 {/* Simulated Bottom Navigation */}
                 <div className="pt-2 border-t border-inherit flex items-center justify-center text-[10px] font-bold opacity-40">
-                  <span>PDFCraft Mobile Reflower v1.0</span>
+                  <span>{tUi('interfaceText.pdfcraftMobileReflowerV10')}</span>
                 </div>
 
               </div>

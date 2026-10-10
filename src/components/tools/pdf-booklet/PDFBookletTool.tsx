@@ -21,6 +21,7 @@ export interface PDFBookletToolProps {
  * Creates booklet layouts from PDF files for printing.
  */
 export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -88,14 +89,14 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
             if (output.success && output.result) {
                 setResultBlob(output.result as Blob);
             } else {
-                setError(output.error?.message || 'Failed to create booklet.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToCreateBooklet'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [file, gridMode, paperSize, orientation, rotation, padding, tFeedback]);
+    }, [tUi, file, gridMode, paperSize, orientation, rotation, padding, tFeedback]);
 
     /**
      * Reset state
@@ -120,8 +121,8 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('pdfBooklet.uploadLabel') || 'Upload PDF File'}
-                description={tTools('pdfBooklet.uploadDescription') || 'Drag and drop a PDF file to create a booklet layout.'}
+                label={tTools('pdfBooklet.uploadLabel')}
+                description={tTools('pdfBooklet.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -145,7 +146,7 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                             </p>
                         </div>
                         <Button variant="ghost" size="sm" onClick={handleReset} disabled={isProcessing}>
-                            {t('buttons.clear') || 'Clear'}
+                            {t('buttons.clear')}
                         </Button>
                     </div>
                 </Card>
@@ -155,14 +156,14 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
             {hasFile && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('pdfBooklet.optionsTitle') || 'Booklet Options'}
+                        {tTools('pdfBooklet.optionsTitle')}
                     </h3>
 
                     <div className="space-y-4">
                         {/* Grid Mode */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('pdfBooklet.gridModeLabel') || 'Grid Mode'}
+                                {tTools('pdfBooklet.gridModeLabel')}
                             </label>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                                 {(['1x2', '2x2', '2x4', '4x4'] as BookletGridMode[]).map((mode) => (
@@ -186,14 +187,14 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                                 ))}
                             </div>
                             <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                                {tTools('pdfBooklet.gridModeDesc') || '1x2 is standard for booklets. Use larger grids to save paper.'}
+                                {tTools('pdfBooklet.gridModeDesc')}
                             </p>
                         </div>
 
                         {/* Paper Size */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('pdfBooklet.paperSizeLabel') || 'Paper Size'}
+                                {tTools('pdfBooklet.paperSizeLabel')}
                             </label>
                             <div className="grid grid-cols-3 gap-2">
                                 {(['a4', 'letter', 'legal'] as BookletPaperSize[]).map((size) => (
@@ -221,7 +222,7 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                         {/* Orientation */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('pdfBooklet.orientationLabel') || 'Orientation'}
+                                {tTools('pdfBooklet.orientationLabel')}
                             </label>
                             <div className="grid grid-cols-2 gap-2">
                                 {(['portrait', 'landscape'] as const).map((orient) => (
@@ -249,7 +250,7 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                         {/* Rotation */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('pdfBooklet.rotationLabel') || 'Page Rotation'}
+                                {tTools('pdfBooklet.rotationLabel')}
                             </label>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                                 {(['none', '90cw', '90ccw', 'alternate'] as BookletRotation[]).map((rot) => (
@@ -280,7 +281,7 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                         {/* Padding */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('pdfBooklet.paddingLabel') || 'Padding'}: {padding}pt
+                                {tTools('pdfBooklet.paddingLabel')}: {padding}pt
                             </label>
                             <input
                                 type="range"
@@ -296,7 +297,7 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                         {/* Live Preview */}
                         <div className="pt-4 border-t border-[hsl(var(--color-border))]">
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-3">
-                                {tTools('pdfBooklet.previewLabel') || 'Layout Preview'}
+                                {tTools('pdfBooklet.previewLabel')}
                             </label>
                             <div
                                 className="relative bg-gray-100 rounded-[var(--radius-md)] p-4 flex items-center justify-center"
@@ -337,12 +338,12 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                                 {/* Preview Info */}
                                 <div className="absolute bottom-2 left-2 right-2 text-center">
                                     <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded shadow-sm">
-                                        {paperSize.toUpperCase()} • {orientation} • {gridMode} grid
+                                        {paperSize.toUpperCase()} • {orientation} • {gridMode} {tUi('interfaceText.grid')}
                                     </span>
                                 </div>
                             </div>
                             <p className="mt-2 text-xs text-[hsl(var(--color-muted-foreground))] text-center">
-                                {tTools('pdfBooklet.previewDesc') || 'This preview shows how pages will be arranged on each sheet.'}
+                                {tTools('pdfBooklet.previewDesc')}
                             </p>
                         </div>
                     </div>
@@ -354,7 +355,7 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                 <ProcessingProgress
                     progress={progress}
                     status="processing"
-                    message="Creating booklet layout..."
+                    message={tUi('interfaceFeedback.creatingBooklet')}
                     showPercentage
                 />
             )}
@@ -370,8 +371,8 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                 >
                     <BookOpen className="w-4 h-4 mr-2" />
                     {isProcessing
-                        ? (t('status.processing') || 'Processing...')
-                        : (tTools('pdfBooklet.createButton') || 'Create Booklet')
+                        ? (t('status.processing'))
+                        : (tTools('pdfBooklet.createButton'))
                     }
                 </Button>
 
@@ -392,7 +393,7 @@ export function PDFBookletTool({ className = '' }: PDFBookletToolProps) {
                     role="status"
                 >
                     <p className="text-sm font-medium">
-                        {tTools('pdfBooklet.successMessage') || 'Booklet created successfully! Click download to save.'}
+                        {tTools('pdfBooklet.successMessage')}
                     </p>
                 </div>
             )}

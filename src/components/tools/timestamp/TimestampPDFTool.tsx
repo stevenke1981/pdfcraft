@@ -30,6 +30,7 @@ const TSA_SERVERS = [
 ];
 
 export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -108,7 +109,7 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Requesting TSA certificate...');
+            setProgressMessage(message || tUi('interfaceFeedback.requestingTsaCertificate'));
           }
         }
       );
@@ -132,12 +133,12 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
           });
         }
       } else {
-        setError(output.error?.message || 'Failed to apply RFC 3161 timestamp.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToApplyRfc3161Timestamp'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
@@ -188,7 +189,7 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
                 {file.name}
               </p>
               <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                {totalPages > 0 ? t('comparePdfs.pageNumber', { page: totalPages }) : t('status.loading')} • {(file.size / (1024 * 1024)).toFixed(2)} MB
+                {totalPages > 0 ? tUi('common.comparePdfs.pageIndex', { page: totalPages }) : t('status.loading')} • {(file.size / (1024 * 1024)).toFixed(2)} MB
               </p>
             </div>
           </div>
@@ -216,10 +217,10 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
                     <svg className="w-5 h-5 text-[hsl(var(--color-primary))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
-                    {tTools('timestampPdf.selectTsaTitle')}
+                    {tUi('common.timestamp.tsaStepTitle')}
                   </h3>
                   <p className="text-[11px] text-[hsl(var(--color-muted-foreground))] mt-1">
-                    {tTools('timestampPdf.privacyGuaranteed')}
+                    {tUi('common.timestamp.tsaPrivacyHelp')}
                   </p>
                 </div>
 
@@ -292,7 +293,7 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
-                  {tTools('timestampPdf.processButton')}
+                  {tUi('common.timestamp.processButton')}
                 </Button>
               </div>
             </Card>
@@ -310,9 +311,9 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
-                  <h4 className="text-sm font-bold text-[hsl(var(--color-foreground))]">{tTools('timestampPdf.waitingTitle')}</h4>
+                  <h4 className="text-sm font-bold text-[hsl(var(--color-foreground))]">{tUi('common.timestamp.processingTitle')}</h4>
                   <p className="text-xs leading-relaxed max-w-[260px] mx-auto">
-                    {tTools('timestampPdf.waitingDescription')}
+                    {tUi('common.timestamp.processingDesc')}
                   </p>
                 </div>
               ) : (
@@ -323,17 +324,17 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
                   <div className="flex items-start justify-between border-b border-zinc-200 dark:border-zinc-800 pb-4">
                     <div className="space-y-1">
                       <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-400 font-bold uppercase tracking-wider">
-                        TSA Verified & Secured
+                        {tUi('interfaceText.tsaVerifiedSecured')}
                       </span>
                       <h4 className="text-base font-black tracking-tight text-[hsl(var(--color-foreground))]">
-                        {tTools('timestampPdf.certificateTitle')}
+                        {tUi('common.timestamp.resultTitle')}
                       </h4>
                     </div>
                     {/* Golden luxury seal */}
                     <div className="w-14 h-14 rounded-full border-4 border-amber-400/40 bg-amber-400/10 flex items-center justify-center shadow-lg transform rotate-12 relative animate-in fade-in zoom-in-75 duration-700 delay-100">
                       <div className="text-center font-black text-amber-500 uppercase tracking-tighter" style={{ fontSize: '7px', lineHeight: '1' }}>
                         TSA<br/>
-                        <span className="text-[9px]">SEAL</span><br/>
+                        <span className="text-[9px]">{tUi('interfaceText.seal')}</span><br/>
                         RFC 3161
                       </div>
                     </div>
@@ -349,7 +350,7 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
                         </svg>
                       </div>
                       <div>
-                        <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] uppercase font-bold tracking-wider">{tTools('timestampPdf.tsaTime')}</p>
+                        <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] uppercase font-bold tracking-wider">{tUi('common.timestamp.tsaTime')}</p>
                         <p className="text-sm font-extrabold text-[hsl(var(--color-foreground))] mt-0.5">
                           {new Date(auditLog.timestamp).toLocaleString()}
                         </p>
@@ -358,7 +359,7 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
 
                     {/* Cryptographic Hash */}
                     <div className="space-y-1">
-                      <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] uppercase font-bold tracking-wider">{tTools('timestampPdf.fileHash')}</p>
+                      <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] uppercase font-bold tracking-wider">{tUi('common.timestamp.tsaHash')}</p>
                       <code className="text-[10px] bg-[hsl(var(--color-muted)/0.35)] border border-[hsl(var(--color-border))] px-3 py-2 rounded-xl block font-mono text-[hsl(var(--color-foreground))] break-all leading-normal">
                         {auditLog.hash}
                       </code>
@@ -367,13 +368,13 @@ export function TimestampPDFTool({ className = '' }: TimestampPDFToolProps) {
                     {/* Metadata fields */}
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] uppercase font-bold tracking-wider">{tTools('timestampPdf.authority')}</p>
+                        <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] uppercase font-bold tracking-wider">{tUi('common.timestamp.tsaName')}</p>
                         <p className="text-xs font-bold text-[hsl(var(--color-foreground))] mt-1">
                           {auditLog.tsaAuthority}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] uppercase font-bold tracking-wider">{tTools('timestampPdf.serialNumber')}</p>
+                        <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] uppercase font-bold tracking-wider">{tUi('common.timestamp.tsaSerial')}</p>
                         <p className="text-xs font-bold text-[hsl(var(--color-foreground))] mt-1 font-mono">
                           {auditLog.serial}
                         </p>

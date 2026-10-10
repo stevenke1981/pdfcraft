@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/Card';
 import type { SignatureValidationResult } from '@/types/digital-signature';
 
 export function ValidateSignatureTool({ className = '' }: { className?: string }) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTool = useTranslations('tools.validateSign');
 
@@ -38,11 +39,11 @@ export function ValidateSignatureTool({ className = '' }: { className?: string }
       setResults(res);
       setValidated(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to validate signatures');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.failedToValidateSignatures'));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [tUi]);
 
   const handleTrustedCert = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -79,12 +80,12 @@ export function ValidateSignatureTool({ className = '' }: { className?: string }
         setResults(res);
         setValidated(true);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to parse certificate');
+        setError(err instanceof Error ? err.message : tUi('tools.digitalSign.errorParse'));
       } finally {
         setLoading(false);
       }
     }
-  }, [pdfFile]);
+  }, [tUi, pdfFile, tTool]);
 
   const handleClear = useCallback(() => {
     setPdfFile(null);
@@ -219,7 +220,7 @@ export function ValidateSignatureTool({ className = '' }: { className?: string }
                       {/* Header */}
                       <div className="flex items-start justify-between">
                         <div>
-                          <h4 className="font-semibold text-[hsl(var(--color-foreground))]">Signature {index + 1}</h4>
+                          <h4 className="font-semibold text-[hsl(var(--color-foreground))]">{tUi('common.editPdf.annSignature')} {index + 1}</h4>
                           <p className={`text-sm ${statusColor}`}>{statusText}</p>
                         </div>
                         <div className="flex gap-2">
@@ -291,7 +292,7 @@ export function ValidateSignatureTool({ className = '' }: { className?: string }
                           <p><span className="text-[hsl(var(--color-muted-foreground))]">{tTool('serialNumber')}</span> <span className="font-mono text-[hsl(var(--color-foreground))]">{result.serialNumber}</span></p>
                           <p><span className="text-[hsl(var(--color-muted-foreground))]">{tTool('digestAlgorithm')}</span> <span className="text-[hsl(var(--color-foreground))]">{result.algorithms.digest}</span></p>
                           <p><span className="text-[hsl(var(--color-muted-foreground))]">{tTool('signatureAlgorithm')}</span> <span className="text-[hsl(var(--color-foreground))]">{result.algorithms.signature}</span></p>
-                          {result.errorMessage && <p className="text-red-600 dark:text-red-400">Error: {result.errorMessage}</p>}
+                          {result.errorMessage && <p className="text-red-600 dark:text-red-400">{tUi('interfaceText.error')} {result.errorMessage}</p>}
                         </div>
                       </details>
                     </div>

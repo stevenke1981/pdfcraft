@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
@@ -25,6 +26,7 @@ export function SignatureLibraryModal({
   viewerWindow,
   onOpenExtractor,
 }: SignatureLibraryModalProps) {
+  const tUi = useTranslations();
   const [signatures, setSignatures] = useState<PDFCraftSignature[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
@@ -116,7 +118,7 @@ export function SignatureLibraryModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="签名库管理"
+      title={tUi('interfaceText.manageSignatureLibrary')}
       size="lg"
       className="!max-w-2xl"
     >
@@ -131,7 +133,7 @@ export function SignatureLibraryModal({
 
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-            已保存 {signatures.length} 个个性化手写签名与印章，可随时重用或应用到文档。
+            {tUi('workflow.saved')} {signatures.length} {tUi('interfaceText.savedHandwritingSignaturesAndStampsReadyToReuseOrApplyToDocuments')}
           </p>
           <div className="flex items-center gap-2">
             <Button
@@ -140,7 +142,7 @@ export function SignatureLibraryModal({
               onClick={() => fileInputRef.current?.click()}
               className="text-xs"
             >
-              🖼️ 上传图片签名
+              {tUi('interfaceText.uploadSignatureImage')}
             </Button>
             <Button
               variant="outline"
@@ -151,7 +153,7 @@ export function SignatureLibraryModal({
               }}
               className="text-xs"
             >
-              ➕ 从已签署 PDF 提取
+              {tUi('interfaceText.extractFromSignedPdf')}
             </Button>
           </div>
         </div>
@@ -171,9 +173,9 @@ export function SignatureLibraryModal({
                 d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
               />
             </svg>
-            <p className="text-sm font-medium text-gray-700 mb-1">暂无已保存的签名</p>
+            <p className="text-sm font-medium text-gray-700 mb-1">{tUi('interfaceText.noSavedSignatures')}</p>
             <p className="text-xs text-gray-500 mb-4 max-w-sm mx-auto">
-              您可以直接上传本地透明 PNG / JPG 签名图片，或上传已在 Adobe Acrobat 中签署过的文件提取签名。
+              {tUi('interfaceText.uploadALocalPngJpgSignatureImageOrExtractASignatureFromAPdfSignedInAdobeAcrobat')}
             </p>
             <div className="flex items-center justify-center gap-3">
               <Button
@@ -181,7 +183,7 @@ export function SignatureLibraryModal({
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
               >
-                🖼️ 上传签名图片 (PNG/JPG)
+                {tUi('interfaceText.uploadSignatureImagePngJpg')}
               </Button>
               <Button
                 variant="outline"
@@ -191,7 +193,7 @@ export function SignatureLibraryModal({
                   onOpenExtractor();
                 }}
               >
-                从已签署 PDF 提取
+                {tUi('interfaceText.extractFromSignedPdf2')}
               </Button>
             </div>
           </div>
@@ -228,7 +230,7 @@ export function SignatureLibraryModal({
                       type="button"
                       onClick={() => handleDelete(sig.id)}
                       className="text-gray-400 hover:text-red-500 text-xs px-1"
-                      title="删除"
+                      title={tUi('common.buttons.delete')}
                     >
                       ✕
                     </button>
@@ -247,7 +249,7 @@ export function SignatureLibraryModal({
                       className="flex-1 text-xs py-1 h-auto"
                       onClick={() => handleApply(sig)}
                     >
-                      直接盖章
+                      {tUi('interfaceText.applyStamp')}
                     </Button>
                   )}
                   <Button
@@ -256,7 +258,7 @@ export function SignatureLibraryModal({
                     className="text-xs py-1 h-auto px-2"
                     onClick={() => handleCopy(sig)}
                   >
-                    {copiedId === sig.id ? '已复制' : '复制'}
+                    {copiedId === sig.id ? tUi('interfaceText.copied') : tUi('interfaceText.copy')}
                   </Button>
                   <Button
                     variant="ghost"
@@ -264,7 +266,7 @@ export function SignatureLibraryModal({
                     className="text-xs py-1 h-auto px-2"
                     onClick={() => handleDownload(sig)}
                   >
-                    下载
+                    {tUi('common.buttons.download')}
                   </Button>
                 </div>
               </div>

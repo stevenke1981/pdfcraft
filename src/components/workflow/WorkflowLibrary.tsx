@@ -52,6 +52,7 @@ export function WorkflowLibrary({
     isCollapsed = false,
     onToggleCollapse,
 }: WorkflowLibraryProps) {
+  const tUi = useTranslations();
     const tWorkflow = useTranslations('workflow');
     const [activeTab, setActiveTab] = useState<TabType>('templates');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -121,18 +122,18 @@ export function WorkflowLibrary({
     };
 
     const tabs = [
-        { id: 'templates' as const, label: tWorkflow('templates') || 'Templates', icon: Sparkles },
-        { id: 'saved' as const, label: tWorkflow('saved') || 'Saved', icon: FolderOpen },
-        { id: 'favorites' as const, label: tWorkflow('favorites') || 'Favorites', icon: Star },
-        { id: 'history' as const, label: tWorkflow('history') || 'History', icon: Clock },
+        { id: 'templates' as const, label: tWorkflow('templates'), icon: Sparkles },
+        { id: 'saved' as const, label: tWorkflow('saved'), icon: FolderOpen },
+        { id: 'favorites' as const, label: tWorkflow('favorites'), icon: Star },
+        { id: 'history' as const, label: tWorkflow('history'), icon: Clock },
     ];
 
     const templateCategories = [
-        { id: 'all', label: tWorkflow('allCategories') || 'All', icon: FileStack },
-        { id: 'common', label: tWorkflow('common') || 'Common', icon: Clock },
-        { id: 'conversion', label: tWorkflow('conversion') || 'Conversion', icon: RefreshCw },
-        { id: 'optimization', label: tWorkflow('optimization') || 'Optimization', icon: Zap },
-        { id: 'security', label: tWorkflow('security') || 'Security', icon: Shield },
+        { id: 'all', label: tWorkflow('allCategories'), icon: FileStack },
+        { id: 'common', label: tWorkflow('common'), icon: Clock },
+        { id: 'conversion', label: tWorkflow('conversion'), icon: RefreshCw },
+        { id: 'optimization', label: tWorkflow('optimization'), icon: Zap },
+        { id: 'security', label: tWorkflow('security'), icon: Shield },
     ];
 
     const filteredTemplates = selectedCategory === 'all'
@@ -156,7 +157,7 @@ export function WorkflowLibrary({
                 <button
                     onClick={onToggleCollapse}
                     className="p-2 rounded-lg hover:bg-[hsl(var(--color-muted))] transition-colors mb-2"
-                    title={tWorkflow('templates') || 'Templates'}
+                    title={tWorkflow('templates')}
                 >
                     <PanelRightOpen className="w-5 h-5 text-[hsl(var(--color-primary))]" />
                 </button>
@@ -184,12 +185,12 @@ export function WorkflowLibrary({
             {/* Collapse button header */}
             <div className="flex items-center justify-between px-4 py-2 border-b border-[hsl(var(--color-border))]">
                 <span className="text-sm font-medium text-[hsl(var(--color-foreground))]">
-                    {tWorkflow('templates') || 'Library'}
+                    {tWorkflow('templates')}
                 </span>
                 <button
                     onClick={onToggleCollapse}
                     className="p-1.5 rounded-lg hover:bg-[hsl(var(--color-muted))] transition-colors"
-                    title="Collapse sidebar"
+                    title={tUi('workflow.collapseSidebar')}
                 >
                     <PanelRightClose className="w-4 h-4 text-[hsl(var(--color-muted-foreground))]" />
                 </button>
@@ -266,10 +267,10 @@ export function WorkflowLibrary({
                                     </div>
                                     <div className="flex items-center gap-2 mt-2">
                                         <span className="text-[10px] px-2 py-0.5 bg-[hsl(var(--color-muted))] rounded-full text-[hsl(var(--color-muted-foreground))]">
-                                            {template.nodes.length} {tWorkflow('nodes') || 'nodes'}
+                                            {template.nodes.length} {tWorkflow('nodes')}
                                         </span>
                                         <span className="text-[10px] px-2 py-0.5 bg-[hsl(var(--color-muted))] rounded-full text-[hsl(var(--color-muted-foreground))]">
-                                            {template.edges.length} {tWorkflow('connections') || 'connections'}
+                                            {template.edges.length} {tWorkflow('connections')}
                                         </span>
                                     </div>
                                 </div>
@@ -285,10 +286,10 @@ export function WorkflowLibrary({
                             <div className="text-center py-8">
                                 <FolderOpen className="w-12 h-12 mx-auto text-[hsl(var(--color-muted-foreground))]" />
                                 <p className="mt-3 text-sm text-[hsl(var(--color-muted-foreground))]">
-                                    {tWorkflow('noSavedWorkflows') || 'No saved workflows yet'}
+                                    {tWorkflow('noSavedWorkflows')}
                                 </p>
                                 <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                                    {tWorkflow('saveWorkflowHint') || 'Create and save your first workflow'}
+                                    {tWorkflow('saveWorkflowHint')}
                                 </p>
                             </div>
                         ) : (
@@ -329,7 +330,7 @@ export function WorkflowLibrary({
                                                         onDuplicateWorkflow(workflow.id);
                                                     }}
                                                     className="p-1.5 rounded hover:bg-[hsl(var(--color-muted))] transition-colors"
-                                                    title="Duplicate"
+                                                    title={tUi('tools.pdfMultiTool.duplicate')}
                                                 >
                                                     <Copy className="w-3.5 h-3.5 text-[hsl(var(--color-muted-foreground))]" />
                                                 </button>
@@ -339,7 +340,7 @@ export function WorkflowLibrary({
                                                         onExportWorkflow(workflow);
                                                     }}
                                                     className="p-1.5 rounded hover:bg-[hsl(var(--color-muted))] transition-colors"
-                                                    title="Export"
+                                                    title={tUi('interfaceText.export')}
                                                 >
                                                     <Download className="w-3.5 h-3.5 text-[hsl(var(--color-muted-foreground))]" />
                                                 </button>
@@ -349,7 +350,7 @@ export function WorkflowLibrary({
                                                         onDeleteWorkflow(workflow.id);
                                                     }}
                                                     className="p-1.5 rounded hover:bg-red-100 transition-colors"
-                                                    title="Delete"
+                                                    title={tUi('common.buttons.delete')}
                                                 >
                                                     <Trash2 className="w-3.5 h-3.5 text-red-500" />
                                                 </button>
@@ -369,10 +370,10 @@ export function WorkflowLibrary({
                             <div className="text-center py-8">
                                 <Star className="w-12 h-12 mx-auto text-[hsl(var(--color-muted-foreground))]" />
                                 <p className="mt-3 text-sm text-[hsl(var(--color-muted-foreground))]">
-                                    {tWorkflow('noFavorites') || 'No favorite workflows'}
+                                    {tWorkflow('noFavorites')}
                                 </p>
                                 <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                                    {tWorkflow('favoriteHint') || 'Star workflows to add them here'}
+                                    {tWorkflow('favoriteHint')}
                                 </p>
                             </div>
                         ) : (

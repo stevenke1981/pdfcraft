@@ -35,6 +35,7 @@ export interface ExtractImagesToolProps {
  * Provides the UI for extracting images from PDF files.
  */
 export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -138,16 +139,16 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                 setExtractedImages(output.metadata.images as ExtractedImage[]);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || 'No images found in the selected PDF(s).');
+                setError(output.error?.message || tUi('interfaceFeedback.noImagesFoundInTheSelectedPdfS'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [files, minWidth, minHeight, minSize, tFeedback]);
+    }, [tUi, files, minWidth, minHeight, minSize, tFeedback]);
 
     /**
      * Handle cancel operation
@@ -186,7 +187,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
         try {
             setStatus('processing');
             setProgress(0);
-            setProgressMessage('Creating ZIP archive...');
+            setProgressMessage(tUi('interfaceText.creatingZipArchive'));
 
             const zip = new JSZip();
 
@@ -206,10 +207,10 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
             setStatus('complete');
             setProgress(100);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to create ZIP file.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.failedToCreateZipFile'));
             setStatus('error');
         }
-    }, [extractedImages]);
+    }, [tUi, extractedImages]);
 
     /**
      * Format file size
@@ -259,8 +260,8 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('extractImages.uploadLabel') || 'Upload PDF Files'}
-                description={tTools('extractImages.uploadDescription') || 'Select PDF files to extract images from.'}
+                label={tTools('extractImages.uploadLabel')}
+                description={tTools('extractImages.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -278,7 +279,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                 <Card variant="outlined" size="lg">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                            {tTools('extractImages.filesTitle') || 'Selected Files'} ({files.length})
+                            {tTools('extractImages.filesTitle')} ({files.length})
                         </h3>
                         <Button
                             variant="ghost"
@@ -286,7 +287,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                             onClick={handleClearAll}
                             disabled={isProcessing}
                         >
-                            {t('buttons.clearAll') || 'Clear All'}
+                            {t('buttons.clearAll')}
                         </Button>
                     </div>
 
@@ -314,7 +315,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                                     onClick={() => handleRemoveFile(item.id)}
                                     disabled={isProcessing}
                                     className="p-1 rounded hover:bg-red-100 text-[hsl(var(--color-muted-foreground))] hover:text-red-600"
-                                    aria-label={`Remove ${item.file.name}`}
+                                    aria-label={tUi('dynamicUi.removeFileName', { filename: item.file.name })}
                                 >
                                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M18 6L6 18M6 6l12 12" />
@@ -330,16 +331,16 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
             {files.length > 0 && !isProcessing && extractedImages.length === 0 && (
                 <Card variant="outlined" size="lg">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('extractImages.filterTitle') || 'Filter Options'}
+                        {tTools('extractImages.filterTitle')}
                     </h3>
                     <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-4">
-                        {tTools('extractImages.filterDescription') || 'Filter out small images (icons, decorations, etc.)'}
+                        {tTools('extractImages.filterDescription')}
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                                {tTools('extractImages.minWidth') || 'Min Width (px)'}
+                                {tTools('extractImages.minWidth')}
                             </label>
                             <input
                                 type="number"
@@ -352,7 +353,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                                {tTools('extractImages.minHeight') || 'Min Height (px)'}
+                                {tTools('extractImages.minHeight')}
                             </label>
                             <input
                                 type="number"
@@ -365,7 +366,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                                {tTools('extractImages.minSizeKB') || 'Min Size (KB)'}
+                                {tTools('extractImages.minSizeKB')}
                             </label>
                             <input
                                 type="number"
@@ -401,8 +402,8 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                     loading={isProcessing}
                 >
                     {isProcessing
-                        ? (t('status.processing') || 'Processing...')
-                        : (tTools('extractImages.extractButton') || 'Extract Images')
+                        ? (t('status.processing'))
+                        : (tTools('extractImages.extractButton'))
                     }
                 </Button>
             </div>
@@ -412,7 +413,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                 <Card variant="outlined" size="lg">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                            {tTools('extractImages.extractedTitle') || 'Extracted Images'} ({extractedImages.length})
+                            {tTools('extractImages.extractedTitle')} ({extractedImages.length})
                         </h3>
                         <div className="flex gap-2">
                             <Button
@@ -420,14 +421,14 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                                 size="sm"
                                 onClick={handleDownloadAll}
                             >
-                                {tTools('extractImages.downloadAll') || 'Download All'}
+                                {tTools('extractImages.downloadAll')}
                             </Button>
                             <Button
                                 variant="secondary"
                                 size="sm"
                                 onClick={handleDownloadZip}
                             >
-                                {tTools('extractImages.downloadZip') || 'Download as ZIP'}
+                                {tTools('extractImages.downloadZip')}
                             </Button>
                         </div>
                     </div>
@@ -466,7 +467,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                                         {image.width}×{image.height} • {formatSize(image.size)}
                                     </p>
                                     <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                                        {tTools('extractImages.page') || 'Page'} {image.pageNumber}
+                                        {tTools('extractImages.page')} {image.pageNumber}
                                     </p>
                                 </div>
 
@@ -478,7 +479,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                                         handleDownloadImage(image);
                                     }}
                                     className="absolute top-2 right-2 p-1.5 rounded-[var(--radius-md)] bg-[hsl(var(--color-background)/0.9)] border border-[hsl(var(--color-border))] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[hsl(var(--color-primary))] hover:text-white"
-                                    aria-label={`Download ${image.name}`}
+                                    aria-label={tUi('dynamicUi.downloadImage', { filename: image.name })}
                                 >
                                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -545,7 +546,7 @@ export function ExtractImagesTool({ className = '' }: ExtractImagesToolProps) {
                                 variant="primary"
                                 onClick={() => handleDownloadImage(selectedImage)}
                             >
-                                {t('buttons.download') || 'Download'}
+                                {t('buttons.download')}
                             </Button>
                         </div>
                     </div>

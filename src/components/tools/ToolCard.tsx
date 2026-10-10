@@ -104,7 +104,7 @@ export function ToolCard({ tool, locale, className = '', localizedContent }: Too
               {categoryName}
             </span>
             <span className="group-hover:translate-x-1 transition-transform duration-300 text-[hsl(var(--color-primary))] font-medium opacity-0 group-hover:opacity-100">
-              {t('common.buttons.next') || 'Try now'} {/* Using Next as dummy or keep Try now if no key */}
+              {t('common.buttons.next')} {/* Using Next as dummy or keep Try now if no key */}
             </span>
           </div>
         </div>

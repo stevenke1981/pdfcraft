@@ -18,9 +18,11 @@
     "test:i18n": "vitest run src/__tests__/config src/__tests__/lib/locale-detector.test.ts src/__tests__/components/layout/LanguageSelector.test.tsx src/__tests__/components/tools/LocalizedSharedUI.test.tsx",
     "audit:i18n": "node scripts/audit-i18n.mjs",
     "test:e2e": "playwright test",
-    "predev": "node scripts/decompress-wasm.mjs public && node scripts/ensure-pdfjs-viewer-js.js public",
-    "postinstall": "node scripts/sync-pdfjs-workers.js && node scripts/decompress-wasm.mjs public && node scripts/ensure-pdfjs-viewer-js.js public",
-    "postbuild": "node scripts/decompress-wasm.mjs && node scripts/chunk-assets.mjs && node scripts/ensure-pdfjs-viewer-js.js out && node scripts/localize-static-html.mjs"
+    "predev": "node scripts/sync-editor-translations.mjs && node scripts/decompress-wasm.mjs public && node scripts/ensure-pdfjs-viewer-js.js public",
+    "postinstall": "node scripts/sync-editor-translations.mjs && node scripts/sync-pdfjs-workers.js && node scripts/decompress-wasm.mjs public && node scripts/ensure-pdfjs-viewer-js.js public",
+    "postbuild": "node scripts/sync-editor-translations.mjs && node scripts/decompress-wasm.mjs && node scripts/chunk-assets.mjs && node scripts/ensure-pdfjs-viewer-js.js out && node scripts/localize-static-html.mjs",
+    "sync:editor-i18n": "node scripts/sync-editor-translations.mjs",
+    "prebuild": "node scripts/sync-editor-translations.mjs"
   },
   "dependencies": {
     "@matbee/libreoffice-converter": "^2.5.0",

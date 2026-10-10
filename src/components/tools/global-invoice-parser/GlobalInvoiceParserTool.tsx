@@ -16,6 +16,7 @@ export interface GlobalInvoiceParserToolProps {
 }
 
 export function GlobalInvoiceParserTool({ className = '' }: GlobalInvoiceParserToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [targetCurrency, setTargetCurrency] = useState('CNY');
@@ -59,7 +60,7 @@ export function GlobalInvoiceParserTool({ className = '' }: GlobalInvoiceParserT
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Translating invoice terms...');
+            setProgressMessage(message || tUi('interfaceFeedback.translatingInvoiceTerms'));
           }
         }
       );
@@ -74,12 +75,12 @@ export function GlobalInvoiceParserTool({ className = '' }: GlobalInvoiceParserT
         setInvoiceStats(output.metadata);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to translate invoice.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToTranslateInvoice'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error converting invoice.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorConvertingInvoice'));
         setStatus('error');
       }
     }
@@ -137,7 +138,7 @@ export function GlobalInvoiceParserTool({ className = '' }: GlobalInvoiceParserT
                 {invoiceStats ? (
                   <div className="space-y-4 text-center max-w-sm">
                     <div className="text-[10px] font-black text-green-500 tracking-widest uppercase">
-                      Converted successfully
+                      {tUi('common.globalInvoiceParser.convertedSuccess')}
                     </div>
                     <div className="text-3xl font-black text-zinc-800 dark:text-zinc-100 flex items-center justify-center gap-1">
                       <span>{invoiceStats.convertedAmount.toFixed(2)}</span>

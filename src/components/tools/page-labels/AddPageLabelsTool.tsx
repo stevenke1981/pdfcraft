@@ -28,6 +28,7 @@ export interface PageLabelRuleInput {
 }
 
 export function AddPageLabelsTool() {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -81,7 +82,7 @@ export function AddPageLabelsTool() {
     } finally {
       setIsLoadingFile(false);
     }
-  }, []);
+  }, [t]);
 
   const handleClearFile = () => {
     setFile(null);
@@ -257,7 +258,7 @@ export function AddPageLabelsTool() {
               <svg className="w-10 h-10 text-[hsl(var(--color-primary))]" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
                 <path d="M14 2v6h6" fill="white" />
-                <text x="8" y="17" fontSize="5" fill="white" fontWeight="bold">LABEL</text>
+                <text x="8" y="17" fontSize="5" fill="white" fontWeight="bold">{tUi('interfaceText.label')}</text>
               </svg>
               <div>
                 <p 
@@ -267,7 +268,7 @@ export function AddPageLabelsTool() {
                   {file.name}
                 </p>
                 <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                  {totalPages > 0 ? t('pageLabels.uploadSuccess', { count: totalPages, size: (file.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata') || 'Loading...')}
+                  {totalPages > 0 ? t('pageLabels.uploadSuccess', { count: totalPages, size: (file.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata'))}
                 </p>
               </div>
             </div>
@@ -313,7 +314,7 @@ export function AddPageLabelsTool() {
             <div className="flex justify-between items-center pb-2">
               <label className="text-sm font-bold text-[hsl(var(--color-foreground))] flex items-center gap-1.5">
                 <Layers className="w-4 h-4 text-[hsl(var(--color-primary))]" />
-                {t('pageLabels.optionsTitle')}
+                {tUi('common.pageLabels.rulesTitle')}
               </label>
               <Button
                 variant="outline"
@@ -323,7 +324,7 @@ export function AddPageLabelsTool() {
                 className="flex items-center gap-1 text-xs border border-[hsl(var(--color-primary)/0.35)] hover:bg-[hsl(var(--color-primary)/0.08)] py-1.5"
               >
                 <Plus className="w-3.5 h-3.5" />
-                {t('pageLabels.addRuleButton')}
+                {tUi('common.pageLabels.addRuleBtn')}
               </Button>
             </div>
 
@@ -343,7 +344,7 @@ export function AddPageLabelsTool() {
                         onClick={() => handleRemoveRule(idx)}
                         disabled={isProcessing}
                         className="text-zinc-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-[hsl(var(--color-muted))] transition-colors"
-                        title={t('pageLabels.deleteRuleTitle')}
+                        title={tUi('common.pageLabels.deleteRuleTooltip')}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -380,11 +381,11 @@ export function AddPageLabelsTool() {
                         onChange={(e) => handleRuleChange(idx, { style: e.target.value as any })}
                         className="w-full px-3 py-2 text-xs rounded-xl bg-[hsl(var(--color-muted)/0.35)] border border-[hsl(var(--color-input))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))] transition-all"
                       >
-                        <option value="D">{t('pageLabels.styleArabic')}</option>
-                        <option value="R">{t('pageLabels.styleRomanUpper')}</option>
-                        <option value="r">{t('pageLabels.styleRomanLower')}</option>
-                        <option value="A">{t('pageLabels.styleAlphaUpper')}</option>
-                        <option value="a">{t('pageLabels.styleAlphaLower')}</option>
+                        <option value="D">{tUi('common.pageLabels.styleD')}</option>
+                        <option value="R">{tUi('common.pageLabels.styleR')}</option>
+                        <option value="r">{tUi('common.pageLabels.style_r')}</option>
+                        <option value="A">{tUi('common.pageLabels.styleA')}</option>
+                        <option value="a">{tUi('common.pageLabels.style_a')}</option>
                         <option value="none">{t('pageLabels.styleNone')}</option>
                       </select>
                     </div>
@@ -431,7 +432,7 @@ export function AddPageLabelsTool() {
                 className="w-full py-4 font-bold shadow-lg shadow-[hsl(var(--color-primary)/0.15)] flex items-center justify-center gap-2"
               >
                 <Tag className="w-5 h-5" />
-                {isProcessing ? t('pageLabels.processing') : t('pageLabels.processButton')}
+                {isProcessing ? tUi('common.status.processing') : t('pageLabels.processButton')}
               </Button>
 
               {result && (
@@ -471,8 +472,8 @@ export function AddPageLabelsTool() {
               <div className="mb-4 p-3 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/10 border border-emerald-100/35 text-[11px] text-[hsl(var(--color-muted-foreground))] leading-normal flex gap-2">
                 <Info className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-[hsl(var(--color-foreground))]">{t('pageLabels.previewAlgorithmTitle')}</span>
-                  {t('pageLabels.previewAlgorithmDesc')}
+                  <span className="font-bold text-[hsl(var(--color-foreground))]">{tUi('common.pageLabels.algorithmTitle')}</span>
+                  {tUi('common.pageLabels.algorithmDesc')}
                 </div>
               </div>
 
@@ -495,7 +496,7 @@ export function AddPageLabelsTool() {
                 {totalPages > maxPreviewCount && !showAllPreview && (
                   <div className="col-span-full pt-4 pb-2 text-center">
                     <p className="text-[10px] text-[hsl(var(--color-muted-foreground))] mb-2">
-                      {t('pageLabels.previewFolded', { count: totalPages - maxPreviewCount })}
+                      {tUi('common.pageLabels.collapsedPages', { count: totalPages - maxPreviewCount })}
                     </p>
                     <Button
                       variant="outline"
@@ -503,7 +504,7 @@ export function AddPageLabelsTool() {
                       onClick={() => setShowAllPreview(true)}
                       className="text-[10px] py-1 px-3 rounded-xl"
                     >
-                      {t('pageLabels.previewLoadAll', { total: totalPages })}
+                      {tUi('common.pageLabels.loadFullPreview', { count: totalPages })}
                     </Button>
                   </div>
                 )}

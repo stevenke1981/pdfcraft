@@ -29,6 +29,7 @@ export interface JSONToPDFToolProps {
  * Converts JSON files to PDF with formatted output.
  */
 export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -157,16 +158,16 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to convert JSON to PDF.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToConvertJsonToPdf'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [files, pageSize, fontSize, indentSpaces, prettyPrint, showLineNumbers, tFeedback]);
+  }, [tUi, files, pageSize, fontSize, indentSpaces, prettyPrint, showLineNumbers, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -199,8 +200,8 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('jsonToPdf.uploadLabel') || 'Upload JSON Files'}
-        description={tTools('jsonToPdf.uploadDescription') || 'Drag and drop JSON files here, or click to browse.'}
+        label={tTools('jsonToPdf.uploadLabel')}
+        description={tTools('jsonToPdf.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -219,7 +220,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
           className="p-4 rounded-[var(--radius-md)] bg-yellow-50 border border-yellow-200 text-yellow-700"
           role="alert"
         >
-          <p className="text-sm font-medium">Invalid JSON</p>
+          <p className="text-sm font-medium">{tUi('interfaceText.invalidJson')}</p>
           <p className="text-sm mt-1">{parseError}</p>
         </div>
       )}
@@ -229,7 +230,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('jsonToPdf.filesTitle') || 'JSON Files'} ({files.length})
+              {tUi('interfaceText.jsonFiles')} ({files.length})
             </h3>
             <Button
               variant="ghost"
@@ -237,7 +238,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
               onClick={handleClearAll}
               disabled={isProcessing}
             >
-              {t('buttons.clearAll') || 'Clear All'}
+              {t('buttons.clearAll')}
             </Button>
           </div>
 
@@ -272,7 +273,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
                   onClick={() => handleRemoveFile(file.id)}
                   disabled={isProcessing}
                   className="flex-shrink-0 p-1 rounded hover:bg-red-100 text-[hsl(var(--color-muted-foreground))] hover:text-red-600 disabled:opacity-30"
-                  aria-label={`Remove ${file.file.name}`}
+                  aria-label={tUi('dynamicUi.removeFileName', { filename: file.file.name })}
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M18 6L6 18M6 6l12 12" />
@@ -286,7 +287,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
           {jsonPreview && !parseError && (
             <div className="mt-4">
               <h4 className="text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('jsonToPdf.preview') || 'Preview'}
+                {tUi('interfaceText.preview')}
               </h4>
               <pre className="p-3 rounded-[var(--radius-md)] bg-[hsl(var(--color-muted)/0.3)] text-xs font-mono text-[hsl(var(--color-foreground))] overflow-auto max-h-64 whitespace-pre">
                 {jsonPreview}
@@ -301,14 +302,14 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
       {files.length >= 1 && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('jsonToPdf.optionsTitle') || 'PDF Options'}
+            {tUi('interfaceText.pdfOptions')}
           </h3>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Page Size */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('jsonToPdf.pageSize') || 'Page Size'}
+                {tUi('interfaceText.pageSize')}
               </label>
               <select
                 value={pageSize}
@@ -317,8 +318,8 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               >
                 <option value="A4">A4</option>
-                <option value="LETTER">Letter</option>
-                <option value="LEGAL">Legal</option>
+                <option value="LETTER">{tUi('interfaceText.letter')}</option>
+                <option value="LEGAL">{tUi('interfaceText.legal')}</option>
                 <option value="A3">A3</option>
               </select>
             </div>
@@ -326,7 +327,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
             {/* Font Size */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('jsonToPdf.fontSize') || 'Font Size'}
+                {tUi('interfaceText.fontSize')}
               </label>
               <select
                 value={fontSize}
@@ -345,7 +346,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
             {/* Indent Spaces */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('jsonToPdf.indentSpaces') || 'Indentation'}
+                {tUi('interfaceText.indentation')}
               </label>
               <select
                 value={indentSpaces}
@@ -353,9 +354,9 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               >
-                <option value="2">2 spaces</option>
-                <option value="4">4 spaces</option>
-                <option value="8">8 spaces (tab)</option>
+                <option value="2">{tUi('interfaceText.2Spaces')}</option>
+                <option value="4">{tUi('interfaceText.4Spaces')}</option>
+                <option value="8">{tUi('interfaceText.8SpacesTab')}</option>
               </select>
             </div>
           </div>
@@ -370,7 +371,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
                 className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
               />
               <span className="text-sm text-[hsl(var(--color-foreground))]">
-                {tTools('jsonToPdf.prettyPrint') || 'Format JSON (pretty print)'}
+                {tUi('interfaceText.formatJson')}
               </span>
             </label>
 
@@ -383,7 +384,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
                 className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
               />
               <span className="text-sm text-[hsl(var(--color-foreground))]">
-                {tTools('jsonToPdf.showLineNumbers') || 'Show line numbers'}
+                {tUi('interfaceText.showLineNumbers')}
               </span>
             </label>
           </div>
@@ -411,8 +412,8 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('jsonToPdf.convertButton') || 'Convert to PDF')
+            ? (t('status.processing'))
+            : (tTools('jsonToPdf.convertButton'))
           }
         </Button>
 
@@ -434,7 +435,7 @@ export function JSONToPDFTool({ className = '' }: JSONToPDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('jsonToPdf.successMessage') || 'JSON converted to PDF successfully! Click the download button to save your file.'}
+            {tTools('jsonToPdf.successMessage')}
           </p>
         </div>
       )}

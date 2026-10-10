@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { PDFDocument, StandardFonts, PDFRawStream, PDFArray, decodePDFRawStream } from 'pdf-lib';
+import { PDFDocument, PDFName, PDFString, StandardFonts, PDFRawStream, PDFArray, decodePDFRawStream } from 'pdf-lib';
 import fs from 'node:fs';
 import path from 'node:path';
 import en from '../messages/en.json' with { type: 'json' };
@@ -11,7 +11,14 @@ const evidenceDirectory = path.resolve(process.env.PDFCRAFT_EVIDENCE_DIR || 'tes
 const fixtureDirectory = path.resolve('test-results/synthetic');
 
 async function assertFits(page: Page) {
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+  const horizontal = await page.evaluate(() => ({
+    fits: document.documentElement.scrollWidth <= window.innerWidth + 1,
+    viewport: window.innerWidth,
+    documentWidth: document.documentElement.scrollWidth,
+    overflowing: [...document.querySelectorAll('main div, main canvas')].filter(element => element.getBoundingClientRect().right > window.innerWidth + 1)
+      .map(element => ({ tag: element.tagName, className: element.className, width: element.getBoundingClientRect().width })).slice(-12),
+  }));
+  expect(horizontal.fits, JSON.stringify(horizontal)).toBe(true);
   const clipped = await page.locator('h1, h2, button:not([role="option"]), label').evaluateAll(elements => elements.filter(element => {
     const bounds = element.getBoundingClientRect();
     const style = getComputedStyle(element);
@@ -26,6 +33,13 @@ async function screenshot(page: Page, name: string) {
   await assertFits(page);
   await page.screenshot({ path: path.join(evidenceDirectory, name + '.png'), fullPage: true, animations: 'disabled' });
   if (name.endsWith('-home') || name.endsWith('-ocr')) {
+    await page.screenshot({ path: path.join(evidenceDirectory, name + '-viewport.png'), animations: 'disabled' });
+  }
+  if (name.endsWith('-controls')) {
+    await page.evaluate(() => {
+      const tool = document.querySelector('[data-testid="tool-page-interface"]');
+      if (tool) window.scrollTo(0, window.scrollY + tool.getBoundingClientRect().top - 90);
+    });
     await page.screenshot({ path: path.join(evidenceDirectory, name + '-viewport.png'), animations: 'disabled' });
   }
 }
@@ -57,6 +71,10 @@ test.beforeAll(async () => {
     pdf.setTitle(`Synthetic fixture ${name}`);
     fs.writeFileSync(path.join(fixtureDirectory, `${name}.pdf`), await pdf.save());
   }
+  const layered = await PDFDocument.load(fs.readFileSync(path.join(fixtureDirectory, 'A.pdf')));
+  const layer = layered.context.register(layered.context.obj({ Type: 'OCG', Name: PDFString.of('ReviewLayer') }));
+  layered.catalog.set(PDFName.of('OCProperties'), layered.context.obj({ OCGs: [layer], D: { Order: [layer], ON: [layer] } }));
+  fs.writeFileSync(path.join(fixtureDirectory, 'Layered.pdf'), await layered.save());
 });
 
 test.beforeEach(async ({ context }) => {
@@ -162,6 +180,61 @@ for (const locale of ['en', 'zh-TW', 'ja'] as const) {
     await screenshot(page, `${locale}-desktop-compress-preview`);
     await page.setViewportSize({ width: 390, height: 844 });
     await screenshot(page, `${locale}-mobile-compress-preview`);
+    expect(uploads).toEqual([]);
+  });
+
+  test(`${locale}: owned tool controls, literal document templates and embedded editor`, async ({ page }) => {
+    test.setTimeout(90_000);
+    const consoleErrors: string[] = [], uploads: string[] = [];
+    page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
+    page.on('request', request => { if (['POST', 'PUT', 'PATCH'].includes(request.method())) uploads.push(request.url()); });
+    for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844 }]) {
+      await page.setViewportSize(viewport);
+      const device = viewport.width < 600 ? 'mobile' : 'desktop';
+      await page.goto(`/${locale}/tools/header-footer/`);
+      await page.locator('input[type=file]').setInputFiles(path.join(fixtureDirectory, 'A.pdf'));
+      await expect(page.getByPlaceholder(messages.interfaceText.eGCompanyName)).toBeVisible();
+      await expect(page.locator('input[value="Page {page} of {total}"]')).toBeVisible();
+      // Braces are displayed literally in hints; existing document defaults are not localized.
+      const hint = messages.interfaceText.eGPagePageOfTotal.replaceAll("'{", '{').replaceAll("}'", '}');
+      await expect(page.getByPlaceholder(hint)).toBeVisible();
+      await expect(page.getByText(messages.interfaceText.left, { exact: true })).toHaveCount(2);
+      await screenshot(page, `${locale}-${device}-header-footer-controls`);
+      if (device === 'desktop') {
+        await page.getByRole('button', { name: messages.tools.headerFooter.addButton, exact: true }).click();
+        const downloadPromise = page.waitForEvent('download');
+        await page.getByRole('button', { name: new RegExp(messages.common.buttons.download) }).click();
+        const download = await downloadPromise, output = path.join(fixtureDirectory, `${locale}-header-footer.pdf`);
+        await download.saveAs(output);
+        await verifyOutput(output, 2, ['SYNTHETIC_A1', 'SYNTHETIC_A2', 'Page 1 of 2']);
+      }
+      await page.goto(`/${locale}/tools/ocg-manager/`);
+      await page.locator('input[type=file]').setInputFiles(path.join(fixtureDirectory, 'Layered.pdf'));
+      await expect(page.getByText('ReviewLayer', { exact: true })).toBeVisible();
+      await expect(page.getByTitle(messages.interfaceText.renameLayer)).toBeVisible();
+      await screenshot(page, `${locale}-${device}-ocg-controls`);
+      const dialogPromise = page.waitForEvent('dialog');
+      const clickPromise = page.getByTitle(messages.interfaceText.deleteLayer).click();
+      const dialog = await dialogPromise;
+      expect(dialog.message()).toBe(messages.interfaceFeedback.areYouSureYouWantToDeleteThisLayer);
+      await dialog.dismiss();
+      await clickPromise;
+      await page.goto(`/${locale}/tools/background-color/`);
+      await page.locator('input[type=file]').setInputFiles(path.join(fixtureDirectory, 'A.pdf'));
+      await expect(page.getByLabel(messages.interfaceText.backgroundHex)).toHaveValue('#fffde7');
+      await expect(page.getByRole('button', { name: messages.interfaceText.addBackground, exact: true })).toBeVisible();
+      await screenshot(page, `${locale}-${device}-background-controls`);
+      await page.goto(`/${locale}/tools/redact-pdf/`);
+      await page.locator('input[type=file]').setInputFiles(path.join(fixtureDirectory, 'A.pdf'));
+      await expect(page.getByText(messages.interfaceText.securityAndPrivacyOptions, { exact: true })).toBeVisible();
+      await screenshot(page, `${locale}-${device}-redact-controls`);
+      await page.goto(`/direct-pdf-editor/index.html?lang=${locale}`);
+      await expect(page.locator('html')).toHaveAttribute('lang', locale);
+      await expect(page.locator('#editLabel')).toHaveText(messages.directEditor.editAll);
+      await expect(page.locator('#save')).toHaveAttribute('aria-label', messages.directEditor.exportS);
+      await screenshot(page, `${locale}-${device}-direct-editor-controls`);
+    }
+    expect(consoleErrors.filter(message => /MISSING_MESSAGE|INVALID_MESSAGE|FORMATTING_ERROR/.test(message))).toEqual([]);
     expect(uploads).toEqual([]);
   });
 }

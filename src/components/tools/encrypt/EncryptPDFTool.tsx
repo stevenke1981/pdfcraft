@@ -23,6 +23,7 @@ export interface EncryptPDFToolProps {
  * All encryption is performed client-side - passwords are never transmitted.
  */
 export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -129,16 +130,16 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to encrypt PDF file.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToEncryptPdfFile'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, userPassword, ownerPassword, permissions, tFeedback]);
+  }, [tUi, file, userPassword, ownerPassword, permissions, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;
@@ -165,8 +166,8 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('encryptPdf.uploadLabel') || 'Upload PDF File'}
-        description={tTools('encryptPdf.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+        label={tTools('encryptPdf.uploadLabel')}
+        description={tTools('encryptPdf.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -206,7 +207,7 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -217,21 +218,21 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('encryptPdf.passwordTitle') || 'Password Settings'}
+            {tTools('encryptPdf.passwordTitle')}
           </h3>
           
           <div className="space-y-4">
             {/* Privacy Notice */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-green-50 border border-green-200">
               <p className="text-sm text-green-700">
-                {tTools('encryptPdf.privacyNotice') || '🔒 Your passwords are processed locally and never sent to any server.'}
+                {tTools('encryptPdf.privacyNotice')}
               </p>
             </div>
 
             {/* User Password */}
             <div>
               <label htmlFor="user-password" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('encryptPdf.userPasswordLabel') || 'User Password (to open document)'}
+                {tTools('encryptPdf.userPasswordLabel')}
               </label>
               <div className="relative">
                 <input
@@ -240,28 +241,28 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
                   value={userPassword}
                   onChange={(e) => setUserPassword(e.target.value)}
                   disabled={isProcessing}
-                  placeholder={tTools('encryptPdf.userPasswordPlaceholder') || 'Enter password to open PDF'}
+                  placeholder={tTools('encryptPdf.userPasswordPlaceholder')}
                   aria-describedby="user-password-hint"
                   className="w-full px-3 py-2 pr-10 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowUserPassword(!showUserPassword)}
-                  aria-label={showUserPassword ? 'Hide user password' : 'Show user password'}
+                  aria-label={showUserPassword ? tUi('interfaceText.hideUserPassword') : tUi('interfaceText.showUserPassword')}
                   className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]"
                 >
                   {showUserPassword ? '🙈' : '👁️'}
                 </button>
               </div>
               <p id="user-password-hint" className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                {tTools('encryptPdf.userPasswordHint') || 'Required to open and view the PDF.'}
+                {tTools('encryptPdf.userPasswordHint')}
               </p>
             </div>
 
             {/* Owner Password */}
             <div>
               <label htmlFor="owner-password" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('encryptPdf.ownerPasswordLabel') || 'Owner Password (to change permissions)'}
+                {tTools('encryptPdf.ownerPasswordLabel')}
               </label>
               <div className="relative">
                 <input
@@ -270,21 +271,21 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
                   value={ownerPassword}
                   onChange={(e) => setOwnerPassword(e.target.value)}
                   disabled={isProcessing}
-                  placeholder={tTools('encryptPdf.ownerPasswordPlaceholder') || 'Enter owner password'}
+                  placeholder={tTools('encryptPdf.ownerPasswordPlaceholder')}
                   aria-describedby="owner-password-hint"
                   className="w-full px-3 py-2 pr-10 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowOwnerPassword(!showOwnerPassword)}
-                  aria-label={showOwnerPassword ? 'Hide owner password' : 'Show owner password'}
+                  aria-label={showOwnerPassword ? tUi('interfaceText.hideOwnerPassword') : tUi('interfaceText.showOwnerPassword')}
                   className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]"
                 >
                   {showOwnerPassword ? '🙈' : '👁️'}
                 </button>
               </div>
               <p id="owner-password-hint" className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                {tTools('encryptPdf.ownerPasswordHint') || 'Required to modify permissions or remove encryption.'}
+                {tTools('encryptPdf.ownerPasswordHint')}
               </p>
             </div>
           </div>
@@ -295,7 +296,7 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('encryptPdf.permissionsTitle') || 'Document Permissions'}
+            {tTools('encryptPdf.permissionsTitle')}
           </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -309,13 +310,13 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {key === 'printing' && (tTools('encryptPdf.permPrinting') || 'Allow Printing')}
-                  {key === 'modifying' && (tTools('encryptPdf.permModifying') || 'Allow Modifying')}
-                  {key === 'copying' && (tTools('encryptPdf.permCopying') || 'Allow Copying')}
-                  {key === 'annotating' && (tTools('encryptPdf.permAnnotating') || 'Allow Annotating')}
-                  {key === 'fillingForms' && (tTools('encryptPdf.permFillingForms') || 'Allow Filling Forms')}
-                  {key === 'contentAccessibility' && (tTools('encryptPdf.permAccessibility') || 'Allow Accessibility')}
-                  {key === 'documentAssembly' && (tTools('encryptPdf.permAssembly') || 'Allow Assembly')}
+                  {key === 'printing' && (tTools('encryptPdf.permPrinting'))}
+                  {key === 'modifying' && (tTools('encryptPdf.permModifying'))}
+                  {key === 'copying' && (tTools('encryptPdf.permCopying'))}
+                  {key === 'annotating' && (tTools('encryptPdf.permAnnotating'))}
+                  {key === 'fillingForms' && (tTools('encryptPdf.permFillingForms'))}
+                  {key === 'contentAccessibility' && (tTools('encryptPdf.permAccessibility'))}
+                  {key === 'documentAssembly' && (tTools('encryptPdf.permAssembly'))}
                 </span>
               </label>
             ))}
@@ -344,8 +345,8 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('encryptPdf.encryptButton') || 'Encrypt PDF')
+            ? (t('status.processing'))
+            : (tTools('encryptPdf.encryptButton'))
           }
         </Button>
 
@@ -367,10 +368,10 @@ export function EncryptPDFTool({ className = '' }: EncryptPDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('encryptPdf.successMessage') || 'PDF encrypted successfully!'}
+            {tTools('encryptPdf.successMessage')}
           </p>
           <p className="text-xs mt-1 text-green-600">
-            {tTools('encryptPdf.successHint') || 'Remember to save your passwords securely. They cannot be recovered if lost.'}
+            {tTools('encryptPdf.successHint')}
           </p>
         </div>
       )}

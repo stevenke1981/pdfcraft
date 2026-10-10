@@ -23,6 +23,7 @@ export interface AddBlankPageToolProps {
  * Provides the UI for adding blank pages to a PDF.
  */
 export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -111,7 +112,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
     }
 
     if (position < 0 || position > totalPages) {
-      setError(`Position must be between 0 and ${totalPages}.`);
+      setError(tUi('interfaceFeedback.positionBounds', { total: totalPages }));
       return;
     }
 
@@ -143,16 +144,16 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to add blank pages.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToAddBlankPages'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, position, count, totalPages, tFeedback]);
+  }, [tUi, file, position, count, totalPages, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -186,8 +187,8 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('addBlankPage.uploadLabel') || 'Upload PDF File'}
-          description={tTools('addBlankPage.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('addBlankPage.uploadLabel')}
+          description={tTools('addBlankPage.uploadDescription')}
         />
       )}
 
@@ -214,7 +215,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -224,7 +225,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -234,7 +235,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
       {file && totalPages > 0 && (
         <Card variant="outlined" size="lg">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('addBlankPage.optionsTitle') || 'Add Blank Pages Options'}
+            {tTools('addBlankPage.optionsTitle')}
           </h3>
 
           <div className="space-y-4">
@@ -244,7 +245,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
                 htmlFor="position" 
                 className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1"
               >
-                {tTools('addBlankPage.positionLabel') || 'Insert Position'}
+                {tTools('addBlankPage.positionLabel')}
               </label>
               <input
                 type="number"
@@ -267,7 +268,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
                 htmlFor="count" 
                 className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1"
               >
-                {tTools('addBlankPage.countLabel') || 'Number of Blank Pages'}
+                {tTools('addBlankPage.countLabel')}
               </label>
               <input
                 type="number"
@@ -289,7 +290,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
                 onClick={() => setPosition(0)}
                 disabled={isProcessing}
               >
-                {t('buttons.insertAtBeginning') || 'Insert at Beginning'}
+                {t('buttons.insertAtBeginning')}
               </Button>
               <Button
                 variant="outline"
@@ -297,7 +298,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
                 onClick={() => setPosition(totalPages)}
                 disabled={isProcessing}
               >
-                {t('buttons.insertAtEnd') || 'Insert at End'}
+                {t('buttons.insertAtEnd')}
               </Button>
             </div>
           </div>
@@ -326,7 +327,7 @@ export function AddBlankPageTool({ className = '' }: AddBlankPageToolProps) {
             loading={isProcessing}
           >
             {isProcessing 
-              ? (t('status.processing') || 'Processing...') 
+              ? (t('status.processing'))
               : (tTools('addBlankPage.addButton') || `Add ${count} Blank Page${count !== 1 ? 's' : ''}`)
             }
           </Button>

@@ -28,6 +28,7 @@ interface PagePreview {
  * Provides the UI for extracting specific pages from a PDF.
  */
 export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -230,16 +231,16 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to extract pages.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToExtractPages'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, selectedPages, tFeedback]);
+  }, [tUi, file, selectedPages, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -273,8 +274,8 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('extractPages.uploadLabel') || 'Upload PDF File'}
-          description={tTools('extractPages.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('extractPages.uploadLabel')}
+          description={tTools('extractPages.uploadDescription')}
         />
       )}
 
@@ -301,7 +302,7 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -311,7 +312,7 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -322,15 +323,15 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('extractPages.selectTitle') || 'Select Pages to Extract'}
+              {tTools('extractPages.selectTitle')}
               {selectedPages.size > 0 && ` (${selectedPages.size} selected)`}
             </h3>
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={handleSelectAll} disabled={isProcessing}>
-                {t('buttons.selectAll') || 'Select All'}
+                {t('buttons.selectAll')}
               </Button>
               <Button variant="ghost" size="sm" onClick={handleDeselectAll} disabled={isProcessing}>
-                {t('buttons.deselectAll') || 'Deselect All'}
+                {t('buttons.deselectAll')}
               </Button>
             </div>
           </div>
@@ -341,7 +342,7 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
               type="text"
               value={pageInput}
               onChange={(e) => setPageInput(e.target.value)}
-              placeholder="e.g., 1-5, 8, 10-15"
+              placeholder={tUi('interfaceText.eG1581015')}
               disabled={isProcessing}
               className="flex-1 px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] placeholder:text-[hsl(var(--color-muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
             />
@@ -351,12 +352,12 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
               onClick={handleApplyPageInput}
               disabled={isProcessing || !pageInput.trim()}
             >
-              {t('buttons.apply') || 'Apply'}
+              {t('buttons.apply')}
             </Button>
           </div>
 
           <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-4">
-            {tTools('extractPages.selectHint') || 'Click pages to select them, or enter page numbers/ranges above.'}
+            {tTools('extractPages.selectHint')}
           </p>
 
           {isLoadingPreviews ? (
@@ -364,7 +365,7 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
               <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-8 border-2 border-[hsl(var(--color-primary))] border-t-transparent rounded-full animate-spin" />
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {t('status.loading') || 'Loading previews...'}
+                  {t('status.loading')}
                 </p>
               </div>
             </div>
@@ -381,12 +382,12 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
                       ? 'border-[hsl(var(--color-primary))] ring-2 ring-[hsl(var(--color-primary)/0.3)]'
                       : 'border-[hsl(var(--color-border))] hover:border-[hsl(var(--color-primary)/0.5)]'
                   }`}
-                  aria-label={`Page ${preview.pageNumber}${selectedPages.has(preview.pageNumber) ? ' (selected)' : ''}`}
+                  aria-label={tUi(selectedPages.has(preview.pageNumber) ? 'dynamicUi.pageSelected' : 'dynamicUi.pageNumber', { page: preview.pageNumber })}
                 >
                   {preview.thumbnail ? (
                     <img
                       src={preview.thumbnail}
-                      alt={`Page ${preview.pageNumber}`}
+                      alt={tUi('dynamicUi.pageNumber', { page: preview.pageNumber })}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -435,7 +436,7 @@ export function ExtractPagesTool({ className = '' }: ExtractPagesToolProps) {
             loading={isProcessing}
           >
             {isProcessing 
-              ? (t('status.processing') || 'Processing...') 
+              ? (t('status.processing'))
               : (tTools('extractPages.extractButton') || `Extract ${selectedPages.size} Page${selectedPages.size !== 1 ? 's' : ''}`)
             }
           </Button>

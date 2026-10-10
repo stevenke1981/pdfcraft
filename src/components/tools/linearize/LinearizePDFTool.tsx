@@ -24,6 +24,7 @@ export interface LinearizePDFToolProps {
  * to display before the entire file is downloaded.
  */
 export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -155,16 +156,16 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
           });
         }
       } else {
-        setError(output.error?.message || 'Failed to linearize PDF file.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToLinearizePdfFile'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [files, useObjectStreams, tFeedback]);
+  }, [tUi, files, useObjectStreams, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -197,8 +198,8 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('linearizePdf.uploadLabel') || 'Upload PDF Files'}
-        description={tTools('linearizePdf.uploadDescription') || 'Drag and drop PDF files here, or click to browse. You can select multiple files.'}
+        label={tTools('linearizePdf.uploadLabel')}
+        description={tTools('linearizePdf.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -216,7 +217,7 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('linearizePdf.selectedFiles') || 'Selected Files'} ({files.length})
+              {tTools('linearizePdf.selectedFiles')} ({files.length})
             </h3>
             <Button
               variant="ghost"
@@ -224,7 +225,7 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.clearAll') || 'Clear All'}
+              {t('buttons.clearAll')}
             </Button>
           </div>
           
@@ -257,7 +258,7 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
                   onClick={() => handleRemoveFile(index)}
                   disabled={isProcessing}
                 >
-                  {t('buttons.remove') || 'Remove'}
+                  {t('buttons.remove')}
                 </Button>
               </div>
             ))}
@@ -269,14 +270,14 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
       {files.length > 0 && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('linearizePdf.optionsTitle') || 'Linearization Options'}
+            {tTools('linearizePdf.optionsTitle')}
           </h3>
           
           <div className="space-y-4">
             {/* Info about linearization */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-blue-50 border border-blue-200">
               <p className="text-sm text-blue-700">
-                {tTools('linearizePdf.info') || 'Linearization optimizes PDFs for fast web viewing. The first page will display before the entire file is downloaded, improving user experience for web-hosted documents.'}
+                {tTools('linearizePdf.info')}
               </p>
             </div>
 
@@ -292,10 +293,10 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
                 />
                 <div>
                   <span className="text-sm text-[hsl(var(--color-foreground))]">
-                    {tTools('linearizePdf.useObjectStreams') || 'Use object streams for better compression'}
+                    {tTools('linearizePdf.useObjectStreams')}
                   </span>
                   <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                    {tTools('linearizePdf.useObjectStreamsDesc') || 'Recommended for smaller file sizes. Disable for maximum compatibility with older PDF readers.'}
+                    {tTools('linearizePdf.useObjectStreamsDesc')}
                   </p>
                 </div>
               </label>
@@ -325,8 +326,8 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('linearizePdf.linearizeButton') || 'Linearize PDF')
+            ? (t('status.processing'))
+            : (tTools('linearizePdf.linearizeButton'))
           }
         </Button>
 
@@ -348,25 +349,25 @@ export function LinearizePDFTool({ className = '' }: LinearizePDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium mb-2">
-            {tTools('linearizePdf.successMessage') || 'PDF linearized successfully!'}
+            {tTools('linearizePdf.successMessage')}
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             {stats.filesProcessed && stats.filesProcessed > 1 && (
               <div>
-                <span className="text-green-600">{tTools('linearizePdf.filesProcessed') || 'Files:'}</span>
+                <span className="text-green-600">{tTools('linearizePdf.filesProcessed')}</span>
                 <span className="ml-1 font-medium">{stats.filesProcessed}</span>
               </div>
             )}
             <div>
-              <span className="text-green-600">{tTools('linearizePdf.pages') || 'Pages:'}</span>
+              <span className="text-green-600">{tTools('linearizePdf.pages')}</span>
               <span className="ml-1 font-medium">{stats.pageCount}</span>
             </div>
             <div>
-              <span className="text-green-600">{tTools('linearizePdf.originalSize') || 'Original:'}</span>
+              <span className="text-green-600">{tTools('linearizePdf.originalSize')}</span>
               <span className="ml-1 font-medium">{formatSize(stats.originalSize)}</span>
             </div>
             <div>
-              <span className="text-green-600">{tTools('linearizePdf.optimizedSize') || 'Optimized:'}</span>
+              <span className="text-green-600">{tTools('linearizePdf.optimizedSize')}</span>
               <span className="ml-1 font-medium">{formatSize(stats.linearizedSize)}</span>
             </div>
           </div>

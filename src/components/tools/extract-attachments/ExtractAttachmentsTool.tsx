@@ -34,6 +34,7 @@ export interface ExtractAttachmentsToolProps {
  * Provides the UI for extracting attachments from PDF files.
  */
 export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -123,16 +124,16 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
         setExtractedAttachments(output.metadata.attachments as AttachmentInfo[]);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'No attachments found in the selected PDF(s).');
+        setError(output.error?.message || tUi('interfaceFeedback.noAttachmentsFoundInTheSelectedPdfS'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [files, tFeedback]);
+  }, [tUi, files, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -184,8 +185,8 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('extractAttachments.uploadLabel') || 'Upload PDF Files'}
-        description={tTools('extractAttachments.uploadDescription') || 'Select PDF files to extract attachments from.'}
+        label={tTools('extractAttachments.uploadLabel')}
+        description={tTools('extractAttachments.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -203,7 +204,7 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('extractAttachments.filesTitle') || 'Selected Files'} ({files.length})
+              {tTools('extractAttachments.filesTitle')} ({files.length})
             </h3>
             <Button
               variant="ghost"
@@ -211,7 +212,7 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
               onClick={handleClearAll}
               disabled={isProcessing}
             >
-              {t('buttons.clearAll') || 'Clear All'}
+              {t('buttons.clearAll')}
             </Button>
           </div>
 
@@ -239,7 +240,7 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
                   onClick={() => handleRemoveFile(item.id)}
                   disabled={isProcessing}
                   className="p-1 rounded hover:bg-red-100 text-[hsl(var(--color-muted-foreground))] hover:text-red-600"
-                  aria-label={`Remove ${item.file.name}`}
+                  aria-label={tUi('dynamicUi.removeFileName', { filename: item.file.name })}
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M18 6L6 18M6 6l12 12" />
@@ -272,8 +273,8 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('extractAttachments.extractButton') || 'Extract Attachments')
+            ? (t('status.processing'))
+            : (tTools('extractAttachments.extractButton'))
           }
         </Button>
       </div>
@@ -283,14 +284,14 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('extractAttachments.extractedTitle') || 'Extracted Attachments'} ({extractedAttachments.length})
+              {tTools('extractAttachments.extractedTitle')} ({extractedAttachments.length})
             </h3>
             <Button
               variant="secondary"
               size="sm"
               onClick={handleDownloadAll}
             >
-              {tTools('extractAttachments.downloadAll') || 'Download All'}
+              {tTools('extractAttachments.downloadAll')}
             </Button>
           </div>
 
@@ -317,7 +318,7 @@ export function ExtractAttachmentsTool({ className = '' }: ExtractAttachmentsToo
                   size="sm"
                   onClick={() => handleDownloadAttachment(attachment)}
                 >
-                  {t('buttons.download') || 'Download'}
+                  {t('buttons.download')}
                 </Button>
               </li>
             ))}

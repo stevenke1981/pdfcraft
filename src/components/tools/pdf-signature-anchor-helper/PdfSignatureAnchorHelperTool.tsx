@@ -16,6 +16,7 @@ export interface PdfSignatureAnchorHelperToolProps {
 }
 
 export function PdfSignatureAnchorHelperTool({ className = '' }: PdfSignatureAnchorHelperToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -67,7 +68,7 @@ export function PdfSignatureAnchorHelperTool({ className = '' }: PdfSignatureAnc
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Injecting visual signature coordinates...');
+            setProgressMessage(message || tUi('interfaceFeedback.injectingVisualSignatureCoordinates'));
           }
         }
       );
@@ -81,12 +82,12 @@ export function PdfSignatureAnchorHelperTool({ className = '' }: PdfSignatureAnc
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to inject signature guides.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToInjectSignatureGuides'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error injecting guides.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorInjectingGuides'));
         setStatus('error');
       }
     }

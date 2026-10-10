@@ -16,6 +16,7 @@ export interface PdfScratchpadCanvasToolProps {
 }
 
 export function PdfScratchpadCanvasTool({ className = '' }: PdfScratchpadCanvasToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [padPosition, setPadPosition] = useState<'right' | 'bottom'>('right');
@@ -52,7 +53,7 @@ export function PdfScratchpadCanvasTool({ className = '' }: PdfScratchpadCanvasT
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Stitching scratchpad margins...');
+            setProgressMessage(message || tUi('interfaceFeedback.stitchingScratchpadMargins'));
           }
         }
       );
@@ -66,12 +67,12 @@ export function PdfScratchpadCanvasTool({ className = '' }: PdfScratchpadCanvasT
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to stitch canvases.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToStitchCanvases'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error stitching canvases.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorStitchingCanvases'));
         setStatus('error');
       }
     }
@@ -151,7 +152,7 @@ export function PdfScratchpadCanvasTool({ className = '' }: PdfScratchpadCanvasT
                       )}
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-[8px] text-zinc-400 font-mono tracking-widest font-black uppercase">
-                          {gridType} pad
+                          {gridType} {tUi('interfaceText.pad')}
                         </span>
                       </div>
                     </div>

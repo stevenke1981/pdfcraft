@@ -24,6 +24,7 @@ export interface DecryptPDFToolProps {
  * All decryption is performed client-side - passwords are never transmitted.
  */
 export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -115,10 +116,10 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
           combinedError.includes('invalid password') ||
           combinedError.includes('incorrect password')
         ) {
-          setPasswordErrorMessage(tTools('decryptPdf.invalidPassword') || 'The password you entered is incorrect. Please check and try again.');
+          setPasswordErrorMessage(tTools('decryptPdf.invalidPassword'));
           setShowPasswordErrorModal(true);
         } else {
-          setError(errorMsg || 'Failed to decrypt PDF file.');
+          setError(errorMsg || tUi('interfaceFeedback.failedToDecryptPdfFile'));
         }
         setStatus('error');
       }
@@ -127,15 +128,15 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
         const errMsg = err instanceof Error ? err.message : String(err);
         // Check for invalid password error in catch block
         if (errMsg.toLowerCase().includes('invalid password')) {
-          setPasswordErrorMessage(tTools('decryptPdf.invalidPassword') || 'The password you entered is incorrect. Please check and try again.');
+          setPasswordErrorMessage(tTools('decryptPdf.invalidPassword'));
           setShowPasswordErrorModal(true);
         } else {
-          setError(errMsg || 'An unexpected error occurred.');
+          setError(errMsg || tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         }
         setStatus('error');
       }
     }
-  }, [file, password, tTools, tFeedback]);
+  }, [tUi, file, password, tTools, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;
@@ -162,8 +163,8 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('decryptPdf.uploadLabel') || 'Upload Encrypted PDF'}
-        description={tTools('decryptPdf.uploadDescription') || 'Drag and drop an encrypted PDF file here, or click to browse.'}
+        label={tTools('decryptPdf.uploadLabel')}
+        description={tTools('decryptPdf.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -203,7 +204,7 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -213,21 +214,21 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('decryptPdf.passwordTitle') || 'Enter Password'}
+            {tTools('decryptPdf.passwordTitle')}
           </h3>
           
           <div className="space-y-4">
             {/* Privacy Notice */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-green-50 border border-green-200">
               <p className="text-sm text-green-700">
-                {tTools('decryptPdf.privacyNotice') || '🔒 Your password is processed locally and never sent to any server.'}
+                {tTools('decryptPdf.privacyNotice')}
               </p>
             </div>
 
             {/* Password Field */}
             <div>
               <label htmlFor="decrypt-password" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('decryptPdf.passwordLabel') || 'PDF Password'}
+                {tTools('decryptPdf.passwordLabel')}
               </label>
               <div className="relative">
                 <input
@@ -236,21 +237,21 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isProcessing}
-                  placeholder={tTools('decryptPdf.passwordPlaceholder') || 'Enter the PDF password'}
+                  placeholder={tTools('decryptPdf.passwordPlaceholder')}
                   aria-describedby="decrypt-password-hint"
                   className="w-full px-3 py-2 pr-10 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? tUi('interfaceText.hidePassword') : tUi('interfaceText.showPassword')}
                   className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]"
                 >
                   {showPassword ? '🙈' : '👁️'}
                 </button>
               </div>
               <p id="decrypt-password-hint" className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                {tTools('decryptPdf.passwordHint') || 'Leave empty if the PDF only has owner password restrictions.'}
+                {tTools('decryptPdf.passwordHint')}
               </p>
             </div>
           </div>
@@ -278,8 +279,8 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('decryptPdf.decryptButton') || 'Decrypt PDF')
+            ? (t('status.processing'))
+            : (tTools('decryptPdf.decryptButton'))
           }
         </Button>
 
@@ -301,10 +302,10 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('decryptPdf.successMessage') || 'PDF decrypted successfully!'}
+            {tTools('decryptPdf.successMessage')}
           </p>
           <p className="text-xs mt-1 text-green-600">
-            {tTools('decryptPdf.successHint') || 'The PDF is now unlocked and can be opened without a password.'}
+            {tTools('decryptPdf.successHint')}
           </p>
         </div>
       )}
@@ -313,7 +314,7 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
       <Modal
         isOpen={showPasswordErrorModal}
         onClose={() => setShowPasswordErrorModal(false)}
-        title={t('status.error') || 'Error'}
+        title={t('status.error')}
         size="sm"
       >
         <div className="space-y-4">
@@ -335,7 +336,7 @@ export function DecryptPDFTool({ className = '' }: DecryptPDFToolProps) {
               size="sm"
               onClick={() => setShowPasswordErrorModal(false)}
             >
-              {t('buttons.close') || 'Close'}
+              {t('buttons.close')}
             </Button>
           </div>
         </div>

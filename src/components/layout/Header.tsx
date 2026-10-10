@@ -161,7 +161,7 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
   const navItems = [
     { href: `/${locale}`, label: t('navigation.home') },
     { href: `/${locale}/tools`, label: t('navigation.tools') },
-    { href: `/${locale}/workflow`, label: t('navigation.workflow') || 'Workflow' },
+    { href: `/${locale}/workflow`, label: t('navigation.workflow') },
     { href: `/${locale}/about`, label: t('navigation.about') },
     { href: `/${locale}/faq`, label: t('navigation.faq') },
   ];
@@ -236,7 +236,7 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        placeholder={t('search.placeholder') || 'Search tools...'}
+                        placeholder={t('search.placeholder')}
                         className="w-full pl-10 pr-10 py-2.5 text-sm rounded-xl border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] shadow-lg focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                         aria-label={tA11y('searchTools')}
                         autoComplete="off"
@@ -312,10 +312,10 @@ export const Header: React.FC<HeaderProps> = ({ locale, showSearch = true }) => 
             <RecentFilesDropdown
               locale={locale}
               translations={{
-                title: t('recentFiles.title') || 'Recent Files',
-                empty: t('recentFiles.empty') || 'No recent files',
-                clearAll: t('recentFiles.clearAll') || 'Clear all',
-                processedWith: t('recentFiles.processedWith') || 'Processed with',
+                title: t('recentFiles.title'),
+                empty: t('recentFiles.empty'),
+                clearAll: t('recentFiles.clearAll'),
+                processedWith: t('recentFiles.processedWith'),
               }}
             />
 

@@ -12,6 +12,7 @@
 
 'use client';
 
+import { useTranslations } from 'next-intl';
 import React, { useState, useCallback } from 'react';
 import Image, { type ImageProps } from 'next/image';
 import { cn } from '@/lib/utils';
@@ -73,6 +74,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   priority = false,
   ...props
 }) => {
+  const tUi = useTranslations();
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(src);
@@ -127,10 +129,10 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         <div 
           className="absolute inset-0 flex items-center justify-center bg-[hsl(var(--color-muted))]"
           role="img"
-          aria-label={`Failed to load: ${alt}`}
+          aria-label={tUi('dynamicUi.imageLoadFailed', { description: alt })}
         >
           <span className="text-[hsl(var(--color-muted-foreground))] text-sm">
-            Image unavailable
+            {tUi('interfaceText.imageUnavailable')}
           </span>
         </div>
       )}

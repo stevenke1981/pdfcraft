@@ -16,6 +16,7 @@ export interface AnnotationExporterToolProps {
 }
 
 export function AnnotationExporterTool({ className = '' }: AnnotationExporterToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [format, setFormat] = useState<'md' | 'json'>('md');
@@ -56,7 +57,7 @@ export function AnnotationExporterTool({ className = '' }: AnnotationExporterToo
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Extracting comments...');
+            setProgressMessage(message || tUi('interfaceFeedback.extractingComments'));
           }
         }
       );
@@ -70,12 +71,12 @@ export function AnnotationExporterTool({ className = '' }: AnnotationExporterToo
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to parse page annotations.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToParsePageAnnotations'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error extracting annotations.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorExtractingAnnotations'));
         setStatus('error');
       }
     }
@@ -195,7 +196,7 @@ export function AnnotationExporterTool({ className = '' }: AnnotationExporterToo
                         onClick={() => setFormat('json')}
                         className="text-xs rounded-xl"
                       >
-                        JSON Data
+                        {tUi('interfaceText.jsonData')}
                       </Button>
                     </div>
                   </div>

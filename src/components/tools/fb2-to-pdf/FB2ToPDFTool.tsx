@@ -20,6 +20,7 @@ export interface FB2ToPDFToolProps {
 }
 
 export function FB2ToPDFTool({ className = '' }: FB2ToPDFToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -60,7 +61,7 @@ export function FB2ToPDFTool({ className = '' }: FB2ToPDFToolProps) {
 
     const handleConvert = useCallback(async () => {
         if (files.length === 0) {
-            setError(t('errors.uploadFile') || 'Please upload at least one FB2 file.');
+            setError(tUi('interfaceFeedback.pleaseUploadAtLeastOneFb2File'));
             return;
         }
 
@@ -92,16 +93,16 @@ export function FB2ToPDFTool({ className = '' }: FB2ToPDFToolProps) {
                 setResult(output.result);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || 'Failed to convert FB2 to PDF.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToConvertFb2ToPdf'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [files, t]);
+    }, [tUi, files]);
 
     const handleCancel = useCallback(() => {
         cancelledRef.current = true;
@@ -134,8 +135,8 @@ export function FB2ToPDFTool({ className = '' }: FB2ToPDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('fb2ToPdf.uploadLabel') || 'Upload FB2 Files'}
-                description={tTools('fb2ToPdf.uploadDescription') || 'Drag and drop FB2 e-book files here, or click to browse. Supports multiple files.'}
+                label={tTools('fb2ToPdf.uploadLabel')}
+                description={tTools('fb2ToPdf.uploadDescription')}
             />
 
             {error && (
@@ -149,7 +150,7 @@ export function FB2ToPDFTool({ className = '' }: FB2ToPDFToolProps) {
                 <Card variant="outlined" size="lg" className="glass-card">
                     <div className="space-y-3">
                         <h3 className="font-semibold text-[hsl(var(--color-foreground))]">
-                            {files.length} {files.length === 1 ? 'File' : 'Files'} Selected
+                            {files.length} {files.length === 1 ? tUi('interfaceText.file') : tUi('tools.fontToOutline.filesTitle')} {tUi('common.accessibility.selected')}
                         </h3>
                         <div className="space-y-2 max-h-64 overflow-y-auto">
                             {files.map((file) => (
@@ -193,7 +194,7 @@ export function FB2ToPDFTool({ className = '' }: FB2ToPDFToolProps) {
                     className="min-w-[200px] shadow-lg hover:shadow-primary/25 transition-all hover:-translate-y-0.5"
                 >
                     {!isProcessing && <RefreshCw className="w-5 h-5 mr-2" />}
-                    {isProcessing ? (t('status.processing') || 'Converting...') : (tTools('fb2ToPdf.convertButton') || 'Convert to PDF')}
+                    {isProcessing ? (t('status.processing')) : (tTools('fb2ToPdf.convertButton'))}
                 </Button>
 
                 {result && !Array.isArray(result) && (
@@ -224,9 +225,9 @@ export function FB2ToPDFTool({ className = '' }: FB2ToPDFToolProps) {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
                         <CheckCircle2 className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle') || 'Conversion Successful!'}</h3>
+                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle')}</h3>
                     <p className="text-green-800/80 max-w-md mx-auto">
-                        {tTools('fb2ToPdf.successMessage') || 'Your FB2 file(s) have been converted to PDF.'}
+                        {tTools('fb2ToPdf.successMessage')}
                     </p>
                 </div>
             )}

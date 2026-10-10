@@ -21,6 +21,7 @@ export interface RasterizePDFToolProps {
  * Converts PDF pages to high-quality images.
  */
 export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -91,14 +92,14 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
                 setResultBlob(output.result as Blob);
                 setResultFilename(output.filename || (format === 'pdf' ? 'rasterized.pdf' : 'images.zip'));
             } else {
-                setError(output.error?.message || 'Failed to rasterize PDF.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToRasterizePdf'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [file, dpi, format, quality, pageRange, backgroundColor, tFeedback]);
+    }, [tUi, file, dpi, format, quality, pageRange, backgroundColor, tFeedback]);
 
     /**
      * Reset state
@@ -124,8 +125,8 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('rasterizePdf.uploadLabel') || 'Upload PDF File'}
-                description={tTools('rasterizePdf.uploadDescription') || 'Drag and drop a PDF file to convert to images.'}
+                label={tTools('rasterizePdf.uploadLabel')}
+                description={tTools('rasterizePdf.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -149,7 +150,7 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
                             </p>
                         </div>
                         <Button variant="ghost" size="sm" onClick={handleReset} disabled={isProcessing}>
-                            {t('buttons.clear') || 'Clear'}
+                            {t('buttons.clear')}
                         </Button>
                     </div>
                 </Card>
@@ -159,14 +160,14 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
             {hasFile && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('rasterizePdf.optionsTitle') || 'Output Options'}
+                        {tTools('rasterizePdf.optionsTitle')}
                     </h3>
 
                     <div className="space-y-4">
                         {/* DPI Preset */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('rasterizePdf.dpiLabel') || 'Resolution (DPI)'}
+                                {tTools('rasterizePdf.dpiLabel')}
                             </label>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                                 {Object.entries(DPI_PRESETS).map(([name, value]) => (
@@ -195,7 +196,7 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
                         {/* Output Format */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('rasterizePdf.formatLabel') || 'Output Format'}
+                                {tTools('rasterizePdf.formatLabel')}
                             </label>
                             <div className="grid grid-cols-4 gap-2">
                                 {(['png', 'jpeg', 'webp', 'pdf'] as RasterizeFormat[]).map((fmt) => (
@@ -224,7 +225,7 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
                         {(format === 'jpeg' || format === 'webp' || format === 'pdf') && (
                             <div>
                                 <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                    {tTools('rasterizePdf.qualityLabel') || 'Quality'}: {quality}%
+                                    {tTools('rasterizePdf.qualityLabel')}: {quality}%
                                 </label>
                                 <input
                                     type="range"
@@ -241,25 +242,25 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
                         {/* Page Range */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('rasterizePdf.pageRangeLabel') || 'Page Range (optional)'}
+                                {tTools('rasterizePdf.pageRangeLabel')}
                             </label>
                             <input
                                 type="text"
                                 value={pageRange}
                                 onChange={(e) => setPageRange(e.target.value)}
                                 disabled={isProcessing}
-                                placeholder="e.g., 1-5, 8, 10-15"
+                                placeholder={tUi('interfaceText.eG1581015')}
                                 className="w-full px-3 py-2 border border-[hsl(var(--color-border))] rounded-[var(--radius-md)] text-sm"
                             />
                             <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                                {tTools('rasterizePdf.pageRangeDesc') || 'Leave empty to convert all pages.'}
+                                {tTools('rasterizePdf.pageRangeDesc')}
                             </p>
                         </div>
 
                         {/* Background Color */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('rasterizePdf.bgColorLabel') || 'Background Color'}
+                                {tTools('rasterizePdf.bgColorLabel')}
                             </label>
                             <div className="flex items-center gap-3">
                                 <input
@@ -287,7 +288,7 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
                 <ProcessingProgress
                     progress={progress}
                     status="processing"
-                    message="Converting pages to images..."
+                    message={tUi('interfaceFeedback.convertingPages')}
                     showPercentage
                 />
             )}
@@ -303,8 +304,8 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
                 >
                     <Grid2X2 className="w-4 h-4 mr-2" />
                     {isProcessing
-                        ? (t('status.processing') || 'Processing...')
-                        : (tTools('rasterizePdf.convertButton') || 'Convert to Images')
+                        ? (t('status.processing'))
+                        : (tTools('rasterizePdf.convertButton'))
                     }
                 </Button>
 
@@ -327,7 +328,7 @@ export function RasterizePDFTool({ className = '' }: RasterizePDFToolProps) {
                     <div className="flex items-center gap-2">
                         <Image className="w-5 h-5" />
                         <p className="text-sm font-medium">
-                            {tTools('rasterizePdf.successMessage') || 'Images created successfully! Click download to save.'}
+                            {tTools('rasterizePdf.successMessage')}
                         </p>
                     </div>
                 </div>

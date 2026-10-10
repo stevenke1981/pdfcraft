@@ -23,6 +23,7 @@ interface SlidePreview {
 }
 
 export function PDFToSlideTool() {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools.pdfToSlide');
 
@@ -70,11 +71,11 @@ export function PDFToSlideTool() {
           setSlides(output.metadata.slides as SlidePreview[]);
         }
       } else {
-        setError(output.error?.message || 'Failed to reconstruct slides.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToReconstructSlides'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred.');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
       setStatus('error');
     } finally {
       // Keep animation running briefly for WOW effect
@@ -204,13 +205,13 @@ export function PDFToSlideTool() {
                   <div className="space-y-3 text-center z-10">
                     <div className="flex gap-2 justify-center">
                       <div className="p-4 rounded-xl bg-neutral-800/80 backdrop-blur-md border border-indigo-500/30 shadow-lg shadow-indigo-500/10 animate-bounce">
-                        <span className="text-xs font-semibold text-indigo-400 font-mono">TEXT OBJECTS</span>
+                        <span className="text-xs font-semibold text-indigo-400 font-mono">{tUi('interfaceText.textObjects')}</span>
                       </div>
                       <div className="flex items-center text-neutral-600">
                         <ChevronRight className="w-5 h-5 animate-pulse" />
                       </div>
                       <div className="p-4 rounded-xl bg-neutral-800/80 backdrop-blur-md border border-pink-500/30 shadow-lg shadow-pink-500/10 animate-pulse">
-                        <span className="text-xs font-semibold text-pink-400 font-mono">OOXML PPT SLIDE</span>
+                        <span className="text-xs font-semibold text-pink-400 font-mono">{tUi('interfaceText.ooxmlPptSlide')}</span>
                       </div>
                     </div>
                     <p className="text-xs text-neutral-400 mt-4 animate-pulse">
@@ -222,8 +223,8 @@ export function PDFToSlideTool() {
                 /* Slide Previews Panel */
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-xs text-neutral-400">
-                    <span>RECONSTRUCTED OUTLINES ({slides.length} SLIDES)</span>
-                    <span>SLIDE {activeSlideIdx + 1} OF {slides.length}</span>
+                    <span>{tUi('interfaceText.reconstructedOutlines')}{slides.length} {tUi('interfaceText.slides')}</span>
+                    <span>{tUi('interfaceText.slide')} {activeSlideIdx + 1} {tUi('interfaceText.of2')} {slides.length}</span>
                   </div>
 
                   {/* Modern Glassmorphic PPT Slide Preview Card */}

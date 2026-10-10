@@ -16,6 +16,7 @@ export interface PdfTwoColumnReflowerToolProps {
 }
 
 export function PdfTwoColumnReflowerTool({ className = '' }: PdfTwoColumnReflowerToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [middleGapRatio, setMiddleGapRatio] = useState(0.5);
@@ -49,7 +50,7 @@ export function PdfTwoColumnReflowerTool({ className = '' }: PdfTwoColumnReflowe
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Rearranging layout grids...');
+            setProgressMessage(message || tUi('interfaceFeedback.rearrangingLayoutGrids'));
           }
         }
       );
@@ -63,12 +64,12 @@ export function PdfTwoColumnReflowerTool({ className = '' }: PdfTwoColumnReflowe
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to reflow double columns.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToReflowDoubleColumns'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error reflowing layout.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorReflowingLayout'));
         setStatus('error');
       }
     }
@@ -117,7 +118,7 @@ export function PdfTwoColumnReflowerTool({ className = '' }: PdfTwoColumnReflowe
               <div className="flex-1 flex flex-col md:flex-row items-center justify-center gap-8 p-6 relative">
                 {/* Visual rendering of Before and After with nice perspective */}
                 <div className="w-44 h-56 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 shadow-lg transform -rotate-6 hover:rotate-0 transition-transform duration-300 relative flex flex-col gap-2">
-                  <span className="absolute top-2 right-2 text-[8px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-mono font-bold">BEFORE</span>
+                  <span className="absolute top-2 right-2 text-[8px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-mono font-bold">{tUi('interfaceText.before')}</span>
                   <div className="h-6 w-1/2 bg-zinc-200 dark:bg-zinc-800 rounded" />
                   <div className="flex-1 grid grid-cols-2 gap-2 mt-2">
                     <div className="border-r border-dashed border-zinc-300 dark:border-zinc-700 space-y-1.5 pr-1">
@@ -136,7 +137,7 @@ export function PdfTwoColumnReflowerTool({ className = '' }: PdfTwoColumnReflowe
                 <div className="text-zinc-300 dark:text-zinc-700 text-2xl font-bold animate-pulse">➔</div>
 
                 <div className="w-44 h-56 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 shadow-lg transform rotate-6 hover:rotate-0 transition-transform duration-300 relative flex flex-col gap-2">
-                  <span className="absolute top-2 right-2 text-[8px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-mono font-bold">AFTER</span>
+                  <span className="absolute top-2 right-2 text-[8px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-mono font-bold">{tUi('interfaceText.after')}</span>
                   <div className="h-6 w-1/2 bg-zinc-200 dark:bg-zinc-800 rounded" />
                   <div className="flex-1 space-y-2 mt-2">
                     <div className="space-y-1">

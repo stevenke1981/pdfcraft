@@ -62,7 +62,7 @@ export const Footer: React.FC<FooterProps> = ({ locale }) => {
               <span data-testid="footer-brand-name">{t('brand')}</span>
             </Link>
             <p className="text-sm text-[hsl(var(--color-muted-foreground))] leading-relaxed max-w-xs">
-              {t('tagline') || 'Professional, secure, and free PDF tools for everyone. No installation required.'}
+              {t('tagline')}
             </p>
 
             <div className="flex gap-4">

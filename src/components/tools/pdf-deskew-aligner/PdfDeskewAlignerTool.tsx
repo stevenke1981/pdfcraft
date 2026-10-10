@@ -16,6 +16,7 @@ export interface PdfDeskewAlignerToolProps {
 }
 
 export function PdfDeskewAlignerTool({ className = '' }: PdfDeskewAlignerToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [threshold, setThreshold] = useState(10);
@@ -49,7 +50,7 @@ export function PdfDeskewAlignerTool({ className = '' }: PdfDeskewAlignerToolPro
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Straightening scan axes...');
+            setProgressMessage(message || tUi('interfaceFeedback.straighteningScanAxes'));
           }
         }
       );
@@ -63,12 +64,12 @@ export function PdfDeskewAlignerTool({ className = '' }: PdfDeskewAlignerToolPro
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to align tilted PDF.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToAlignTiltedPdf'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error aligning scan.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorAligningScan'));
         setStatus('error');
       }
     }

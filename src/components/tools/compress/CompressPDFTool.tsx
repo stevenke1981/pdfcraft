@@ -248,8 +248,8 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={setError}
           disabled={isProcessing}
-          label={tTools('compressPdf.uploadLabel') || 'Upload PDF Files'}
-          description={tTools('compressPdf.batchUploadDescription') || 'Drag and drop PDF files here. Support up to 10 files.'}
+          label={tTools('compressPdf.uploadLabel')}
+          description={tTools('compressPdf.batchUploadDescription')}
         />
       )}
 

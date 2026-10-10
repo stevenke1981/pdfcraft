@@ -63,6 +63,7 @@ async function convertImageToPng(file: File): Promise<ArrayBuffer> {
 type WatermarkType = 'text' | 'image';
 
 export function WatermarkTool({ className = '' }: WatermarkToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools.watermark');
 
@@ -697,7 +698,7 @@ export function WatermarkTool({ className = '' }: WatermarkToolProps) {
                       type="text"
                       value={watermarkText}
                       onChange={(e) => setWatermarkText(e.target.value)}
-                      placeholder={tTools('textPlaceholder') || 'CONFIDENTIAL'}
+                      placeholder={tTools('textPlaceholder')}
                       className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
                       disabled={isProcessing}
                     />
@@ -1179,7 +1180,7 @@ export function WatermarkTool({ className = '' }: WatermarkToolProps) {
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage <= 1 || isRenderingPage}
                     className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed"
-                    aria-label="Previous Page"
+                    aria-label={tUi('interfaceText.previousPage2')}
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -1209,7 +1210,7 @@ export function WatermarkTool({ className = '' }: WatermarkToolProps) {
                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage >= totalPages || isRenderingPage}
                     className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed"
-                    aria-label="Next Page"
+                    aria-label={tUi('interfaceText.nextPage2')}
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -1279,7 +1280,7 @@ export function WatermarkTool({ className = '' }: WatermarkToolProps) {
                       ) : imagePreviewUrl ? (
                         <img
                           src={imagePreviewUrl}
-                          alt="Watermark Preview"
+                          alt={tUi('interfaceText.watermarkPreview')}
                           className="select-none pointer-events-none block"
                           style={{
                             maxWidth: `${Math.max(20, Math.round((imageScale / 100) * (containerDimensions.width || 400) * 0.5))}px`,

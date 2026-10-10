@@ -15,6 +15,7 @@ export interface EmailToPDFToolProps {
 }
 
 export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -67,14 +68,14 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
             if (output.success && output.result) {
                 setResultBlob(output.result as Blob);
             } else {
-                setError(output.error?.message || 'Failed to convert email.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToConvertEmail'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [file, pageSize, includeCcBcc, includeAttachments, dateFormat, timezone, tFeedback]);
+    }, [tUi, file, pageSize, includeCcBcc, includeAttachments, dateFormat, timezone, tFeedback]);
 
     const handleReset = useCallback(() => {
         setFile(null);
@@ -95,8 +96,8 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('emailToPdf.uploadLabel') || 'Upload Email File'}
-                description={tTools('emailToPdf.uploadDescription') || 'Drag and drop an email file (.eml or .msg) to convert to PDF.'}
+                label={tTools('emailToPdf.uploadLabel')}
+                description={tTools('emailToPdf.uploadDescription')}
             />
 
             {error && (
@@ -113,7 +114,7 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
                             <p className="text-sm text-[hsl(var(--color-muted-foreground))]">{(file.size / 1024).toFixed(2)} KB</p>
                         </div>
                         <Button variant="ghost" size="sm" onClick={handleReset} disabled={isProcessing}>
-                            {t('buttons.clear') || 'Clear'}
+                            {t('buttons.clear')}
                         </Button>
                     </div>
                 </Card>
@@ -122,13 +123,13 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
             {hasFile && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('emailToPdf.optionsTitle') || 'Conversion Options'}
+                        {tTools('emailToPdf.optionsTitle')}
                     </h3>
 
                     <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('emailToPdf.pageSizeLabel') || 'Page Size'}
+                                {tTools('emailToPdf.pageSizeLabel')}
                             </label>
                             <div className="grid grid-cols-3 gap-2">
                                 {(['a4', 'letter', 'legal'] as EmailPageSize[]).map((size) => (
@@ -156,7 +157,7 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
                                 className="w-4 h-4 rounded"
                             />
                             <span className="text-sm text-[hsl(var(--color-foreground))]">
-                                {tTools('emailToPdf.includeCcBccLabel') || 'Include CC/BCC fields'}
+                                {tTools('emailToPdf.includeCcBccLabel')}
                             </span>
                         </label>
 
@@ -169,13 +170,13 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
                                 className="w-4 h-4 rounded"
                             />
                             <span className="text-sm text-[hsl(var(--color-foreground))]">
-                                {tTools('emailToPdf.includeAttachmentsLabel') || 'Include attachment list'}
+                                {tTools('emailToPdf.includeAttachmentsLabel')}
                             </span>
                         </label>
 
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('emailToPdf.timezoneLabel') || 'Timezone'}
+                                {tTools('emailToPdf.timezoneLabel')}
                             </label>
                             <input
                                 type="text"
@@ -190,13 +191,13 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
             )}
 
             {isProcessing && (
-                <ProcessingProgress progress={progress} status="processing" message="Converting email to PDF..." showPercentage />
+                <ProcessingProgress progress={progress} status="processing" message={tUi('interfaceFeedback.convertingEmail')} showPercentage />
             )}
 
             <div className="flex flex-wrap items-center gap-4">
                 <Button variant="primary" size="lg" onClick={handleConvert} disabled={!canProcess} loading={isProcessing}>
                     <Mail className="w-4 h-4 mr-2" />
-                    {isProcessing ? (t('status.processing') || 'Processing...') : (tTools('emailToPdf.convertButton') || 'Convert to PDF')}
+                    {isProcessing ? (t('status.processing')) : (tTools('emailToPdf.convertButton'))}
                 </Button>
 
                 {resultBlob && (
@@ -211,7 +212,7 @@ export function EmailToPDFTool({ className = '' }: EmailToPDFToolProps) {
 
             {resultBlob && (
                 <div className="p-4 rounded-[var(--radius-md)] bg-green-50 border border-green-200 text-green-700" role="status">
-                    <p className="text-sm font-medium">{tTools('emailToPdf.successMessage') || 'Email converted successfully!'}</p>
+                    <p className="text-sm font-medium">{tTools('emailToPdf.successMessage')}</p>
                 </div>
             )}
         </div>

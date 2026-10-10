@@ -29,6 +29,7 @@ export interface PDFToPptxToolProps {
  * Converts PDF files to PowerPoint presentations (PPTX).
  */
 export function PDFToPptxTool({ className = '' }: PDFToPptxToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -87,7 +88,7 @@ export function PDFToPptxTool({ className = '' }: PDFToPptxToolProps) {
      */
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError(t('errors.uploadFile') || 'Please upload a PDF file.');
+            setError(tUi('common.toolFeedback.uploadPdf'));
             return;
         }
 
@@ -118,16 +119,16 @@ export function PDFToPptxTool({ className = '' }: PDFToPptxToolProps) {
                 setResult(output.result);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || t('errors.conversionFailed') || 'Failed to convert PDF to PowerPoint.');
+                setError(output.error?.message || tUi('errors.processingFailed') || tUi('interfaceFeedback.failedToConvertPdfToPowerpoint'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : t('errors.unexpectedError') || 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, dpi, t]);
+    }, [tUi, file, dpi]);
 
     /**
      * Handle cancel operation
@@ -160,8 +161,8 @@ export function PDFToPptxTool({ className = '' }: PDFToPptxToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('pdfToPptx.uploadLabel') || 'Upload PDF'}
-                description={tTools('pdfToPptx.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+                label={tTools('pdfToPptx.uploadLabel')}
+                description={tTools('pdfToPptx.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -196,7 +197,7 @@ export function PDFToPptxTool({ className = '' }: PDFToPptxToolProps) {
                             className="text-[hsl(var(--color-muted-foreground))] hover:text-red-500 hover:bg-red-50"
                         >
                             <Trash2 className="w-5 h-5" />
-                            <span className="sr-only">{t('buttons.remove') || 'Remove'}</span>
+                            <span className="sr-only">{t('buttons.remove')}</span>
                         </Button>
                     </div>
                 </Card>
@@ -206,13 +207,13 @@ export function PDFToPptxTool({ className = '' }: PDFToPptxToolProps) {
             {file && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('pdfToPptx.optionsTitle') || 'Conversion Options'}
+                        {tTools('pdfToPptx.optionsTitle')}
                     </h3>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('pdfToPptx.dpiLabel') || 'Image Quality (DPI)'}
+                                {tTools('pdfToPptx.dpiLabel')}
                             </label>
                             <select
                                 value={dpi}
@@ -220,13 +221,13 @@ export function PDFToPptxTool({ className = '' }: PDFToPptxToolProps) {
                                 disabled={isProcessing}
                                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                             >
-                                <option value="72">{tTools('pdfToPptx.lowSet') || 'Low (72 DPI - smaller file)'}</option>
-                                <option value="150">{tTools('pdfToPptx.mediumSet') || 'Medium (150 DPI - balanced)'}</option>
-                                <option value="200">{tTools('pdfToPptx.highSet') || 'High (200 DPI - better quality)'}</option>
-                                <option value="300">{tTools('pdfToPptx.veryHighSet') || 'Very High (300 DPI - best quality)'}</option>
+                                <option value="72">{tTools('pdfToPptx.lowSet')}</option>
+                                <option value="150">{tTools('pdfToPptx.mediumSet')}</option>
+                                <option value="200">{tTools('pdfToPptx.highSet')}</option>
+                                <option value="300">{tTools('pdfToPptx.veryHighSet')}</option>
                             </select>
                             <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                                {tTools('pdfToPptx.dpiHint') || 'Higher DPI produces better quality slides but larger file sizes.'}
+                                {tTools('pdfToPptx.dpiHint')}
                             </p>
                         </div>
                     </div>
@@ -256,8 +257,8 @@ export function PDFToPptxTool({ className = '' }: PDFToPptxToolProps) {
                 >
                     {!isProcessing && <RefreshCw className="w-5 h-5 mr-2" />}
                     {isProcessing
-                        ? (t('status.processing') || 'Converting...')
-                        : (tTools('pdfToPptx.convertButton') || 'Convert to PowerPoint')
+                        ? (t('status.processing'))
+                        : (tTools('pdfToPptx.convertButton'))
                     }
                 </Button>
 
@@ -282,9 +283,9 @@ export function PDFToPptxTool({ className = '' }: PDFToPptxToolProps) {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
                         <CheckCircle2 className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle') || 'Conversion Successful!'}</h3>
+                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle')}</h3>
                     <p className="text-green-800/80 max-w-md mx-auto">
-                        {tTools('pdfToPptx.successMessage') || 'Your PDF has been converted to PowerPoint. Each page is now a slide with full-quality images.'}
+                        {tTools('pdfToPptx.successMessage')}
                     </p>
                 </div>
             )}

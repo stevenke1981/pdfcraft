@@ -277,7 +277,7 @@ export function EditPDFTool({ className = '' }: EditPDFToolProps) {
               </div>
 
               <Button variant="ghost" size="sm" onClick={handleClear}>
-                {t('buttons.clear') || 'Clear'}
+                {t('buttons.clear')}
               </Button>
             </div>
           </Card>
@@ -305,7 +305,7 @@ export function EditPDFTool({ className = '' }: EditPDFToolProps) {
                   <div className="text-center p-6 rounded-2xl bg-white dark:bg-gray-900 border border-[hsl(var(--color-border))] shadow-lg">
                     <div className="animate-spin rounded-full h-9 w-9 border-2 border-blue-600 border-t-transparent mx-auto mb-3"></div>
                     <p className="text-sm font-semibold text-[hsl(var(--color-foreground))]">
-                      {t('status.loading') || 'Loading...'}
+                      {t('status.loading')}
                     </p>
                   </div>
                 </div>

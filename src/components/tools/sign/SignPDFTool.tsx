@@ -54,6 +54,7 @@ const VIEWER_HTML = withBasePath('/pdfjs-viewer/viewer.html');
  * Supports: draw (handwritten), type, and image signatures.
  */
 export function SignPDFTool({ className = '' }: SignPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -284,10 +285,10 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
     } catch (err) {
       console.error('Failed to save signed PDF:', err);
       const msg = err instanceof Error ? err.message : 'Please try again.';
-      setError(`Failed to save signed PDF: ${msg}`);
+      setError(tUi('interfaceFeedback.saveSignedPdfFailed', { message: msg }));
       setIsProcessing(false);
     }
-  }, [signState.viewerReady, signState.file, tFeedback]);
+  }, [tUi, signState.viewerReady, signState.file, tFeedback]);
 
   /**
    * Clear and start over
@@ -313,13 +314,13 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-              <span>从已签署 PDF 提取签名 / 印章</span>
+              <span>{tUi('interfaceText.extractSignatureStampFromASignedPdf')}</span>
               <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
-                支持 Adobe Acrobat
+                {tUi('interfaceText.supportsAdobeAcrobat')}
               </span>
             </h3>
             <p className="text-xs text-gray-600 mt-0.5">
-              上传已签名的 PDF，智能识别笔迹或印章并剥离纸张白底，一键存入签名库随时使用。
+              {tUi('interfaceText.uploadASignedPdfToDetectHandwritingOrStampsRemoveTheWhiteBackgroundAndSaveTheResultInYourS')}
             </p>
           </div>
         </div>
@@ -339,7 +340,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
             onClick={() => setIsLibraryOpen(true)}
             className="text-xs bg-white hover:bg-gray-50 flex items-center gap-1.5"
           >
-            <span>📂 签名库</span>
+            <span>{tUi('interfaceText.signatureLibrary')}</span>
             {savedSignatureCount > 0 && (
               <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-blue-100 text-blue-700 font-medium">
                 {savedSignatureCount}
@@ -353,7 +354,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
             onClick={() => imageInputRef.current?.click()}
             className="text-xs bg-white hover:bg-gray-50 flex items-center gap-1.5 border-blue-300 text-blue-700"
           >
-            <span>🖼️ 导入图片签名</span>
+            <span>{tUi('interfaceText.importSignatureImage')}</span>
           </Button>
 
           <Button
@@ -365,7 +366,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
             </svg>
-            <span>从 PDF 提取</span>
+            <span>{tUi('interfaceText.extractFromPdf')}</span>
           </Button>
         </div>
       </div>
@@ -398,8 +399,8 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('signPdf.uploadLabel') || 'Upload PDF File'}
-          description={tTools('signPdf.uploadDescription') || 'Drag and drop a PDF file to sign.'}
+          label={tTools('signPdf.uploadLabel')}
+          description={tTools('signPdf.uploadDescription')}
         />
       )}
 
@@ -439,7 +440,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
                 onClick={handleClear}
                 disabled={isProcessing}
               >
-                {t('buttons.remove') || 'Remove'}
+                {t('buttons.remove')}
               </Button>
             </div>
           </Card>
@@ -451,12 +452,12 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div className="text-sm text-blue-700">
-                <p className="font-medium mb-1">{tTools('signPdf.instructionsTitle') || 'How to Sign'}</p>
+                <p className="font-medium mb-1">{tTools('signPdf.instructionsTitle')}</p>
                 <ol className="list-decimal list-inside space-y-1 text-blue-600">
-                  <li>{tTools('signPdf.instruction1') || '点击工具栏中的签名笔工具（或使用上方快捷导入图片/从 PDF 提取）'}</li>
-                  <li>{tTools('signPdf.instruction2') || '选择手写绘制、输入文本，或直接上传现成的透明 PNG 图片签名'}</li>
-                  <li>{tTools('signPdf.instruction3') || '在页面点击放置签名，可随意拖拽四角自由调整大小（Resize）与旋转'}</li>
-                  <li>{tTools('signPdf.instruction4') || '完成签署后，点击下方的“保存已签署 PDF”'}</li>
+                  <li>{tTools('signPdf.instruction1')}</li>
+                  <li>{tTools('signPdf.instruction2')}</li>
+                  <li>{tTools('signPdf.instruction3')}</li>
+                  <li>{tTools('signPdf.instruction4')}</li>
                 </ol>
               </div>
             </div>
@@ -471,7 +472,7 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
               onLoad={handleIframeLoad}
               className="w-full bg-gray-100"
               style={{ height: '600px', border: 'none' }}
-              title="PDF Signature Editor"
+              title={tUi('interfaceText.pdfSignatureEditor')}
             />
           </div>
 
@@ -486,8 +487,8 @@ export function SignPDFTool({ className = '' }: SignPDFToolProps) {
                 loading={isProcessing}
               >
                 {isProcessing
-                  ? (t('status.processing') || 'Processing...')
-                  : (tTools('signPdf.saveButton') || 'Save Signed PDF')
+                  ? (t('status.processing'))
+                  : (tTools('signPdf.saveButton'))
                 }
               </Button>
             </div>

@@ -42,6 +42,7 @@ const categoryTranslationKeys: Record<ToolCategory, string> = {
  * Includes tool interface, description, how-to, use cases, FAQ, and related tools.
  */
 export function ToolPage({ tool, content, locale, children, localizedRelatedTools = {} }: ToolPageProps) {
+  const tUi = useTranslations();
   // Get related tools data
   const relatedTools = tool.relatedTools
     .map(id => getToolById(id))
@@ -98,7 +99,7 @@ export function ToolPage({ tool, content, locale, children, localizedRelatedTool
             <section
               className="mt-6"
               data-testid="tool-page-interface"
-              aria-label="Tool interface"
+              aria-label={tUi('interfaceText.toolInterface')}
             >
               {children}
             </section>

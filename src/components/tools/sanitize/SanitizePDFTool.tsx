@@ -22,6 +22,7 @@ export interface SanitizePDFToolProps {
  * Provides the UI for sanitizing PDF files by removing potentially harmful content.
  */
 export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -114,16 +115,16 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
           setRemovedItems(output.metadata.removedItems as string[]);
         }
       } else {
-        setError(output.error?.message || 'Failed to sanitize PDF file.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToSanitizePdfFile'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, options, tFeedback]);
+  }, [tUi, file, options, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;
@@ -150,8 +151,8 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('sanitizePdf.uploadLabel') || 'Upload PDF File'}
-        description={tTools('sanitizePdf.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+        label={tTools('sanitizePdf.uploadLabel')}
+        description={tTools('sanitizePdf.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -191,7 +192,7 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -201,14 +202,14 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('sanitizePdf.optionsTitle') || 'Sanitization Options'}
+            {tTools('sanitizePdf.optionsTitle')}
           </h3>
           
           <div className="space-y-4">
             {/* Info */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-blue-50 border border-blue-200">
               <p className="text-sm text-blue-700">
-                {tTools('sanitizePdf.info') || 'Sanitization removes potentially harmful content from PDFs, making them safer to open and share.'}
+                {tTools('sanitizePdf.info')}
               </p>
             </div>
 
@@ -223,7 +224,7 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('sanitizePdf.removeJavaScript') || 'Remove JavaScript'}
+                  {tTools('sanitizePdf.removeJavaScript')}
                 </span>
               </label>
 
@@ -236,7 +237,7 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('sanitizePdf.removeAttachments') || 'Remove Attachments'}
+                  {tTools('sanitizePdf.removeAttachments')}
                 </span>
               </label>
 
@@ -249,7 +250,7 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('sanitizePdf.removeLinks') || 'Remove External Links'}
+                  {tTools('sanitizePdf.removeLinks')}
                 </span>
               </label>
 
@@ -262,7 +263,7 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('sanitizePdf.flattenForms') || 'Flatten Forms'}
+                  {tUi('tools.flattenPdf.flattenForms')}
                 </span>
               </label>
 
@@ -275,7 +276,7 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('sanitizePdf.removeMetadata') || 'Remove Metadata'}
+                  {tTools('sanitizePdf.removeMetadata')}
                 </span>
               </label>
 
@@ -288,7 +289,7 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('sanitizePdf.removeAnnotations') || 'Remove Annotations'}
+                  {tTools('sanitizePdf.removeAnnotations')}
                 </span>
               </label>
             </div>
@@ -317,8 +318,8 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('sanitizePdf.sanitizeButton') || 'Sanitize PDF')
+            ? (t('status.processing'))
+            : (tTools('sanitizePdf.sanitizeButton'))
           }
         </Button>
 
@@ -340,11 +341,11 @@ export function SanitizePDFTool({ className = '' }: SanitizePDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('sanitizePdf.successMessage') || 'PDF sanitized successfully!'}
+            {tTools('sanitizePdf.successMessage')}
           </p>
           {removedItems.length > 0 && (
             <p className="text-xs mt-1 text-green-600">
-              {tTools('sanitizePdf.removedItems') || 'Removed:'} {removedItems.join(', ')}
+              {tTools('sanitizePdf.removedItems')} {removedItems.join(', ')}
             </p>
           )}
         </div>

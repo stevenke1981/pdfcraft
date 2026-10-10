@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
+import { auditTranslationCalls } from './i18n-source-audit.mjs';
 
 const root = process.cwd();
 function leaves(value, prefix = '') {
@@ -51,8 +52,19 @@ function scan(directory) {
   }
 }
 scan(path.join(root, 'src'));
-const report = { englishKeys: Object.keys(english).length, catalogs, hardcodedLiteralCandidates: literals.length, literals };
+const sourceCalls = auditTranslationCalls(root, JSON.parse(fs.readFileSync(path.join(root, 'messages/en.json'), 'utf8')));
+const classificationPath = path.join(root, 'docs/i18n-hardcoded-classification.json');
+const classified = fs.existsSync(classificationPath) ? JSON.parse(fs.readFileSync(classificationPath, 'utf8')) : undefined;
+const counts = (entries) => entries.reduce((result, entry) => ({ ...result, [entry.category]: (result[entry.category] || 0) + 1 }), {});
+const baselineClassification = classified && {
+  baseSha: classified.baseSha,
+  originalCandidateCount: classified.originalCandidateCount,
+  original: counts(classified.entries.filter(entry => typeof entry.id === 'number')),
+  supplementalCandidateCount: classified.supplementalCandidateCount,
+  supplemental: counts(classified.entries.filter(entry => typeof entry.id === 'string')),
+};
+const report = { englishKeys: Object.keys(english).length, catalogs, sourceCalls, baselineClassification, hardcodedLiteralCandidates: literals.length, literals };
 const outputIndex = process.argv.indexOf('--output');
 if (outputIndex !== -1 && process.argv[outputIndex + 1]) fs.writeFileSync(process.argv[outputIndex + 1], JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify({ ...report, literals: undefined }, null, 2));
-if (Object.values(catalogs).some(catalog => catalog.missing.length || catalog.extra.length || catalog.incompatible.length)) process.exitCode = 1;
+if (sourceCalls.missing.length || Object.values(catalogs).some(catalog => catalog.missing.length || catalog.extra.length || catalog.incompatible.length)) process.exitCode = 1;

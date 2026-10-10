@@ -23,6 +23,7 @@ export interface ChangePermissionsToolProps {
  * Provides the UI for changing PDF document permissions.
  */
 export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -165,17 +166,17 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
           combinedError.includes('invalid password') ||
           combinedError.includes('incorrect password')
         ) {
-          setPasswordErrorMessage(tTools('changePermissions.invalidPassword') || 'The current password you entered is incorrect. Please check and try again.');
+          setPasswordErrorMessage(tTools('changePermissions.invalidPassword'));
           setShowPasswordErrorModal(true);
         } else if (
           errorMsg === 'PASSWORD_REQUIRED' ||
           combinedError.includes('password required') ||
           combinedError.includes('password-protected')
         ) {
-          setPasswordErrorMessage(tTools('changePermissions.passwordRequired') || 'This PDF is password-protected. Please enter the current password to proceed.');
+          setPasswordErrorMessage(tTools('changePermissions.passwordRequired'));
           setShowPasswordErrorModal(true);
         } else {
-          setError(errorMsg || 'Failed to change permissions.');
+          setError(errorMsg || tUi('interfaceFeedback.failedToChangePermissions'));
         }
         setStatus('error');
       }
@@ -188,21 +189,21 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
           errMsgLower.includes('invalid password') ||
           errMsgLower.includes('incorrect password')
         ) {
-          setPasswordErrorMessage(tTools('changePermissions.invalidPassword') || 'The current password you entered is incorrect. Please check and try again.');
+          setPasswordErrorMessage(tTools('changePermissions.invalidPassword'));
           setShowPasswordErrorModal(true);
         } else if (
           errMsgLower.includes('password required') ||
           errMsgLower.includes('password-protected')
         ) {
-          setPasswordErrorMessage(tTools('changePermissions.passwordRequired') || 'This PDF is password-protected. Please enter the current password to proceed.');
+          setPasswordErrorMessage(tTools('changePermissions.passwordRequired'));
           setShowPasswordErrorModal(true);
         } else {
-          setError(errMsg || 'An unexpected error occurred.');
+          setError(errMsg || tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         }
         setStatus('error');
       }
     }
-  }, [file, permissions, currentPassword, newUserPassword, newOwnerPassword, tTools, tFeedback]);
+  }, [tUi, file, permissions, currentPassword, newUserPassword, newOwnerPassword, tTools, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;
@@ -220,14 +221,14 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
   const canProcess = file && !isProcessing;
 
   const permissionFields = [
-    { key: 'allowPrinting' as const, label: tTools('changePermissions.allowPrinting') || 'Allow Printing', desc: tTools('changePermissions.allowPrintingDesc') || 'Users can print the document' },
-    { key: 'allowHighQualityPrinting' as const, label: tTools('changePermissions.allowHighQualityPrinting') || 'Allow High-Quality Printing', desc: tTools('changePermissions.allowHighQualityPrintingDesc') || 'Users can print at high resolution' },
-    { key: 'allowModifying' as const, label: tTools('changePermissions.allowModifying') || 'Allow Modifying', desc: tTools('changePermissions.allowModifyingDesc') || 'Users can edit the document' },
-    { key: 'allowCopying' as const, label: tTools('changePermissions.allowCopying') || 'Allow Copying', desc: tTools('changePermissions.allowCopyingDesc') || 'Users can copy text and images' },
-    { key: 'allowAnnotating' as const, label: tTools('changePermissions.allowAnnotating') || 'Allow Annotating', desc: tTools('changePermissions.allowAnnotatingDesc') || 'Users can add comments and annotations' },
-    { key: 'allowFillingForms' as const, label: tTools('changePermissions.allowFillingForms') || 'Allow Filling Forms', desc: tTools('changePermissions.allowFillingFormsDesc') || 'Users can fill in form fields' },
-    { key: 'allowContentAccessibility' as const, label: tTools('changePermissions.allowAccessibility') || 'Allow Accessibility', desc: tTools('changePermissions.allowAccessibilityDesc') || 'Screen readers can access content' },
-    { key: 'allowDocumentAssembly' as const, label: tTools('changePermissions.allowAssembly') || 'Allow Assembly', desc: tTools('changePermissions.allowAssemblyDesc') || 'Users can insert, delete, or rotate pages' },
+    { key: 'allowPrinting' as const, label: tTools('changePermissions.allowPrinting'), desc: tTools('changePermissions.allowPrintingDesc') },
+    { key: 'allowHighQualityPrinting' as const, label: tTools('changePermissions.allowHighQualityPrinting'), desc: tTools('changePermissions.allowHighQualityPrintingDesc') },
+    { key: 'allowModifying' as const, label: tTools('changePermissions.allowModifying'), desc: tTools('changePermissions.allowModifyingDesc') },
+    { key: 'allowCopying' as const, label: tTools('changePermissions.allowCopying'), desc: tTools('changePermissions.allowCopyingDesc') },
+    { key: 'allowAnnotating' as const, label: tTools('changePermissions.allowAnnotating'), desc: tTools('changePermissions.allowAnnotatingDesc') },
+    { key: 'allowFillingForms' as const, label: tTools('changePermissions.allowFillingForms'), desc: tTools('changePermissions.allowFillingFormsDesc') },
+    { key: 'allowContentAccessibility' as const, label: tTools('changePermissions.allowAccessibility'), desc: tTools('changePermissions.allowAccessibilityDesc') },
+    { key: 'allowDocumentAssembly' as const, label: tTools('changePermissions.allowAssembly'), desc: tTools('changePermissions.allowAssemblyDesc') },
   ];
 
   return (
@@ -240,8 +241,8 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('changePermissions.uploadLabel') || 'Upload PDF File'}
-        description={tTools('changePermissions.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+        label={tTools('changePermissions.uploadLabel')}
+        description={tTools('changePermissions.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -281,7 +282,7 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -292,14 +293,14 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
         <Card variant="outlined">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('changePermissions.optionsTitle') || 'Document Permissions'}
+              {tTools('changePermissions.optionsTitle')}
             </h3>
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={allowAll} disabled={isProcessing}>
-                {tTools('changePermissions.allowAll') || 'Allow All'}
+                {tTools('changePermissions.allowAll')}
               </Button>
               <Button variant="ghost" size="sm" onClick={restrictAll} disabled={isProcessing}>
-                {tTools('changePermissions.restrictAll') || 'Restrict All'}
+                {tTools('changePermissions.restrictAll')}
               </Button>
             </div>
           </div>
@@ -308,7 +309,7 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
             {/* Info */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-yellow-50 border border-yellow-200">
               <p className="text-sm text-yellow-700">
-                {tTools('changePermissions.info') || 'Note: Permission enforcement requires PDF encryption. Set an owner password below to enforce restrictions.'}
+                {tTools('changePermissions.info')}
               </p>
             </div>
 
@@ -342,68 +343,68 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('changePermissions.passwordTitle') || 'Password Settings'}
+            {tTools('changePermissions.passwordTitle')}
           </h3>
           
           <div className="space-y-4">
             {/* Privacy Notice */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-blue-50 border border-blue-200">
               <p className="text-sm text-blue-700">
-                {tTools('changePermissions.privacyNotice') || '🔒 Your passwords are processed locally and never sent to any server.'}
+                {tTools('changePermissions.privacyNotice')}
               </p>
             </div>
 
             {/* Current Password */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('changePermissions.currentPasswordLabel') || 'Current Password (if PDF is encrypted)'}
+                {tTools('changePermissions.currentPasswordLabel')}
               </label>
               <input
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder={tTools('changePermissions.currentPasswordPlaceholder') || 'Enter current password'}
+                placeholder={tTools('changePermissions.currentPasswordPlaceholder')}
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-sm)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               />
               <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                {tTools('changePermissions.currentPasswordHint') || 'Required if the PDF is already password-protected.'}
+                {tTools('changePermissions.currentPasswordHint')}
               </p>
             </div>
 
             {/* New User Password */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('changePermissions.newUserPasswordLabel') || 'New User Password (to open document)'}
+                {tTools('changePermissions.newUserPasswordLabel')}
               </label>
               <input
                 type="password"
                 value={newUserPassword}
                 onChange={(e) => setNewUserPassword(e.target.value)}
-                placeholder={tTools('changePermissions.newUserPasswordPlaceholder') || 'Enter user password'}
+                placeholder={tTools('changePermissions.newUserPasswordPlaceholder')}
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-sm)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               />
               <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                {tTools('changePermissions.newUserPasswordHint') || 'Users will need this password to open the PDF.'}
+                {tTools('changePermissions.newUserPasswordHint')}
               </p>
             </div>
 
             {/* New Owner Password */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('changePermissions.newOwnerPasswordLabel') || 'New Owner Password (to change permissions)'}
+                {tTools('changePermissions.newOwnerPasswordLabel')}
               </label>
               <input
                 type="password"
                 value={newOwnerPassword}
                 onChange={(e) => setNewOwnerPassword(e.target.value)}
-                placeholder={tTools('changePermissions.newOwnerPasswordPlaceholder') || 'Enter owner password'}
+                placeholder={tTools('changePermissions.newOwnerPasswordPlaceholder')}
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-sm)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               />
               <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                {tTools('changePermissions.newOwnerPasswordHint') || 'Required to enforce permission restrictions.'}
+                {tTools('changePermissions.newOwnerPasswordHint')}
               </p>
             </div>
           </div>
@@ -431,8 +432,8 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('changePermissions.applyButton') || 'Apply Permissions')
+            ? (t('status.processing'))
+            : (tTools('changePermissions.applyButton'))
           }
         </Button>
 
@@ -454,10 +455,10 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('changePermissions.successMessage') || 'Permissions updated successfully!'}
+            {tTools('changePermissions.successMessage')}
           </p>
           <p className="text-xs mt-1 text-green-600">
-            {tTools('changePermissions.successHint') || 'For full permission enforcement, encrypt the PDF with an owner password.'}
+            {tTools('changePermissions.successHint')}
           </p>
         </div>
       )}
@@ -466,7 +467,7 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
       <Modal
         isOpen={showPasswordErrorModal}
         onClose={() => setShowPasswordErrorModal(false)}
-        title={t('status.error') || 'Error'}
+        title={t('status.error')}
         size="sm"
       >
         <div className="space-y-4">
@@ -488,7 +489,7 @@ export function ChangePermissionsTool({ className = '' }: ChangePermissionsToolP
               size="sm"
               onClick={() => setShowPasswordErrorModal(false)}
             >
-              {t('buttons.close') || 'Close'}
+              {t('buttons.close')}
             </Button>
           </div>
         </div>

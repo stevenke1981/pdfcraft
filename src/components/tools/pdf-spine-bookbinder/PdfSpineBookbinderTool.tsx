@@ -16,6 +16,7 @@ export interface PdfSpineBookbinderToolProps {
 }
 
 export function PdfSpineBookbinderTool({ className = '' }: PdfSpineBookbinderToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [pageCount, setPageCount] = useState(100);
   const [paperGsm, setPaperGsm] = useState<80 | 100 | 120 | 150>(80);
@@ -80,7 +81,7 @@ export function PdfSpineBookbinderTool({ className = '' }: PdfSpineBookbinderToo
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Engraving spine creasing folds...');
+            setProgressMessage(message || tUi('interfaceFeedback.engravingSpineCreasingFolds'));
           }
         }
       );
@@ -94,12 +95,12 @@ export function PdfSpineBookbinderTool({ className = '' }: PdfSpineBookbinderToo
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to design spine layout.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToDesignSpineLayout'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error designing spine.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorDesigningSpine'));
         setStatus('error');
       }
     }
@@ -139,7 +140,7 @@ export function PdfSpineBookbinderTool({ className = '' }: PdfSpineBookbinderToo
                 <div className="absolute w-36 h-52 bg-zinc-400 border border-zinc-500 rounded-l-md origin-right -translate-x-36 z-10 flex items-center justify-center text-[10px] text-zinc-600 font-bold"
                   style={{ transform: 'rotateY(180deg) translateZ(0px)', transformOrigin: 'right' }}
                 >
-                  BACK COVER
+                  {tUi('interfaceText.backCover')}
                 </div>
 
                 {/* Spine side */}
@@ -165,7 +166,7 @@ export function PdfSpineBookbinderTool({ className = '' }: PdfSpineBookbinderToo
                     {bookTitle || 'Untitled Book'}
                   </span>
                   <span className="text-[8px] text-zinc-400 mt-2 font-mono">
-                    {pageCount} Pages
+                    {pageCount} {tUi('common.ocr.statsPages')}
                   </span>
                 </div>
               </div>

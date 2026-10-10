@@ -28,6 +28,7 @@ interface PagePreview {
  * Provides the UI for deleting specific pages from a PDF.
  */
 export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -243,16 +244,16 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to delete pages.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToDeletePages'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, selectedPages, totalPages, tFeedback]);
+  }, [tUi, file, selectedPages, totalPages, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -287,8 +288,8 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('deletePages.uploadLabel') || 'Upload PDF File'}
-          description={tTools('deletePages.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('deletePages.uploadLabel')}
+          description={tTools('deletePages.uploadDescription')}
         />
       )}
 
@@ -315,7 +316,7 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -325,7 +326,7 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -336,19 +337,19 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('deletePages.selectTitle') || 'Select Pages to Delete'}
+              {tTools('deletePages.selectTitle')}
               {selectedPages.size > 0 && (
                 <span className="ml-2 text-red-600">
-                  ({selectedPages.size} selected, {remainingPages} will remain)
+                  ({selectedPages.size} {tUi('interfaceText.selected')} {remainingPages} {tUi('interfaceText.willRemain')}
                 </span>
               )}
             </h3>
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={handleSelectAll} disabled={isProcessing || totalPages <= 1}>
-                {t('buttons.selectAll') || 'Select All'}
+                {t('buttons.selectAll')}
               </Button>
               <Button variant="ghost" size="sm" onClick={handleDeselectAll} disabled={isProcessing}>
-                {t('buttons.deselectAll') || 'Deselect All'}
+                {t('buttons.deselectAll')}
               </Button>
             </div>
           </div>
@@ -356,8 +357,8 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
           {/* Warning about deletion */}
           <div className="mb-4 p-3 rounded-[var(--radius-md)] bg-amber-50 border border-amber-200 text-amber-800">
             <p className="text-sm">
-              <strong>⚠️ {tTools('deletePages.warning') || 'Warning'}:</strong>{' '}
-              {tTools('deletePages.warningText') || 'Selected pages will be permanently removed from the PDF. At least one page must remain.'}
+              <strong>⚠️ {tTools('deletePages.warning')}:</strong>{' '}
+              {tTools('deletePages.warningText')}
             </p>
           </div>
 
@@ -367,7 +368,7 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
               type="text"
               value={pageInput}
               onChange={(e) => setPageInput(e.target.value)}
-              placeholder="e.g., 1-5, 8, 10-15"
+              placeholder={tUi('interfaceText.eG1581015')}
               disabled={isProcessing}
               className="flex-1 px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] placeholder:text-[hsl(var(--color-muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
             />
@@ -377,12 +378,12 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
               onClick={handleApplyPageInput}
               disabled={isProcessing || !pageInput.trim()}
             >
-              {t('buttons.apply') || 'Apply'}
+              {t('buttons.apply')}
             </Button>
           </div>
 
           <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-4">
-            {tTools('deletePages.selectHint') || 'Click pages to select them for deletion, or enter page numbers/ranges above.'}
+            {tTools('deletePages.selectHint')}
           </p>
 
           {isLoadingPreviews ? (
@@ -390,7 +391,7 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
               <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-8 border-2 border-[hsl(var(--color-primary))] border-t-transparent rounded-full animate-spin" />
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {t('status.loading') || 'Loading previews...'}
+                  {t('status.loading')}
                 </p>
               </div>
             </div>
@@ -407,12 +408,12 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
                       ? 'border-red-500 ring-2 ring-red-300 opacity-60'
                       : 'border-[hsl(var(--color-border))] hover:border-red-300'
                   }`}
-                  aria-label={`Page ${preview.pageNumber}${selectedPages.has(preview.pageNumber) ? ' (selected for deletion)' : ''}`}
+                  aria-label={tUi(selectedPages.has(preview.pageNumber) ? 'dynamicUi.pageDeleteSelected' : 'dynamicUi.pageNumber', { page: preview.pageNumber })}
                 >
                   {preview.thumbnail ? (
                     <img
                       src={preview.thumbnail}
-                      alt={`Page ${preview.pageNumber}`}
+                      alt={tUi('dynamicUi.pageNumber', { page: preview.pageNumber })}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -464,7 +465,7 @@ export function DeletePagesTool({ className = '' }: DeletePagesToolProps) {
             className="bg-red-600 hover:bg-red-700"
           >
             {isProcessing 
-              ? (t('status.processing') || 'Processing...') 
+              ? (t('status.processing'))
               : (tTools('deletePages.deleteButton') || `Delete ${selectedPages.size} Page${selectedPages.size !== 1 ? 's' : ''}`)
             }
           </Button>

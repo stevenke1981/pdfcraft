@@ -25,6 +25,7 @@ type DisplayUnit = 'pt' | 'in' | 'mm';
  * Displays detailed information about each page's size, orientation, and standard size match.
  */
 export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -117,16 +118,16 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
           setDimensionsResult(output.metadata.result as PageDimensionsResult);
         }
       } else {
-        setError(output.error?.message || 'Failed to analyze PDF page dimensions.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToAnalyzePdfPageDimensions'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, displayUnit, tFeedback]);
+  }, [tUi, file, displayUnit, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -175,8 +176,8 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('pageDimensions.uploadLabel') || 'Upload PDF File'}
-        description={tTools('pageDimensions.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+        label={tTools('pageDimensions.uploadLabel')}
+        description={tTools('pageDimensions.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -216,7 +217,7 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -226,12 +227,12 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('pageDimensions.displayOptions') || 'Display Options'}
+            {tTools('pageDimensions.displayOptions')}
           </h3>
           
           <div>
             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-              {tTools('pageDimensions.unitLabel') || 'Measurement Unit'}
+              {tTools('pageDimensions.unitLabel')}
             </label>
             <div className="flex gap-2">
               {(['pt', 'in', 'mm'] as DisplayUnit[]).map((unit) => (
@@ -250,9 +251,9 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
                     disabled:opacity-50 disabled:cursor-not-allowed
                   `}
                 >
-                  {unit === 'pt' && (tTools('pageDimensions.unitPoints') || 'Points')}
-                  {unit === 'in' && (tTools('pageDimensions.unitInches') || 'Inches')}
-                  {unit === 'mm' && (tTools('pageDimensions.unitMm') || 'Millimeters')}
+                  {unit === 'pt' && (tTools('pageDimensions.unitPoints'))}
+                  {unit === 'in' && (tTools('pageDimensions.unitInches'))}
+                  {unit === 'mm' && (tTools('pageDimensions.unitMm'))}
                 </button>
               ))}
             </div>
@@ -281,8 +282,8 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('pageDimensions.analyzeButton') || 'Analyze Dimensions')
+            ? (t('status.processing'))
+            : (tTools('pageDimensions.analyzeButton'))
           }
         </Button>
 
@@ -303,13 +304,13 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
           {/* Summary */}
           <Card variant="outlined">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-              {tTools('pageDimensions.summary') || 'Summary'}
+              {tTools('pageDimensions.summary')}
             </h3>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="p-3 rounded-[var(--radius-sm)] bg-[hsl(var(--color-muted)/0.3)]">
                 <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                  {tTools('pageDimensions.totalPages') || 'Total Pages'}
+                  {tTools('pageDimensions.totalPages')}
                 </p>
                 <p className="text-xl font-semibold text-[hsl(var(--color-foreground))]">
                   {dimensionsResult.pageCount}
@@ -317,7 +318,7 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
               </div>
               <div className="p-3 rounded-[var(--radius-sm)] bg-[hsl(var(--color-muted)/0.3)]">
                 <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                  {tTools('pageDimensions.uniqueSizes') || 'Unique Sizes'}
+                  {tTools('pageDimensions.uniqueSizes')}
                 </p>
                 <p className="text-xl font-semibold text-[hsl(var(--color-foreground))]">
                   {dimensionsResult.uniqueSizes.length}
@@ -325,12 +326,12 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
               </div>
               <div className="p-3 rounded-[var(--radius-sm)] bg-[hsl(var(--color-muted)/0.3)] col-span-2">
                 <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                  {tTools('pageDimensions.uniformSize') || 'Uniform Size'}
+                  {tTools('pageDimensions.uniformSize')}
                 </p>
                 <p className="text-xl font-semibold text-[hsl(var(--color-foreground))]">
                   {dimensionsResult.uniformSize 
-                    ? (tTools('pageDimensions.yes') || 'Yes') 
-                    : (tTools('pageDimensions.no') || 'No')
+                    ? (tTools('pageDimensions.yes'))
+                    : (tTools('pageDimensions.no'))
                   }
                 </p>
               </div>
@@ -341,7 +342,7 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
           {dimensionsResult.uniqueSizes.length > 0 && (
             <Card variant="outlined">
               <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                {tTools('pageDimensions.sizeDistribution') || 'Size Distribution'}
+                {tTools('pageDimensions.sizeDistribution')}
               </h3>
               
               <div className="space-y-2">
@@ -361,7 +362,7 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
                           {page?.standardSize || `${sizeInfo.size} pt`}
                         </p>
                         <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                          {sizeInfo.count} {sizeInfo.count === 1 ? 'page' : 'pages'}
+                          {sizeInfo.count} {sizeInfo.count === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                           {sizeInfo.pages.length <= 5 && ` (${sizeInfo.pages.join(', ')})`}
                         </p>
                       </div>
@@ -380,7 +381,7 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
           {/* Page Details */}
           <Card variant="outlined">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-              {tTools('pageDimensions.pageDetails') || 'Page Details'}
+              {tTools('pageDimensions.pageDetails')}
             </h3>
             
             <div className="overflow-x-auto">
@@ -388,19 +389,19 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
                 <thead>
                   <tr className="border-b border-[hsl(var(--color-border))]">
                     <th className="text-left py-2 px-3 font-medium text-[hsl(var(--color-muted-foreground))]">
-                      {tTools('pageDimensions.page') || 'Page'}
+                      {tTools('pageDimensions.page')}
                     </th>
                     <th className="text-left py-2 px-3 font-medium text-[hsl(var(--color-muted-foreground))]">
-                      {tTools('pageDimensions.width') || 'Width'}
+                      {tTools('pageDimensions.width')}
                     </th>
                     <th className="text-left py-2 px-3 font-medium text-[hsl(var(--color-muted-foreground))]">
-                      {tTools('pageDimensions.height') || 'Height'}
+                      {tTools('pageDimensions.height')}
                     </th>
                     <th className="text-left py-2 px-3 font-medium text-[hsl(var(--color-muted-foreground))]">
-                      {tTools('pageDimensions.orientation') || 'Orientation'}
+                      {tTools('pageDimensions.orientation')}
                     </th>
                     <th className="text-left py-2 px-3 font-medium text-[hsl(var(--color-muted-foreground))]">
-                      {tTools('pageDimensions.standardSize') || 'Standard Size'}
+                      {tTools('pageDimensions.standardSize')}
                     </th>
                   </tr>
                 </thead>
@@ -432,7 +433,7 @@ export function PageDimensionsTool({ className = '' }: PageDimensionsToolProps) 
               
               {dimensionsResult.pages.length > 50 && (
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))] mt-2 text-center">
-                  {tTools('pageDimensions.showingFirst50') || 'Showing first 50 pages. Download JSON for complete data.'}
+                  {tTools('pageDimensions.showingFirst50')}
                 </p>
               )}
             </div>

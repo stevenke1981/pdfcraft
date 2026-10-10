@@ -15,6 +15,7 @@ export interface OCGManagerToolProps {
 }
 
 export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -60,11 +61,11 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
             const result = await listOCGLayers(file, (prog) => setProgress(prog));
             setLayers(result.layers);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to load layers.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.failedToLoadLayers'));
         } finally {
             setIsLoading(false);
         }
-    }, [file]);
+    }, [tUi, file]);
 
     const handleToggleLayer = useCallback(async (layerId: string, currentVisible: boolean) => {
         if (!file) return;
@@ -86,14 +87,14 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                     l.id === layerId ? { ...l, visible: !currentVisible } : l
                 ));
             } else {
-                setError(output.error?.message || 'Failed to toggle layer.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToToggleLayer'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [file]);
+    }, [tUi, file]);
 
     const handleAddLayer = useCallback(async () => {
         if (!file || !newLayerName.trim()) return;
@@ -113,19 +114,19 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                 // Reload layers
                 await loadLayers();
             } else {
-                setError(output.error?.message || 'Failed to add layer.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToAddLayer'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [file, newLayerName, loadLayers]);
+    }, [tUi, file, newLayerName, loadLayers]);
 
     const handleDeleteLayer = useCallback(async (layerId: string) => {
         if (!file) return;
 
-        if (!confirm('Are you sure you want to delete this layer?')) return;
+        if (!confirm(tUi('interfaceFeedback.areYouSureYouWantToDeleteThisLayer'))) return;
 
         setIsProcessing(true);
         setError(null);
@@ -140,14 +141,14 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                 setResultBlob(output.result as Blob);
                 setLayers(prev => prev.filter(l => l.id !== layerId));
             } else {
-                setError(output.error?.message || 'Failed to delete layer.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToDeleteLayer'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [file]);
+    }, [tUi, file]);
 
     const handleRenameLayer = useCallback(async (layerId: string) => {
         if (!file || !editName.trim()) return;
@@ -170,14 +171,14 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                 setEditingLayer(null);
                 setEditName('');
             } else {
-                setError(output.error?.message || 'Failed to rename layer.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToRenameLayer'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [file, editName]);
+    }, [tUi, file, editName]);
 
     const handleReset = useCallback(() => {
         setFile(null);
@@ -199,8 +200,8 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('ocgManager.uploadLabel') || 'Upload PDF File'}
-                description={tTools('ocgManager.uploadDescription') || 'Drag and drop a PDF to manage its layers (OCG).'}
+                label={tTools('ocgManager.uploadLabel')}
+                description={tTools('ocgManager.uploadDescription')}
             />
 
             {error && (
@@ -215,7 +216,7 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                         <div className="flex items-center gap-2">
                             <Layers className="w-5 h-5 text-[hsl(var(--color-primary))]" />
                             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                                {tTools('ocgManager.layersTitle') || 'PDF Layers'} ({layers.length})
+                                {tTools('ocgManager.layersTitle')} ({layers.length})
                             </h3>
                         </div>
                         <div className="flex items-center gap-2">
@@ -223,14 +224,14 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                                 <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
                             </Button>
                             <Button variant="ghost" size="sm" onClick={handleReset} disabled={isProcessing}>
-                                {t('buttons.clear') || 'Clear'}
+                                {t('buttons.clear')}
                             </Button>
                         </div>
                     </div>
 
                     {isLoading ? (
                         <div className="py-8 text-center text-[hsl(var(--color-muted-foreground))]">
-                            Loading layers...
+                            {tUi('interfaceText.loadingLayers')}
                         </div>
                     ) : hasLayers ? (
                         <div className="space-y-2">
@@ -244,7 +245,7 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                                             onClick={() => handleToggleLayer(layer.id, layer.visible)}
                                             disabled={isProcessing}
                                             className="p-1 rounded hover:bg-[hsl(var(--color-muted))]"
-                                            title={layer.visible ? 'Hide layer' : 'Show layer'}
+                                            title={layer.visible ? tUi('interfaceText.hideLayer') : tUi('interfaceText.showLayer')}
                                         >
                                             {layer.visible ? (
                                                 <Eye className="w-4 h-4 text-green-600" />
@@ -278,7 +279,7 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                                                     onClick={() => handleRenameLayer(layer.id)}
                                                     disabled={isProcessing}
                                                 >
-                                                    Save
+                                                    {tUi('common.buttons.save')}
                                                 </Button>
                                                 <Button
                                                     variant="ghost"
@@ -288,7 +289,7 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                                                         setEditName('');
                                                     }}
                                                 >
-                                                    Cancel
+                                                    {tUi('common.buttons.cancel')}
                                                 </Button>
                                             </>
                                         ) : (
@@ -300,7 +301,7 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                                                     }}
                                                     disabled={isProcessing}
                                                     className="p-1 rounded hover:bg-[hsl(var(--color-muted))]"
-                                                    title="Rename layer"
+                                                    title={tUi('interfaceText.renameLayer')}
                                                 >
                                                     <Edit2 className="w-4 h-4 text-[hsl(var(--color-muted-foreground))]" />
                                                 </button>
@@ -308,7 +309,7 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                                                     onClick={() => handleDeleteLayer(layer.id)}
                                                     disabled={isProcessing}
                                                     className="p-1 rounded hover:bg-red-100"
-                                                    title="Delete layer"
+                                                    title={tUi('interfaceText.deleteLayer')}
                                                 >
                                                     <Trash2 className="w-4 h-4 text-red-500" />
                                                 </button>
@@ -320,21 +321,21 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                         </div>
                     ) : (
                         <div className="py-8 text-center text-[hsl(var(--color-muted-foreground))]">
-                            {tTools('ocgManager.noLayers') || 'This PDF has no layers (OCG).'}
+                            {tTools('ocgManager.noLayers')}
                         </div>
                     )}
 
                     {/* Add New Layer */}
                     <div className="mt-4 pt-4 border-t border-[hsl(var(--color-border))]">
                         <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                            {tTools('ocgManager.addLayerLabel') || 'Add New Layer'}
+                            {tTools('ocgManager.addLayerLabel')}
                         </label>
                         <div className="flex gap-2">
                             <input
                                 type="text"
                                 value={newLayerName}
                                 onChange={(e) => setNewLayerName(e.target.value)}
-                                placeholder="Layer name..."
+                                placeholder={tUi('interfaceText.layerName')}
                                 disabled={isProcessing}
                                 className="flex-1 px-3 py-2 border border-[hsl(var(--color-border))] rounded-[var(--radius-md)] text-sm"
                             />
@@ -344,7 +345,7 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
                                 disabled={isProcessing || !newLayerName.trim()}
                             >
                                 <Plus className="w-4 h-4 mr-1" />
-                                Add
+                                {tUi('common.buttons.add')}
                             </Button>
                         </div>
                     </div>
@@ -352,7 +353,7 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
             )}
 
             {isProcessing && (
-                <ProcessingProgress progress={progress} status="processing" message="Processing layers..." showPercentage />
+                <ProcessingProgress progress={progress} status="processing" message={tUi('interfaceFeedback.processingLayers')} showPercentage />
             )}
 
             {resultBlob && (
@@ -368,7 +369,7 @@ export function OCGManagerTool({ className = '' }: OCGManagerToolProps) {
 
             {resultBlob && (
                 <div className="p-4 rounded-[var(--radius-md)] bg-green-50 border border-green-200 text-green-700" role="status">
-                    <p className="text-sm font-medium">{tTools('ocgManager.successMessage') || 'Layer changes saved successfully!'}</p>
+                    <p className="text-sm font-medium">{tTools('ocgManager.successMessage')}</p>
                 </div>
             )}
         </div>

@@ -37,6 +37,7 @@ export interface RemoveBlankPagesToolProps {
 }
 
 export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -156,7 +157,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
       }
     } catch (err) {
       console.error(err);
-      setError(err instanceof Error ? err.message : 'Failed to analyze PDF pages.');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.failedToAnalyzePdfPages'));
     } finally {
       setIsAnalyzing(false);
     }
@@ -244,14 +245,14 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
         setRemovedCount(explicitPagesToRemove.length);
         setStatus('complete');
       } else { 
-        setError(output.error?.message || 'Failed to apply blank page filter.'); 
+        setError(output.error?.message || tUi('interfaceFeedback.failedToApplyBlankPageFilter'));
         setStatus('error'); 
       }
     } catch (err) { 
-      setError(err instanceof Error ? err.message : 'Error processing PDF'); 
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorProcessingPdf'));
       setStatus('error'); 
     }
-  }, [file, pages, isPageRemoved, tFeedback]);
+  }, [tUi, file, pages, isPageRemoved, tFeedback]);
 
   const handleClear = () => {
     setFile(null);
@@ -315,7 +316,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
               {tTools('removeBlankPages.analyzingPages')}
             </h3>
             <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-              {analyzingProgress}% Completed
+              {analyzingProgress}{tUi('interfaceText.completed')}
             </p>
             <div className="w-full bg-zinc-200 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
               <div 
@@ -348,7 +349,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
             </div>
             
             <Button variant="ghost" size="sm" onClick={handleClear} disabled={isProcessing} className="hover:bg-red-500/10 hover:text-red-500">
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </Card>
 
@@ -430,7 +431,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
                       : 'text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))]'
                   }`}
                 >
-                  {t('removeBlankPages.tabAll', { count: pages.length })}
+                  {tUi('common.removeBlankPages.allTab', { count: pages.length })}
                 </button>
                 <button
                   onClick={() => setFilterMode('blanks')}
@@ -440,7 +441,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
                       : 'text-red-500/80 hover:text-red-500'
                   }`}
                 >
-                  {t('removeBlankPages.tabBlanks', { count: blankPagesCount })}
+                  {tUi('common.removeBlankPages.blankTab', { count: blankPagesCount })}
                 </button>
                 <button
                   onClick={() => setFilterMode('keeps')}
@@ -450,7 +451,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
                       : 'text-emerald-500/80 hover:text-emerald-500'
                   }`}
                 >
-                  {t('removeBlankPages.tabKeeps', { count: keepPagesCount })}
+                  {tUi('common.removeBlankPages.keepTab', { count: keepPagesCount })}
                 </button>
               </div>
 
@@ -477,7 +478,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
             <Card variant="outlined" className="p-12 text-center rounded-[2rem] border-dashed border-zinc-200 dark:border-zinc-800">
               <Eye className="w-10 h-10 text-zinc-300 dark:text-zinc-700 mx-auto mb-3" />
               <p className="text-sm text-[hsl(var(--color-muted-foreground))] font-bold">
-                {t('removeBlankPages.noPagesToDisplay') || 'No pages to display'}
+                {tUi('common.removeBlankPages.emptyState')}
               </p>
             </Card>
           ) : (
@@ -521,7 +522,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
             </h3>
             <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
               {removedCount > 0 
-                ? t('removeBlankPages.successPurged', { count: removedCount }) 
+                ? tUi('common.removeBlankPages.successRemoved', { count: removedCount })
                 : t('removeBlankPages.successNoChange')
               }
             </p>
@@ -537,7 +538,7 @@ export function RemoveBlankPagesTool({ className = '' }: RemoveBlankPagesToolPro
               showFileSize 
             />
             <Button variant="ghost" size="lg" onClick={handleClear} className="border border-zinc-200 dark:border-zinc-800">
-              {t('removeBlankPages.processNewFile') || 'Process New File'}
+              {tUi('common.removeBlankPages.processNew')}
             </Button>
           </div>
         </Card>
@@ -571,6 +572,7 @@ interface PageCardProps {
 }
 
 function PageCard({ page, isRemoved, isAutoBlank, isManualKeep, isManualRemove, onToggle }: PageCardProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const cardRef = useRef<HTMLDivElement>(null);
   
@@ -617,7 +619,7 @@ function PageCard({ page, isRemoved, isAutoBlank, isManualKeep, isManualRemove, 
       >
         <img 
           src={page.dataUrl} 
-          alt={`Page ${page.pageNumber}`} 
+          alt={tUi('common.removeBlankPages.pageNumber', { page: page.pageNumber })}
           className={`w-full h-auto object-contain rounded shadow-sm select-none pointer-events-none transition-transform duration-500 ${
             isRemoved ? 'filter grayscale opacity-30 scale-[0.98]' : 'group-hover:scale-[1.02]'
           }`}
@@ -651,11 +653,11 @@ function PageCard({ page, isRemoved, isAutoBlank, isManualKeep, isManualRemove, 
           : 'bg-zinc-50 dark:bg-zinc-900/60 border-zinc-100 dark:border-zinc-800'
       }`}>
         <span className={isRemoved ? 'text-red-500' : 'text-zinc-500'}>
-          {t('removeBlankPages.pageNumberLabel', { num: page.pageNumber })}
+          {tUi('common.removeBlankPages.pageNumber', { page: page.pageNumber })}
         </span>
         
         {/* Entropy Tag */}
-        <span className="text-[9px] font-medium text-zinc-400 font-mono tracking-tighter" title={`Shannon Entropy: ${page.entropy.toFixed(4)}`}>
+        <span className="text-[9px] font-medium text-zinc-400 font-mono tracking-tighter" title={tUi('dynamicUi.entropyValue', { entropy: page.entropy.toFixed(4) })}>
           {t('removeBlankPages.entropyLabel', { val: page.entropy.toFixed(3) })}
         </span>
       </div>
@@ -664,17 +666,17 @@ function PageCard({ page, isRemoved, isAutoBlank, isManualKeep, isManualRemove, 
       <div className="absolute top-2.5 right-2.5 z-20 pointer-events-none">
         {isManualRemove && (
           <span className="px-2 py-0.5 text-[8px] font-extrabold rounded-md shadow-md bg-red-500 text-white border border-red-600 tracking-wider">
-            {t('removeBlankPages.badgeForceDelete')}
+            {tUi('common.removeBlankPages.forceDelete')}
           </span>
         )}
         {isManualKeep && (
           <span className="px-2 py-0.5 text-[8px] font-extrabold rounded-md shadow-md bg-emerald-500 text-white border border-emerald-600 tracking-wider animate-pulse">
-            {t('removeBlankPages.badgeForceKeep')}
+            {tUi('common.removeBlankPages.forceKeep')}
           </span>
         )}
         {!isManualKeep && !isManualRemove && isAutoBlank && (
           <span className="px-2 py-0.5 text-[8px] font-extrabold rounded-md shadow-md bg-red-600/90 text-white border border-red-700 tracking-wider">
-            {t('removeBlankPages.badgeEmptyPage')}
+            {tUi('common.removeBlankPages.blankBadge')}
           </span>
         )}
       </div>

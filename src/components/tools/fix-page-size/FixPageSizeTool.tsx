@@ -28,6 +28,7 @@ export interface FixPageSizeToolProps {
  * Provides the UI for standardizing PDF page sizes.
  */
 export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -126,16 +127,16 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to fix page sizes.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToFixPageSizes'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, sizePreset, customWidth, customHeight, scaleMode, maintainAspectRatio, orientation, tFeedback]);
+  }, [tUi, file, sizePreset, customWidth, customHeight, scaleMode, maintainAspectRatio, orientation, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -168,8 +169,8 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('fixPageSize.uploadLabel') || 'Upload PDF File'}
-        description={tTools('fixPageSize.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+        label={tTools('fixPageSize.uploadLabel')}
+        description={tTools('fixPageSize.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -209,7 +210,7 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -220,14 +221,14 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('fixPageSize.optionsTitle') || 'Page Size Options'}
+            {tTools('fixPageSize.optionsTitle')}
           </h3>
           
           <div className="space-y-6">
             {/* Page Size Selection */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('fixPageSize.targetSize') || 'Target Page Size'}
+                {tTools('fixPageSize.targetSize')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 {(Object.keys(PAGE_SIZES) as PageSizePreset[]).map((preset) => (
@@ -246,7 +247,7 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
                       disabled:opacity-50 disabled:cursor-not-allowed
                     `}
                   >
-                    {preset === 'custom' ? (tTools('fixPageSize.custom') || 'Custom') : preset.toUpperCase()}
+                    {preset === 'custom' ? (tTools('fixPageSize.custom')) : preset.toUpperCase()}
                   </button>
                 ))}
               </div>
@@ -260,7 +261,7 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                    {tTools('fixPageSize.width') || 'Width (points)'}
+                    {tTools('fixPageSize.width')}
                   </label>
                   <input
                     type="number"
@@ -274,7 +275,7 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                    {tTools('fixPageSize.height') || 'Height (points)'}
+                    {tTools('fixPageSize.height')}
                   </label>
                   <input
                     type="number"
@@ -292,7 +293,7 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
             {/* Scale Mode */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('fixPageSize.scaleMode') || 'Content Scaling'}
+                {tTools('fixPageSize.scaleMode')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 {(['fit', 'fill', 'stretch', 'center'] as ScaleMode[]).map((mode) => (
@@ -311,25 +312,25 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
                       disabled:opacity-50 disabled:cursor-not-allowed
                     `}
                   >
-                    {mode === 'fit' && (tTools('fixPageSize.scaleFit') || 'Fit')}
-                    {mode === 'fill' && (tTools('fixPageSize.scaleFill') || 'Fill')}
-                    {mode === 'stretch' && (tTools('fixPageSize.scaleStretch') || 'Stretch')}
-                    {mode === 'center' && (tTools('fixPageSize.scaleCenter') || 'Center')}
+                    {mode === 'fit' && (tTools('fixPageSize.scaleFit'))}
+                    {mode === 'fill' && (tTools('fixPageSize.scaleFill'))}
+                    {mode === 'stretch' && (tTools('fixPageSize.scaleStretch'))}
+                    {mode === 'center' && (tTools('fixPageSize.scaleCenter'))}
                   </button>
                 ))}
               </div>
               <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                {scaleMode === 'fit' && (tTools('fixPageSize.scaleFitDesc') || 'Scale content to fit within page, maintaining aspect ratio')}
-                {scaleMode === 'fill' && (tTools('fixPageSize.scaleFillDesc') || 'Scale content to fill page, may crop edges')}
-                {scaleMode === 'stretch' && (tTools('fixPageSize.scaleStretchDesc') || 'Stretch content to fill page exactly')}
-                {scaleMode === 'center' && (tTools('fixPageSize.scaleCenterDesc') || 'Center content without scaling')}
+                {scaleMode === 'fit' && (tTools('fixPageSize.scaleFitDesc'))}
+                {scaleMode === 'fill' && (tTools('fixPageSize.scaleFillDesc'))}
+                {scaleMode === 'stretch' && (tTools('fixPageSize.scaleStretchDesc'))}
+                {scaleMode === 'center' && (tTools('fixPageSize.scaleCenterDesc'))}
               </p>
             </div>
 
             {/* Orientation */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('fixPageSize.orientation') || 'Page Orientation'}
+                {tTools('fixPageSize.orientation')}
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {(['auto', 'portrait', 'landscape'] as const).map((orient) => (
@@ -348,9 +349,9 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
                       disabled:opacity-50 disabled:cursor-not-allowed
                     `}
                   >
-                    {orient === 'auto' && (tTools('fixPageSize.orientAuto') || 'Auto')}
-                    {orient === 'portrait' && (tTools('fixPageSize.orientPortrait') || 'Portrait')}
-                    {orient === 'landscape' && (tTools('fixPageSize.orientLandscape') || 'Landscape')}
+                    {orient === 'auto' && (tTools('fixPageSize.orientAuto'))}
+                    {orient === 'portrait' && (tTools('fixPageSize.orientPortrait'))}
+                    {orient === 'landscape' && (tTools('fixPageSize.orientLandscape'))}
                   </button>
                 ))}
               </div>
@@ -366,7 +367,7 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
                 className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
               />
               <span className="text-sm text-[hsl(var(--color-foreground))]">
-                {tTools('fixPageSize.maintainAspectRatio') || 'Maintain aspect ratio'}
+                {tTools('fixPageSize.maintainAspectRatio')}
               </span>
             </label>
           </div>
@@ -394,8 +395,8 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('fixPageSize.applyButton') || 'Fix Page Sizes')
+            ? (t('status.processing'))
+            : (tTools('fixPageSize.applyButton'))
           }
         </Button>
 
@@ -417,7 +418,7 @@ export function FixPageSizeTool({ className = '' }: FixPageSizeToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('fixPageSize.successMessage') || 'Page sizes fixed successfully!'}
+            {tTools('fixPageSize.successMessage')}
           </p>
         </div>
       )}

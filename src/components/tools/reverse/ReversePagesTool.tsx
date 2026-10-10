@@ -23,6 +23,7 @@ export interface ReversePagesToolProps {
  * Provides the UI for reversing page order in a PDF.
  */
 export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -129,16 +130,16 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to reverse pages.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToReversePages'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, totalPages, tFeedback]);
+  }, [tUi, file, totalPages, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -172,8 +173,8 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('reversePages.uploadLabel') || 'Upload PDF File'}
-          description={tTools('reversePages.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('reversePages.uploadLabel')}
+          description={tTools('reversePages.uploadDescription')}
         />
       )}
 
@@ -200,7 +201,7 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -210,7 +211,7 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -220,7 +221,7 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
       {file && totalPages > 0 && (
         <Card variant="outlined" size="lg">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-2">
-            {tTools('reversePages.infoTitle') || 'Reverse Page Order'}
+            {tTools('reversePages.infoTitle')}
           </h3>
           <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
             {tTools('reversePages.infoDescription') || 
@@ -275,8 +276,8 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
             loading={isProcessing}
           >
             {isProcessing 
-              ? (t('status.processing') || 'Processing...') 
-              : (tTools('reversePages.reverseButton') || 'Reverse Pages')
+              ? (t('status.processing'))
+              : (tTools('reversePages.reverseButton'))
             }
           </Button>
 
@@ -299,7 +300,7 @@ export function ReversePagesTool({ className = '' }: ReversePagesToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('reversePages.successMessage') || 'Page order reversed successfully! Click the download button to save your file.'}
+            {tTools('reversePages.successMessage')}
           </p>
         </div>
       )}

@@ -23,6 +23,7 @@ export interface DeskewPDFToolProps {
  * Supports batch processing of multiple files with ZIP download.
  */
 export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -150,8 +151,8 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('deskewPdf.uploadLabel') || 'Upload Scanned PDF Files'}
-                description={tTools('deskewPdf.uploadDescription') || 'Drag and drop PDF files here. You can process up to 10 files at once.'}
+                label={tTools('deskewPdf.uploadLabel')}
+                description={tTools('deskewPdf.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -169,7 +170,7 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                 <Card variant="outlined" size="lg">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                            {tTools('deskewPdf.filesTitle') || 'Files to Deskew'} ({files.length})
+                            {tTools('deskewPdf.filesTitle')} ({files.length})
                         </h3>
                         <Button
                             variant="ghost"
@@ -178,7 +179,7 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                             disabled={isProcessing}
                         >
                             <Trash2 className="w-4 h-4 mr-1" />
-                            {t('buttons.clearAll') || 'Clear All'}
+                            {t('buttons.clearAll')}
                         </Button>
                     </div>
 
@@ -205,7 +206,7 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                                             )}
                                             {batchFile.status === 'completed' && batchFile.result && (
                                                 <span className="text-xs text-green-500">
-                                                    ✓ Deskewed
+                                                    {tUi('interfaceText.deskewed')}
                                                 </span>
                                             )}
                                             {batchFile.status === 'error' && (
@@ -232,7 +233,7 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                                     <button
                                         onClick={() => removeFile(batchFile.id)}
                                         className="p-1 text-[hsl(var(--color-muted-foreground))] hover:text-red-500 transition-colors"
-                                        aria-label="Remove file"
+                                        aria-label={tUi('interfaceText.removeFile')}
                                     >
                                         <X className="w-4 h-4" />
                                     </button>
@@ -247,14 +248,14 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
             {hasFiles && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('deskewPdf.optionsTitle') || 'Deskew Options'}
+                        {tTools('deskewPdf.optionsTitle')}
                     </h3>
 
                     <div className="space-y-4">
                         {/* Threshold Setting */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('deskewPdf.thresholdLabel') || 'Sensitivity Level'}: {threshold}
+                                {tTools('deskewPdf.thresholdLabel')}: {threshold}
                             </label>
                             <input
                                 type="range"
@@ -266,14 +267,14 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                                 className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[hsl(var(--color-muted))]"
                             />
                             <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                                {tTools('deskewPdf.thresholdDesc') || 'Higher values detect more subtle skew angles. Lower values only correct obvious tilts. Default: 10'}
+                                {tTools('deskewPdf.thresholdDesc')}
                             </p>
                         </div>
 
                         {/* DPI Setting */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('deskewPdf.dpiLabel') || 'Analysis DPI'}: {dpi}
+                                {tTools('deskewPdf.dpiLabel')}: {dpi}
                             </label>
                             <div className="grid grid-cols-3 gap-2">
                                 {[72, 150, 300].map((d) => (
@@ -297,7 +298,7 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                                 ))}
                             </div>
                             <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                                {tTools('deskewPdf.dpiDesc') || 'Higher DPI provides more accurate detection but takes longer.'}
+                                {tTools('deskewPdf.dpiDesc')}
                             </p>
                         </div>
                     </div>
@@ -326,8 +327,8 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                 >
                     <ScanLine className="w-4 h-4 mr-2" />
                     {isProcessing
-                        ? (t('status.processing') || 'Processing...')
-                        : (tTools('deskewPdf.processButton') || 'Deskew PDFs')
+                        ? (t('status.processing'))
+                        : (tTools('deskewPdf.processButton'))
                     }
                 </Button>
 
@@ -339,7 +340,7 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                         disabled={isProcessing}
                     >
                         <FileArchive className="w-4 h-4 mr-2" />
-                        {tTools('deskewPdf.downloadAllZip') || 'Download All as ZIP'}
+                        {tTools('deskewPdf.downloadAllZip')}
                     </Button>
                 )}
             </div>
@@ -355,7 +356,7 @@ export function DeskewPDFTool({ className = '' }: DeskewPDFToolProps) {
                     </p>
                     {errorCount > 0 && (
                         <p className="text-sm text-red-600 mt-1">
-                            {errorCount} file(s) failed to process.
+                            {errorCount} {tUi('interfaceText.fileSFailedToProcess')}
                         </p>
                     )}
                 </div>

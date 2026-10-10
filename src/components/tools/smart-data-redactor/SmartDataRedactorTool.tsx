@@ -16,6 +16,7 @@ export interface SmartDataRedactorToolProps {
 }
 
 export function SmartDataRedactorTool({ className = '' }: SmartDataRedactorToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [emailRedact, setEmailRedact] = useState(true);
@@ -69,7 +70,7 @@ export function SmartDataRedactorTool({ className = '' }: SmartDataRedactorToolP
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Masking privacy records...');
+            setProgressMessage(message || tUi('interfaceFeedback.maskingPrivacyRecords'));
           }
         }
       );
@@ -83,12 +84,12 @@ export function SmartDataRedactorTool({ className = '' }: SmartDataRedactorToolP
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to apply automatic redaction.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToApplyAutomaticRedaction'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error applying redactor.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorApplyingRedactor'));
         setStatus('error');
       }
     }

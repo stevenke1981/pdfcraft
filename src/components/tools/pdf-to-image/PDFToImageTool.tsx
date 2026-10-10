@@ -34,6 +34,7 @@ export interface PDFToImageToolProps {
  * Converts PDF pages to images (JPG, PNG, WebP, BMP, TIFF).
  */
 export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -189,16 +190,16 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
         setResult(output.result);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to convert PDF to images.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToConvertPdfToImages'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, format, quality, scale, pageRange, layoutPreset, customColumns, customRows, skipFirstPage, tFeedback]);
+  }, [tUi, file, format, quality, scale, pageRange, layoutPreset, customColumns, customRows, skipFirstPage, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -250,8 +251,8 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('pdfToImage.uploadLabel') || 'Upload PDF'}
-        description={tTools('pdfToImage.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+        label={tTools('pdfToImage.uploadLabel')}
+        description={tTools('pdfToImage.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -286,7 +287,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
               onClick={handleRemoveFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -297,7 +298,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('pdfToImage.optionsTitle') || 'Conversion Options'}
+            {tTools('pdfToImage.optionsTitle')}
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -305,7 +306,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
             {!outputFormat && (
               <div>
                 <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                  {tTools('pdfToImage.format') || 'Output Format'}
+                  {tTools('pdfToImage.format')}
                 </label>
                 <Select
                   value={format}
@@ -325,7 +326,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
             {['jpg', 'jpeg', 'webp'].includes(format) && (
               <div>
                 <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                  {tTools('pdfToImage.quality') || 'Quality'} ({Math.round(quality * 100)}%)
+                  {tTools('pdfToImage.quality')} ({Math.round(quality * 100)}%)
                 </label>
                 <input
                   type="range"
@@ -343,35 +344,35 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
             {/* Scale/DPI */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('pdfToImage.resolution') || 'Resolution'}
+                {tTools('pdfToImage.resolution')}
               </label>
               <Select
                 value={scale}
                 onChange={(e) => setScale(parseFloat(e.target.value))}
                 disabled={isProcessing}
               >
-                <option value="1">72 DPI (Low)</option>
-                <option value="2">144 DPI (Medium)</option>
-                <option value="3">216 DPI (High)</option>
-                <option value="4">288 DPI (Very High)</option>
+                <option value="1">{tUi('interfaceText.72DpiLow')}</option>
+                <option value="2">{tUi('interfaceText.144DpiMedium')}</option>
+                <option value="3">{tUi('interfaceText.216DpiHigh')}</option>
+                <option value="4">{tUi('interfaceText.288DpiVeryHigh')}</option>
               </Select>
             </div>
 
             {/* Page Range */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('pdfToImage.pageRange') || 'Page Range'}
+                {tTools('pdfToImage.pageRange')}
               </label>
               <input
                 type="text"
                 value={pageRange}
                 onChange={(e) => setPageRange(e.target.value)}
-                placeholder={tTools('pdfToImage.pageRangePlaceholder') || 'e.g., 1-3, 5, 7'}
+                placeholder={tTools('pdfToImage.pageRangePlaceholder')}
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               />
               <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                {tTools('pdfToImage.pageRangeHint') || 'Leave empty for all pages'}
+                {tTools('pdfToImage.pageRangeHint')}
               </p>
             </div>
           </div>
@@ -379,7 +380,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
           {/* Page Layout Section */}
           <div className="mt-4 pt-4 border-t border-[hsl(var(--color-border))]">
             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-3">
-              {tTools('pdfToImage.layoutTitle') || 'Page Layout'}
+              {tTools('pdfToImage.layoutTitle')}
             </label>
 
             {/* Layout Preset Selection */}
@@ -390,7 +391,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
                 { value: '1x2', label: '1×2', cols: 1, rows: 2 },
                 { value: '2x2', label: '2×2', cols: 2, rows: 2 },
                 { value: '3x3', label: '3×3', cols: 3, rows: 3 },
-                { value: 'custom', label: tTools('pdfToImage.customLayout') || 'Custom', cols: customColumns, rows: customRows },
+                { value: 'custom', label: tTools('pdfToImage.customLayout'), cols: customColumns, rows: customRows },
               ] as const).map((preset) => (
                 <button
                   key={preset.value}
@@ -441,7 +442,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
               <div className="flex gap-4 mb-4 p-3 rounded-lg bg-[hsl(var(--color-muted)/0.3)]">
                 <div className="flex-1">
                   <label className="block text-xs font-medium text-[hsl(var(--color-foreground))] mb-1">
-                    {tTools('pdfToImage.columns') || 'Columns'}
+                    {tTools('pdfToImage.columns')}
                   </label>
                   <input
                     type="number"
@@ -455,7 +456,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
                 </div>
                 <div className="flex-1">
                   <label className="block text-xs font-medium text-[hsl(var(--color-foreground))] mb-1">
-                    {tTools('pdfToImage.rows') || 'Rows'}
+                    {tTools('pdfToImage.rows')}
                   </label>
                   <input
                     type="number"
@@ -481,7 +482,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('pdfToImage.skipFirstPage') || 'Without first/cover page'}
+                  {tTools('pdfToImage.skipFirstPage')}
                 </span>
               </label>
             )}
@@ -492,7 +493,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2 h-2 rounded-full bg-[hsl(var(--color-primary))]"></div>
                   <h4 className="text-sm font-semibold text-[hsl(var(--color-foreground))]">
-                    {tTools('pdfToImage.layoutPreview') || 'Layout Preview'}
+                    {tTools('pdfToImage.layoutPreview')}
                   </h4>
                 </div>
 
@@ -526,11 +527,11 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
                       <span className="font-medium text-[hsl(var(--color-foreground))]">
                         {layoutPreset === 'custom' ? `${customColumns}×${customRows}` : layoutPreset.replace('x', '×')}
                       </span>
-                      {' '}{tTools('pdfToImage.pagesPerImage') || 'pages per image'}
+                      {' '}{tTools('pdfToImage.pagesPerImage')}
                     </p>
                     {skipFirstPage && (
                       <p className="mt-1 text-xs">
-                        ℹ️ {tTools('pdfToImage.skipFirstPageHint') || 'The first page (cover) will be rendered as a separate image'}
+                        ℹ️ {tTools('pdfToImage.skipFirstPageHint')}
                       </p>
                     )}
                   </div>
@@ -539,7 +540,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
             )}
 
             <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-3">
-              {tTools('pdfToImage.layoutHint') || 'Combine multiple PDF pages into a single image with the selected grid layout.'}
+              {tTools('pdfToImage.layoutHint')}
             </p>
           </div>
         </Card>
@@ -566,8 +567,8 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
           loading={isProcessing}
         >
           {isProcessing
-            ? (t('status.processing') || 'Processing...')
-            : (tTools('pdfToImage.convertButton') || 'Convert to Images')
+            ? (t('status.processing'))
+            : (tTools('pdfToImage.convertButton'))
           }
         </Button>
 
@@ -596,7 +597,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
       {isMultipleImages && (
         <Card variant="outlined" size="lg">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('pdfToImage.previewTitle') || 'Converted Images'} ({(result as Blob[]).length})
+            {tTools('pdfToImage.previewTitle')} ({(result as Blob[]).length})
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {(result as Blob[]).map((blob, index) => (
@@ -604,7 +605,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
                 <div className="aspect-[3/4] rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] overflow-hidden bg-[hsl(var(--color-muted)/0.3)]">
                   <img
                     src={URL.createObjectURL(blob)}
-                    alt={`Page ${index + 1}`}
+                    alt={tUi('dynamicUi.pageNumber', { page: index + 1 })}
                     className="w-full h-full object-contain"
                   />
                 </div>
@@ -631,7 +632,7 @@ export function PDFToImageTool({ className = '', outputFormat }: PDFToImageToolP
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('pdfToImage.successMessage') || 'PDF converted to images successfully! Click the download button to save your files.'}
+            {tTools('pdfToImage.successMessage')}
           </p>
         </div>
       )}

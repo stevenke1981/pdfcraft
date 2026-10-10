@@ -54,6 +54,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
   onPageChange,
   onZoomChange,
 }) => {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   
@@ -234,7 +235,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
     return (
       <div className={`flex items-center justify-center min-h-[300px] bg-[hsl(var(--color-muted)/0.3)] rounded-[var(--radius-lg)] ${className}`}>
         <p className="text-[hsl(var(--color-muted-foreground))]">
-          No file to preview
+          {tUi('interfaceText.noFileToPreview')}
         </p>
       </div>
     );
@@ -316,7 +317,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
                 size="sm"
                 onClick={handleZoomOut}
                 disabled={zoom <= minZoom}
-                aria-label="Zoom out"
+                aria-label={tUi('interfaceText.zoomOut')}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
@@ -326,7 +327,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
               <button
                 onClick={handleResetZoom}
                 className="px-2 py-1 text-xs font-medium text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] transition-colors"
-                aria-label={`Zoom: ${Math.round(zoom * 100)}%`}
+                aria-label={tUi('dynamicUi.zoomPercent', { percent: Math.round(zoom * 100) })}
               >
                 {Math.round(zoom * 100)}%
               </button>
@@ -336,7 +337,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
                 size="sm"
                 onClick={handleZoomIn}
                 disabled={zoom >= maxZoom}
-                aria-label="Zoom in"
+                aria-label={tUi('interfaceText.zoomIn')}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -353,7 +354,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
                 size="sm"
                 onClick={handlePrevPage}
                 disabled={currentPage <= 1}
-                aria-label="Previous page"
+                aria-label={tUi('interfaceText.previousPage')}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -369,7 +370,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
                 size="sm"
                 onClick={handleNextPage}
                 disabled={currentPage >= totalPages}
-                aria-label="Next page"
+                aria-label={tUi('interfaceText.nextPage')}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

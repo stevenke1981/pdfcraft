@@ -37,6 +37,7 @@ interface CitationItem {
 }
 
 export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -130,7 +131,7 @@ export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) 
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Analyzing bibliography patterns...');
+            setProgressMessage(message || tUi('interfaceFeedback.analyzingBibliographyPatterns'));
           }
         }
       );
@@ -151,12 +152,12 @@ export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) 
           }
         }
       } else {
-        setError(output.error?.message || 'Scanning citations failed.');
+        setError(output.error?.message || tUi('interfaceFeedback.scanningCitationsFailed'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error scanning citations.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorScanningCitations'));
         setStatus('error');
       }
     }
@@ -171,7 +172,7 @@ export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) 
     cancelledRef.current = false;
     setStatus('processing');
     setProgress(70);
-    setProgressMessage('Injecting PDF link elements...');
+    setProgressMessage(tUi('interfaceText.injectingPdfLinkElements'));
     setError(null);
     setResult(null);
 
@@ -199,12 +200,12 @@ export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) 
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to inject links.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToInjectLinks'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Linking process error.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.linkingProcessError'));
         setStatus('error');
       }
     }
@@ -277,12 +278,12 @@ export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) 
                 {file.name}
               </p>
               <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                {totalPages > 0 ? `${totalPages} ${t('pdfToCbz.pagesLabel') || 'pages'}` : t('citationLinker.scanningMetadata')} • {(file.size / (1024 * 1024)).toFixed(2)} MB
+                {totalPages > 0 ? `${totalPages} ${tUi('interfaceText.pages')}` : t('citationLinker.scanningMetadata')} • {(file.size / (1024 * 1024)).toFixed(2)} MB
               </p>
             </div>
           </div>
           <Button variant="ghost" size="sm" onClick={handleClearFile} disabled={isProcessing}>
-            {t('buttons.remove') || 'Remove'}
+            {t('buttons.remove')}
           </Button>
         </Card>
       )}
@@ -372,7 +373,7 @@ export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) 
                       >
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-[hsl(var(--color-foreground))]">{c.marker}</span>
-                          <span className="text-[10px] text-zinc-400">Page {c.pageNum}</span>
+                          <span className="text-[10px] text-zinc-400">{tUi('interfaceText.page')} {c.pageNum}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           {c.url ? (
@@ -475,7 +476,7 @@ export function CitationLinkerTool({ className = '' }: CitationLinkerToolProps) 
                 {/* Central paper node */}
                 <div className="w-20 h-20 rounded-full border-4 border-[hsl(var(--color-primary)/0.6)] bg-white dark:bg-zinc-800 shadow-2xl flex flex-col items-center justify-center text-center p-2 z-30 transform hover:scale-105 transition-transform">
                   <FileText className="w-6 h-6 text-[hsl(var(--color-primary))]" />
-                  <span className="text-[9px] font-black mt-1 leading-none uppercase">Paper</span>
+                  <span className="text-[9px] font-black mt-1 leading-none uppercase">{tUi('interfaceText.paper')}</span>
                 </div>
 
                 {/* Circumferential nodes (slice first 10 for layout clarity) */}

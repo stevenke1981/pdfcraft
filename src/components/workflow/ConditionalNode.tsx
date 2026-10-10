@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import React, { memo, useState } from 'react';
 import { Handle, Position, useReactFlow } from 'reactflow';
 import { ToolNodeData } from '@/types/workflow';
@@ -55,6 +56,7 @@ function getConditionSummary(settings?: Record<string, unknown>): string {
  * Provides 1 input handle and 2 output handles (True / False branches)
  */
 export const ConditionalNode = memo(({ id, data, selected = false, isConnectable = true }: ConditionalNodeProps) => {
+  const tUi = useTranslations();
     const [isHovered, setIsHovered] = useState(false);
     const { deleteElements } = useReactFlow();
 
@@ -95,7 +97,7 @@ export const ConditionalNode = memo(({ id, data, selected = false, isConnectable
                 <button
                     onClick={handleDelete}
                     className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-md transition-all z-20"
-                    title="删除节点"
+                    title={tUi('interfaceText.deleteNode')}
                 >
                     <X className="w-3 h-3" />
                 </button>
@@ -107,7 +109,7 @@ export const ConditionalNode = memo(({ id, data, selected = false, isConnectable
                 position={Position.Left}
                 isConnectable={isConnectable}
                 className="!w-3.5 !h-3.5 !bg-indigo-500 !border-2 !border-white dark:!border-gray-900 transition-transform hover:scale-125"
-                title="输入连线"
+                title={tUi('interfaceText.inputConnection')}
             />
 
             {/* Header: Icon + Title */}
@@ -120,7 +122,7 @@ export const ConditionalNode = memo(({ id, data, selected = false, isConnectable
                         {data.label || '条件分流'}
                     </p>
                     <p className="text-[10px] text-[hsl(var(--color-muted-foreground))]">
-                        Condition Gateway
+                        {tUi('workflow.conditionGateway')}
                     </p>
                 </div>
             </div>
@@ -137,11 +139,11 @@ export const ConditionalNode = memo(({ id, data, selected = false, isConnectable
                 <div className="mt-2 flex items-center gap-1 text-[11px] font-medium">
                     {data.activeBranch === 'true' ? (
                         <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                            <Check className="w-3 h-3" /> 已走 True 分支
+                            <Check className="w-3 h-3" /> {tUi('interfaceText.trueBranchTaken')}
                         </span>
                     ) : (
                         <span className="text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                            <Check className="w-3 h-3" /> 已走 False 分支
+                            <Check className="w-3 h-3" /> {tUi('interfaceText.falseBranchTaken')}
                         </span>
                     )}
                 </div>
@@ -149,7 +151,7 @@ export const ConditionalNode = memo(({ id, data, selected = false, isConnectable
 
             {data.status === 'skipped' && (
                 <div className="mt-1.5 text-[10px] text-gray-500 italic">
-                    上游分支未激活 (已跳过)
+                    {tUi('interfaceText.upstreamBranchInactiveSkipped')}
                 </div>
             )}
 
@@ -164,25 +166,25 @@ export const ConditionalNode = memo(({ id, data, selected = false, isConnectable
             <div className="mt-3 pt-2 border-t border-[hsl(var(--color-border)/0.6)] space-y-2">
                 {/* True branch handle label */}
                 <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-muted-foreground text-[10px]">满足条件:</span>
+                    <span className="text-muted-foreground text-[10px]">{tUi('interfaceText.conditionMet')}</span>
                     <span className={`font-semibold flex items-center gap-1 ${
                         data.activeBranch === 'true'
                             ? 'text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-400 rounded px-1'
                             : 'text-emerald-600 dark:text-emerald-400'
                     }`}>
-                        ✓ True
+                        {tUi('interfaceText.true')}
                     </span>
                 </div>
 
                 {/* False branch handle label */}
                 <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-muted-foreground text-[10px]">不满足/默认:</span>
+                    <span className="text-muted-foreground text-[10px]">{tUi('interfaceText.conditionNotMetDefault')}</span>
                     <span className={`font-semibold flex items-center gap-1 ${
                         data.activeBranch === 'false'
                             ? 'text-amber-600 dark:text-amber-400 ring-1 ring-amber-400 rounded px-1'
                             : 'text-amber-600 dark:text-amber-400'
                     }`}>
-                        ✗ False
+                        {tUi('interfaceText.false')}
                     </span>
                 </div>
             </div>
@@ -195,7 +197,7 @@ export const ConditionalNode = memo(({ id, data, selected = false, isConnectable
                 style={{ top: '68%' }}
                 isConnectable={isConnectable}
                 className="!w-3.5 !h-3.5 !bg-emerald-500 !border-2 !border-white dark:!border-gray-900 transition-transform hover:scale-125"
-                title="True 分支 (满足条件)"
+                title={tUi('interfaceText.trueBranchConditionMet')}
             />
 
             {/* Source Handle: False Branch */}
@@ -206,7 +208,7 @@ export const ConditionalNode = memo(({ id, data, selected = false, isConnectable
                 style={{ top: '88%' }}
                 isConnectable={isConnectable}
                 className="!w-3.5 !h-3.5 !bg-amber-500 !border-2 !border-white dark:!border-gray-900 transition-transform hover:scale-125"
-                title="False 分支 (不满足条件)"
+                title={tUi('interfaceText.falseBranchConditionNotMet')}
             />
         </div>
     );

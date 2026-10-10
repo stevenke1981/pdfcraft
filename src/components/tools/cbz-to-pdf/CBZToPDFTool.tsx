@@ -15,6 +15,7 @@ export interface CBZToPDFToolProps {
 }
 
 export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -63,14 +64,14 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
             if (output.success && output.result) {
                 setResultBlob(output.result as Blob);
             } else {
-                setError(output.error?.message || 'Failed to convert CBZ.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToConvertCbz'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [file, pageSize, quality, maintainAspectRatio, tFeedback]);
+    }, [tUi, file, pageSize, quality, maintainAspectRatio, tFeedback]);
 
     const handleReset = useCallback(() => {
         setFile(null);
@@ -91,8 +92,8 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('cbzToPdf.uploadLabel') || 'Upload CBZ File'}
-                description={tTools('cbzToPdf.uploadDescription') || 'Drag and drop a comic book archive (.cbz) to convert to PDF.'}
+                label={tTools('cbzToPdf.uploadLabel')}
+                description={tTools('cbzToPdf.uploadDescription')}
             />
 
             {error && (
@@ -109,7 +110,7 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
                             <p className="text-sm text-[hsl(var(--color-muted-foreground))]">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                         </div>
                         <Button variant="ghost" size="sm" onClick={handleReset} disabled={isProcessing}>
-                            {t('buttons.clear') || 'Clear'}
+                            {t('buttons.clear')}
                         </Button>
                     </div>
                 </Card>
@@ -118,13 +119,13 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
             {hasFile && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('cbzToPdf.optionsTitle') || 'Conversion Options'}
+                        {tTools('cbzToPdf.optionsTitle')}
                     </h3>
 
                     <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('cbzToPdf.pageSizeLabel') || 'Page Size'}
+                                {tTools('cbzToPdf.pageSizeLabel')}
                             </label>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                                 {(['original', 'a4', 'letter', 'comic'] as CbzPageSize[]).map((size) => (
@@ -145,7 +146,7 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
 
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('cbzToPdf.qualityLabel') || 'Image Quality'}: {quality}%
+                                {tTools('cbzToPdf.qualityLabel')}: {quality}%
                             </label>
                             <input
                                 type="range"
@@ -167,7 +168,7 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
                                 className="w-4 h-4 rounded"
                             />
                             <span className="text-sm text-[hsl(var(--color-foreground))]">
-                                {tTools('cbzToPdf.preserveAspectLabel') || 'Preserve aspect ratio'}
+                                {tTools('cbzToPdf.preserveAspectLabel')}
                             </span>
                         </label>
                     </div>
@@ -175,13 +176,13 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
             )}
 
             {isProcessing && (
-                <ProcessingProgress progress={progress} status="processing" message="Converting comic to PDF..." showPercentage />
+                <ProcessingProgress progress={progress} status="processing" message={tUi('interfaceFeedback.convertingComic')} showPercentage />
             )}
 
             <div className="flex flex-wrap items-center gap-4">
                 <Button variant="primary" size="lg" onClick={handleConvert} disabled={!canProcess} loading={isProcessing}>
                     <BookOpen className="w-4 h-4 mr-2" />
-                    {isProcessing ? (t('status.processing') || 'Processing...') : (tTools('cbzToPdf.convertButton') || 'Convert to PDF')}
+                    {isProcessing ? (t('status.processing')) : (tTools('cbzToPdf.convertButton'))}
                 </Button>
 
                 {resultBlob && (
@@ -196,7 +197,7 @@ export function CBZToPDFTool({ className = '' }: CBZToPDFToolProps) {
 
             {resultBlob && (
                 <div className="p-4 rounded-[var(--radius-md)] bg-green-50 border border-green-200 text-green-700" role="status">
-                    <p className="text-sm font-medium">{tTools('cbzToPdf.successMessage') || 'Comic converted successfully!'}</p>
+                    <p className="text-sm font-medium">{tTools('cbzToPdf.successMessage')}</p>
                 </div>
             )}
         </div>

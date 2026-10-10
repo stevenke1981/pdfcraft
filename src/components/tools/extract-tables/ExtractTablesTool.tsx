@@ -21,6 +21,7 @@ export interface ExtractTablesToolProps {
  * Extracts tables from PDF documents.
  */
 export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -91,14 +92,14 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                 setResultBlob(output.result as Blob);
                 setResultFilename(output.filename || `tables.${format}`);
             } else {
-                setError(output.error?.message || 'Failed to extract tables.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToExtractTables'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred.');
+            setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
         } finally {
             setIsProcessing(false);
         }
-    }, [file, format, pageRange, minColumns, minRows, includePageNumbers, tFeedback]);
+    }, [tUi, file, format, pageRange, minColumns, minRows, includePageNumbers, tFeedback]);
 
     /**
      * Reset state
@@ -124,8 +125,8 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('extractTables.uploadLabel') || 'Upload PDF File'}
-                description={tTools('extractTables.uploadDescription') || 'Drag and drop a PDF file to extract tables from.'}
+                label={tTools('extractTables.uploadLabel')}
+                description={tTools('extractTables.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -149,7 +150,7 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                             </p>
                         </div>
                         <Button variant="ghost" size="sm" onClick={handleReset} disabled={isProcessing}>
-                            {t('buttons.clear') || 'Clear'}
+                            {t('buttons.clear')}
                         </Button>
                     </div>
                 </Card>
@@ -159,14 +160,14 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
             {hasFile && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('extractTables.optionsTitle') || 'Extraction Options'}
+                        {tTools('extractTables.optionsTitle')}
                     </h3>
 
                     <div className="space-y-4">
                         {/* Output Format */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('extractTables.formatLabel') || 'Output Format'}
+                                {tTools('extractTables.formatLabel')}
                             </label>
                             <div className="grid grid-cols-3 gap-2">
                                 {(['json', 'markdown', 'csv'] as TableExportFormat[]).map((fmt) => (
@@ -194,14 +195,14 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                         {/* Page Range */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('extractTables.pageRangeLabel') || 'Page Range (optional)'}
+                                {tTools('extractTables.pageRangeLabel')}
                             </label>
                             <input
                                 type="text"
                                 value={pageRange}
                                 onChange={(e) => setPageRange(e.target.value)}
                                 disabled={isProcessing}
-                                placeholder="e.g., 1-5, 8, 10-15"
+                                placeholder={tUi('interfaceText.eG1581015')}
                                 className="w-full px-3 py-2 border border-[hsl(var(--color-border))] rounded-[var(--radius-md)] text-sm"
                             />
                         </div>
@@ -210,7 +211,7 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                    {tTools('extractTables.minColumnsLabel') || 'Min Columns'}: {minColumns}
+                                    {tTools('extractTables.minColumnsLabel')}: {minColumns}
                                 </label>
                                 <input
                                     type="range"
@@ -224,7 +225,7 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                    {tTools('extractTables.minRowsLabel') || 'Min Rows'}: {minRows}
+                                    {tTools('extractTables.minRowsLabel')}: {minRows}
                                 </label>
                                 <input
                                     type="range"
@@ -248,7 +249,7 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                                 className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                             />
                             <span className="text-sm text-[hsl(var(--color-foreground))]">
-                                {tTools('extractTables.includePageNumbersLabel') || 'Include page numbers in output'}
+                                {tTools('extractTables.includePageNumbersLabel')}
                             </span>
                         </label>
                     </div>
@@ -260,7 +261,7 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                 <ProcessingProgress
                     progress={progress}
                     status="processing"
-                    message="Extracting tables..."
+                    message={tUi('interfaceFeedback.extractingTables')}
                     showPercentage
                 />
             )}
@@ -276,8 +277,8 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                 >
                     <Table className="w-4 h-4 mr-2" />
                     {isProcessing
-                        ? (t('status.processing') || 'Processing...')
-                        : (tTools('extractTables.extractButton') || 'Extract Tables')
+                        ? (t('status.processing'))
+                        : (tTools('extractTables.extractButton'))
                     }
                 </Button>
 
@@ -298,7 +299,7 @@ export function ExtractTablesTool({ className = '' }: ExtractTablesToolProps) {
                     role="status"
                 >
                     <p className="text-sm font-medium">
-                        {tTools('extractTables.successMessage') || 'Tables extracted successfully! Click download to save.'}
+                        {tTools('extractTables.successMessage')}
                     </p>
                 </div>
             )}

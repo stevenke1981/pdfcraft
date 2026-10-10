@@ -29,6 +29,7 @@ export interface PDFsToZipToolProps {
  * Provides the UI for packaging multiple PDF files into a ZIP archive.
  */
 export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -126,16 +127,16 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to create ZIP archive.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToCreateZipArchive'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [files, compressionLevel, tFeedback]);
+  }, [tUi, files, compressionLevel, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -173,8 +174,8 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('pdfToZip.uploadLabel') || 'Upload PDF Files'}
-        description={tTools('pdfToZip.uploadDescription') || 'Drag and drop PDF files here, or click to browse. You can add multiple files to package into a ZIP archive.'}
+        label={tTools('pdfToZip.uploadLabel')}
+        description={tTools('pdfToZip.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -193,10 +194,10 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                {tTools('pdfToZip.filesTitle') || 'Files to Package'} ({files.length})
+                {tTools('pdfToZip.filesTitle')} ({files.length})
               </h3>
               <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                {tTools('pdfToZip.totalSize') || 'Total size'}: {formatSize(totalSize)}
+                {tTools('pdfToZip.totalSize')}: {formatSize(totalSize)}
               </p>
             </div>
             <Button
@@ -205,11 +206,11 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
               onClick={handleClearAll}
               disabled={isProcessing}
             >
-              {t('buttons.clearAll') || 'Clear All'}
+              {t('buttons.clearAll')}
             </Button>
           </div>
 
-          <ul className="space-y-2 max-h-80 overflow-y-auto" role="list" aria-label="Files to package">
+          <ul className="space-y-2 max-h-80 overflow-y-auto" role="list" aria-label={tUi('interfaceText.filesToPackage')}>
             {files.map((file) => (
               <li
                 key={file.id}
@@ -240,7 +241,7 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
                   onClick={() => handleRemoveFile(file.id)}
                   disabled={isProcessing}
                   className="flex-shrink-0 p-1 rounded hover:bg-red-100 text-[hsl(var(--color-muted-foreground))] hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
-                  aria-label={`Remove ${file.file.name}`}
+                  aria-label={tUi('dynamicUi.removeFileName', { filename: file.file.name })}
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M18 6L6 18M6 6l12 12" />
@@ -256,7 +257,7 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
       {files.length > 0 && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('pdfToZip.optionsTitle') || 'ZIP Options'}
+            {tTools('pdfToZip.optionsTitle')}
           </h3>
           
           <div className="space-y-4">
@@ -265,7 +266,7 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
                 htmlFor="compression-level"
                 className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2"
               >
-                {tTools('pdfToZip.compressionLevel') || 'Compression Level'}
+                {tTools('pdfToZip.compressionLevel')}
               </label>
               <div className="flex items-center gap-4">
                 <input
@@ -284,12 +285,12 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
               </div>
               <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
                 {compressionLevel === 0 
-                  ? (tTools('pdfToZip.noCompression') || 'No compression (fastest)')
+                  ? (tTools('pdfToZip.noCompression'))
                   : compressionLevel <= 3
-                  ? (tTools('pdfToZip.lowCompression') || 'Low compression (fast)')
+                  ? (tTools('pdfToZip.lowCompression'))
                   : compressionLevel <= 6
-                  ? (tTools('pdfToZip.mediumCompression') || 'Medium compression (balanced)')
-                  : (tTools('pdfToZip.highCompression') || 'High compression (smaller file)')
+                  ? (tTools('pdfToZip.mediumCompression'))
+                  : (tTools('pdfToZip.highCompression'))
                 }
               </p>
             </div>
@@ -318,8 +319,8 @@ export function PDFsToZipTool({ className = '' }: PDFsToZipToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('pdfToZip.createButton') || 'Create ZIP Archive')
+            ? (t('status.processing'))
+            : (tTools('pdfToZip.createButton'))
           }
         </Button>
 

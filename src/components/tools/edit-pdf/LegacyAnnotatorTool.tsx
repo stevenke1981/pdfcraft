@@ -33,6 +33,7 @@ export function LegacyAnnotatorTool({
   hideHeaderCard = false,
   onClear,
 }: LegacyAnnotatorToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools.editPdf');
   
@@ -923,7 +924,7 @@ export function LegacyAnnotatorTool({
         console.warn('Could not access iframe content to inject patches', e);
       }
     }, 1000);
-  }, []);
+  }, [t]);
 
   const handleClear = useCallback(() => {
     if (pdfUrl) URL.revokeObjectURL(pdfUrl);
@@ -1049,14 +1050,14 @@ export function LegacyAnnotatorTool({
           result.diagnostics
         );
       } else {
-        setError(result.error || 'Unable to edit the selected text.');
+        setError(result.error || tUi('interfaceFeedback.unableToEditTheSelectedText'));
       }
       setIsTextReplacing(false);
     };
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [file, handleExistingTextReplaced, isTextReplacing]);
+  }, [tUi, file, handleExistingTextReplaced, isTextReplacing]);
 
   return (
     <div className={`space-y-6 ${className}`.trim()}>
@@ -1096,7 +1097,7 @@ export function LegacyAnnotatorTool({
                   </div>
                 </div>
                 <Button variant="ghost" size="sm" onClick={handleClear}>
-                  {t('buttons.clear') || 'Clear'}
+                  {t('buttons.clear')}
                 </Button>
               </div>
             </Card>
@@ -1157,7 +1158,7 @@ export function LegacyAnnotatorTool({
               ref={iframeRef}
               src={`/pdfjs-annotation-viewer/web/viewer.html?file=${encodeURIComponent(pdfUrl)}`}
               className="w-full h-[700px] border-0"
-              title="PDF Editor"
+              title={tUi('interfaceText.pdfEditor')}
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
               onLoad={handleIframeLoad}
             />
@@ -1165,7 +1166,7 @@ export function LegacyAnnotatorTool({
               <div className="absolute inset-0 flex items-center justify-center bg-white/80">
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--color-primary))] mx-auto mb-2"></div>
-                  <p className="text-sm text-[hsl(var(--color-muted-foreground))]">{t('status.loading') || 'Loading...'}</p>
+                  <p className="text-sm text-[hsl(var(--color-muted-foreground))]">{t('status.loading')}</p>
                 </div>
               </div>
             )}
@@ -1173,7 +1174,7 @@ export function LegacyAnnotatorTool({
               <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
                 <div className="rounded-lg bg-white px-5 py-4 text-center shadow-lg">
                   <div className="mx-auto mb-2 h-8 w-8 animate-spin rounded-full border-b-2 border-[hsl(var(--color-primary))]" />
-                  <p className="text-sm font-medium">Updating PDF text…</p>
+                  <p className="text-sm font-medium">{tUi('interfaceText.updatingPdfText')}</p>
                 </div>
               </div>
             )}

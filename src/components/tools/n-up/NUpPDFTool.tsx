@@ -23,6 +23,7 @@ export interface NUpPDFToolProps {
  * Provides the UI for creating N-Up PDF layouts.
  */
 export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -148,16 +149,16 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to create N-Up PDF.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToCreateNUpPdf'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, pagesPerSheet, customCols, customRows, pageSize, orientation, layoutDirection, useMargins, addBorder, borderColor, tFeedback]);
+  }, [tUi, file, pagesPerSheet, customCols, customRows, pageSize, orientation, layoutDirection, useMargins, addBorder, borderColor, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -212,8 +213,8 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('nUpPdf.uploadLabel') || 'Upload PDF File'}
-          description={tTools('nUpPdf.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('nUpPdf.uploadLabel')}
+          description={tTools('nUpPdf.uploadDescription')}
         />
       )}
 
@@ -240,7 +241,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -250,7 +251,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -260,14 +261,14 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
       {file && totalPages > 0 && (
         <Card variant="outlined" size="lg">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('nUpPdf.optionsTitle') || 'N-Up Options'}
+            {tTools('nUpPdf.optionsTitle')}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Pages per sheet */}
             <div>
               <label htmlFor="pagesPerSheet" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('nUpPdf.pagesPerSheet') || 'Pages per Sheet'}
+                {tTools('nUpPdf.pagesPerSheet')}
               </label>
               <select
                 id="pagesPerSheet"
@@ -283,11 +284,11 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               >
-                <option value={2}>2-up (2×1)</option>
-                <option value={4}>4-up (2×2)</option>
-                <option value={9}>9-up (3×3)</option>
-                <option value={16}>16-up (4×4)</option>
-                <option value="custom">{tTools('nUpPdf.customLayout') || 'Custom...'}</option>
+                <option value={2}>{tUi('interfaceText.2Up21')}</option>
+                <option value={4}>{tUi('interfaceText.4Up22')}</option>
+                <option value={9}>{tUi('interfaceText.9Up33')}</option>
+                <option value={16}>{tUi('interfaceText.16Up44')}</option>
+                <option value="custom">{tTools('nUpPdf.customLayout')}</option>
               </select>
             </div>
 
@@ -296,7 +297,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
               <div className="flex gap-4">
                 <div className="flex-1">
                   <label htmlFor="customCols" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                    {tTools('nUpPdf.columns') || 'Columns'}
+                    {tTools('nUpPdf.columns')}
                   </label>
                   <input
                     type="number"
@@ -311,7 +312,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
                 </div>
                 <div className="flex-1">
                   <label htmlFor="customRows" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                    {tTools('nUpPdf.rows') || 'Rows'}
+                    {tTools('nUpPdf.rows')}
                   </label>
                   <input
                     type="number"
@@ -330,7 +331,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
             {/* Page size */}
             <div>
               <label htmlFor="pageSize" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('nUpPdf.pageSize') || 'Output Page Size'}
+                {tTools('nUpPdf.pageSize')}
               </label>
               <select
                 id="pageSize"
@@ -340,8 +341,8 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               >
                 <option value="A4">A4</option>
-                <option value="Letter">Letter</option>
-                <option value="Legal">Legal</option>
+                <option value="Letter">{tUi('interfaceText.letter')}</option>
+                <option value="Legal">{tUi('interfaceText.legal')}</option>
                 <option value="A3">A3</option>
               </select>
             </div>
@@ -349,7 +350,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
             {/* Orientation */}
             <div>
               <label htmlFor="orientation" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('nUpPdf.orientation') || 'Orientation'}
+                {tTools('nUpPdf.orientation')}
               </label>
               <select
                 id="orientation"
@@ -358,9 +359,9 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               >
-                <option value="auto">{t('options.auto') || 'Auto'}</option>
-                <option value="portrait">{t('options.portrait') || 'Portrait'}</option>
-                <option value="landscape">{t('options.landscape') || 'Landscape'}</option>
+                <option value="auto">{t('options.auto')}</option>
+                <option value="portrait">{t('options.portrait')}</option>
+                <option value="landscape">{t('options.landscape')}</option>
               </select>
             </div>
 
@@ -368,7 +369,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
             {pagesPerSheet === 2 && (
               <div>
                 <label htmlFor="layoutDirection" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                  {tTools('nUpPdf.layoutDirection') || 'Layout Direction'}
+                  {tTools('nUpPdf.layoutDirection')}
                 </label>
                 <select
                   id="layoutDirection"
@@ -377,13 +378,13 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
                   disabled={isProcessing}
                   className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                 >
-                  <option value="horizontal">{tTools('nUpPdf.layoutHorizontal') || 'Horizontal (side by side)'}</option>
-                  <option value="vertical">{tTools('nUpPdf.layoutVertical') || 'Vertical (stacked)'}</option>
+                  <option value="horizontal">{tTools('nUpPdf.layoutHorizontal')}</option>
+                  <option value="vertical">{tTools('nUpPdf.layoutVertical')}</option>
                 </select>
                 <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
                   {layoutDirection === 'horizontal'
-                    ? (tTools('nUpPdf.layoutHorizontalDesc') || 'Pages are placed side by side (left-right)')
-                    : (tTools('nUpPdf.layoutVerticalDesc') || 'Pages are stacked top to bottom')
+                    ? (tTools('nUpPdf.layoutHorizontalDesc'))
+                    : (tTools('nUpPdf.layoutVerticalDesc'))
                   }
                 </p>
               </div>
@@ -400,7 +401,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
                 className="w-4 h-4 rounded border-[hsl(var(--color-border))]"
               />
               <label htmlFor="useMargins" className="text-sm text-[hsl(var(--color-foreground))]">
-                {tTools('nUpPdf.useMargins') || 'Add margins and gutters'}
+                {tTools('nUpPdf.useMargins')}
               </label>
             </div>
 
@@ -415,7 +416,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
                 className="w-4 h-4 rounded border-[hsl(var(--color-border))]"
               />
               <label htmlFor="addBorder" className="text-sm text-[hsl(var(--color-foreground))]">
-                {tTools('nUpPdf.addBorder') || 'Add border around pages'}
+                {tTools('nUpPdf.addBorder')}
               </label>
             </div>
 
@@ -423,7 +424,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
             {addBorder && (
               <div>
                 <label htmlFor="borderColor" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                  {tTools('nUpPdf.borderColor') || 'Border Color'}
+                  {tTools('nUpPdf.borderColor')}
                 </label>
                 <input
                   type="color"
@@ -442,7 +443,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
             <div className="flex items-center gap-2 mb-4">
               <div className="w-2 h-2 rounded-full bg-[hsl(var(--color-primary))]"></div>
               <h4 className="text-sm font-semibold text-[hsl(var(--color-foreground))]">
-                {tTools('nUpPdf.layoutPreview') || 'Layout Preview'}
+                {tTools('nUpPdf.layoutPreview')}
               </h4>
             </div>
 
@@ -551,7 +552,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
             loading={isProcessing}
           >
             {isProcessing
-              ? (t('status.processing') || 'Processing...')
+              ? (t('status.processing'))
               : pagesPerSheet === 'custom'
                 ? (tTools('nUpPdf.createCustomButton', { cols: gridCols, rows: gridRows }) || `Create ${gridCols}×${gridRows} PDF`)
                 : (tTools('nUpPdf.createButton', { pages: actualPagesPerSheet }) || `Create ${actualPagesPerSheet}-Up PDF`)
@@ -577,7 +578,7 @@ export function NUpPDFTool({ className = '' }: NUpPDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('nUpPdf.successMessage') || 'N-Up PDF created successfully! Click the download button to save your file.'}
+            {tTools('nUpPdf.successMessage')}
           </p>
         </div>
       )}

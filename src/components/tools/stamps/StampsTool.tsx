@@ -18,6 +18,7 @@ interface StampState {
 }
 
 export function StampsTool({ className = '' }: StampsToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools.stamps');
 
@@ -54,7 +55,7 @@ export function StampsTool({ className = '' }: StampsToolProps) {
 
   const handleSave = useCallback(async () => {
     if (!stampState.viewerReady || !iframeRef.current) {
-      setError(tTools('viewerNotReady') || 'Viewer not ready.');
+      setError(tTools('viewerNotReady'));
       return;
     }
     try {
@@ -63,7 +64,7 @@ export function StampsTool({ className = '' }: StampsToolProps) {
       const doc = win?.document;
 
       if (!win || !doc) {
-        setError(tTools('saveFailed') || 'PDF viewer not accessible.');
+        setError(tTools('saveFailed'));
         setIsProcessing(false);
         return;
       }
@@ -200,7 +201,7 @@ export function StampsTool({ className = '' }: StampsToolProps) {
           await Promise.resolve(exportEntry.call());
         } catch (e) {
           console.warn('[stamps] direct export entry threw:', e);
-          setError(tTools('saveFailed') || 'Failed to save.');
+          setError(tTools('saveFailed'));
         } finally {
           // Give file-saver a tick to fire its anchor.click before we restore.
           await new Promise((r) => setTimeout(r, 1500));
@@ -258,8 +259,7 @@ export function StampsTool({ className = '' }: StampsToolProps) {
         await new Promise((r) => setTimeout(r, 1500));
         if (!ok) {
           setError(
-            tTools('saveFailed') ||
-              'Failed to save. Please use the Export button in the toolbar.'
+            tTools('saveFailed')
           );
         } else if (!triggered) {
           console.info(
@@ -272,7 +272,7 @@ export function StampsTool({ className = '' }: StampsToolProps) {
       setIsProcessing(false);
     } catch (err) {
       console.error('Save failed:', err);
-      setError(tTools('saveFailed') || 'Failed to save.');
+      setError(tTools('saveFailed'));
       setIsProcessing(false);
     }
   }, [stampState.viewerReady, tTools]);
@@ -297,8 +297,8 @@ export function StampsTool({ className = '' }: StampsToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('uploadLabel') || 'Upload PDF File'}
-          description={tTools('uploadDescription') || 'Drag and drop a PDF file here.'}
+          label={tTools('uploadLabel')}
+          description={tTools('uploadDescription')}
         />
       )}
 
@@ -323,7 +323,7 @@ export function StampsTool({ className = '' }: StampsToolProps) {
                 </div>
               </div>
               <Button variant="ghost" size="sm" onClick={handleClear} disabled={isProcessing}>
-                {t('buttons.remove') || 'Remove'}
+                {t('buttons.remove')}
               </Button>
             </div>
           </Card>
@@ -334,13 +334,13 @@ export function StampsTool({ className = '' }: StampsToolProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div className="text-sm text-blue-700">
-                <p className="font-medium mb-1">{tTools('instructionsTitle') || 'How to Add Stamps'}</p>
+                <p className="font-medium mb-1">{tTools('instructionsTitle')}</p>
                 <ol className="list-decimal list-inside space-y-1 text-blue-600">
-                  <li>{tTools('instruction1') || 'Click the Stamp tool in the toolbar'}</li>
-                  <li>{tTools('instruction2') || 'Click Add image to upload your stamp'}</li>
-                  <li>{tTools('instruction3') || 'Click on the PDF to place the stamp'}</li>
-                  <li>{tTools('instruction4') || 'Drag to resize or reposition'}</li>
-                  <li>{tTools('instruction5') || 'Click Save Stamped PDF when done'}</li>
+                  <li>{tTools('instruction1')}</li>
+                  <li>{tTools('instruction2')}</li>
+                  <li>{tTools('instruction3')}</li>
+                  <li>{tTools('instruction4')}</li>
+                  <li>{tTools('instruction5')}</li>
                 </ol>
               </div>
             </div>
@@ -353,7 +353,7 @@ export function StampsTool({ className = '' }: StampsToolProps) {
               onLoad={handleIframeLoad}
               className="w-full bg-gray-100"
               style={{ height: '700px', border: 'none' }}
-              title="PDF Stamp Editor"
+              title={tUi('interfaceText.pdfStampEditor')}
             />
           </div>
 
@@ -365,7 +365,7 @@ export function StampsTool({ className = '' }: StampsToolProps) {
               disabled={!stampState.viewerReady || isProcessing}
               loading={isProcessing}
             >
-              {isProcessing ? (t('status.processing') || 'Processing...') : (tTools('saveButton') || 'Save Stamped PDF')}
+              {isProcessing ? (t('status.processing')) : (tTools('saveButton'))}
             </Button>
           </Card>
         </>

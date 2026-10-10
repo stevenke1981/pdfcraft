@@ -88,6 +88,7 @@ export interface EditMetadataToolProps {
  * title, author, subject, and keywords.
  */
 export function EditMetadataTool({ className = '' }: EditMetadataToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -279,17 +280,17 @@ export function EditMetadataTool({ className = '' }: EditMetadataToolProps) {
         setResultFilename(result.filename || 'edited.pdf');
         setStatus('complete');
       } else {
-        setError(result.error?.message || 'Failed to edit metadata.');
+        setError(result.error?.message || tUi('interfaceFeedback.failedToEditMetadata'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
         console.error('Failed to edit metadata:', err);
-        setError(err instanceof Error ? err.message : 'Failed to edit metadata.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.failedToEditMetadata'));
         setStatus('error');
       }
     }
-  }, [file, metadata, handleProgress]);
+  }, [tUi, file, metadata, handleProgress]);
 
   /**
    * Check if metadata has changed
@@ -325,8 +326,8 @@ export function EditMetadataTool({ className = '' }: EditMetadataToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('editMetadata.uploadLabel') || 'Upload PDF File'}
-          description={tTools('editMetadata.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('editMetadata.uploadLabel')}
+          description={tTools('editMetadata.uploadDescription')}
         />
       )}
 
@@ -363,7 +364,7 @@ export function EditMetadataTool({ className = '' }: EditMetadataToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -385,7 +386,7 @@ export function EditMetadataTool({ className = '' }: EditMetadataToolProps) {
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('editMetadata.editTitle') || 'Edit Document Properties'}
+              {tTools('editMetadata.editTitle')}
             </h3>
             {hasChanges && (
               <Button
@@ -393,65 +394,65 @@ export function EditMetadataTool({ className = '' }: EditMetadataToolProps) {
                 size="sm"
                 onClick={handleResetMetadata}
               >
-                {tTools('editMetadata.resetButton') || 'Reset'}
+                {tTools('editMetadata.resetButton')}
               </Button>
             )}
           </div>
           
           <div className="space-y-4">
             <MetadataField 
-              label={tTools('editMetadata.title') || 'Title'} 
+              label={tTools('editMetadata.title')}
               field="title"
               value={metadata.title}
               onChange={handleMetadataChange}
-              placeholder={tTools('editMetadata.titlePlaceholder') || 'Enter document title'}
+              placeholder={tTools('editMetadata.titlePlaceholder')}
               disabled={isProcessing}
             />
             <MetadataField 
-              label={tTools('editMetadata.author') || 'Author'} 
+              label={tTools('editMetadata.author')}
               field="author"
               value={metadata.author}
               onChange={handleMetadataChange}
-              placeholder={tTools('editMetadata.authorPlaceholder') || 'Enter author name'}
+              placeholder={tTools('editMetadata.authorPlaceholder')}
               disabled={isProcessing}
             />
             <MetadataField 
-              label={tTools('editMetadata.subject') || 'Subject'} 
+              label={tTools('editMetadata.subject')}
               field="subject"
               value={metadata.subject}
               onChange={handleMetadataChange}
-              placeholder={tTools('editMetadata.subjectPlaceholder') || 'Enter document subject'}
+              placeholder={tTools('editMetadata.subjectPlaceholder')}
               disabled={isProcessing}
             />
             <MetadataField 
-              label={tTools('editMetadata.keywords') || 'Keywords'} 
+              label={tTools('editMetadata.keywords')}
               field="keywords"
               value={metadata.keywords}
               onChange={handleMetadataChange}
-              placeholder={tTools('editMetadata.keywordsPlaceholder') || 'Enter keywords separated by commas'}
+              placeholder={tTools('editMetadata.keywordsPlaceholder')}
               disabled={isProcessing}
             />
             <MetadataField 
-              label={tTools('editMetadata.creator') || 'Creator Application'} 
+              label={tTools('editMetadata.creator')}
               field="creator"
               value={metadata.creator}
               onChange={handleMetadataChange}
-              placeholder={tTools('editMetadata.creatorPlaceholder') || 'Enter creator application'}
+              placeholder={tTools('editMetadata.creatorPlaceholder')}
               disabled={isProcessing}
             />
             <MetadataField 
-              label={tTools('editMetadata.producer') || 'PDF Producer'} 
+              label={tTools('editMetadata.producer')}
               field="producer"
               value={metadata.producer}
               onChange={handleMetadataChange}
-              placeholder={tTools('editMetadata.producerPlaceholder') || 'Enter PDF producer'}
+              placeholder={tTools('editMetadata.producerPlaceholder')}
               disabled={isProcessing}
             />
           </div>
 
           <div className="mt-6 pt-4 border-t border-[hsl(var(--color-border))]">
             <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-4">
-              {tTools('editMetadata.modificationNote') || 'The modification date will be updated automatically when you save.'}
+              {tTools('editMetadata.modificationNote')}
             </p>
             <Button
               variant="primary"
@@ -460,7 +461,7 @@ export function EditMetadataTool({ className = '' }: EditMetadataToolProps) {
               disabled={!file}
               className="w-full sm:w-auto"
             >
-              {tTools('editMetadata.saveButton') || 'Save Metadata'}
+              {tTools('editMetadata.saveButton')}
             </Button>
           </div>
         </Card>
@@ -481,7 +482,7 @@ export function EditMetadataTool({ className = '' }: EditMetadataToolProps) {
               size="lg"
               onClick={handleClearFile}
             >
-              {tTools('editMetadata.editAnother') || 'Edit Another PDF'}
+              {tTools('editMetadata.editAnother')}
             </Button>
           </div>
 
@@ -491,7 +492,7 @@ export function EditMetadataTool({ className = '' }: EditMetadataToolProps) {
             role="status"
           >
             <p className="text-sm font-medium">
-              {tTools('editMetadata.successMessage') || 'Metadata updated successfully! Click the download button to save your file.'}
+              {tTools('editMetadata.successMessage')}
             </p>
           </div>
         </>

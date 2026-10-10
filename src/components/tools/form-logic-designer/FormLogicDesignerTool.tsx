@@ -47,6 +47,7 @@ const customNodeStyle: React.CSSProperties = {
 };
 
 export function FormLogicDesignerTool() {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools.formLogicDesigner');
@@ -175,11 +176,11 @@ export function FormLogicDesignerTool() {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to inject logic rules.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToInjectLogicRules'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred.');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
       setStatus('error');
     }
   };

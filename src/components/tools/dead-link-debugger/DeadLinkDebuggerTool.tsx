@@ -16,6 +16,7 @@ export interface DeadLinkDebuggerToolProps {
 }
 
 export function DeadLinkDebuggerTool({ className = '' }: DeadLinkDebuggerToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [linkList, setLinkList] = useState<any[]>([]);
@@ -53,7 +54,7 @@ export function DeadLinkDebuggerTool({ className = '' }: DeadLinkDebuggerToolPro
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Probing url reachability...');
+            setProgressMessage(message || tUi('interfaceFeedback.probingUrlReachability'));
           }
         }
       );
@@ -68,12 +69,12 @@ export function DeadLinkDebuggerTool({ className = '' }: DeadLinkDebuggerToolPro
         setLinkList((output.metadata.links as any[]) || []);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to scan links.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToScanLinks'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error checking links.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorCheckingLinks'));
         setStatus('error');
       }
     }
@@ -138,7 +139,7 @@ export function DeadLinkDebuggerTool({ className = '' }: DeadLinkDebuggerToolPro
                     <div key={idx} className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col gap-2 shadow-sm">
                       <div className="flex justify-between items-center text-[10px] font-bold">
                         <span className="text-primary">{t('deadLinkDebugger.pageNumberLabel', { page: item.pageNumber })}</span>
-                        <span className="text-green-500">Status: Detected</span>
+                        <span className="text-green-500">{tUi('interfaceText.statusDetected')}</span>
                       </div>
                       <div className="text-xs font-mono break-all font-semibold">
                         {item.originalUrl}

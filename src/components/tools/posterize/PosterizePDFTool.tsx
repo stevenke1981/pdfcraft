@@ -23,6 +23,7 @@ export interface PosterizePDFToolProps {
  * Provides the UI for posterizing PDF pages into printable tiles.
  */
 export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -160,16 +161,16 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to posterize PDF.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToPosterizePdf'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, rows, cols, pageSize, orientation, getOverlapInPoints, scalingMode, pageRange, tFeedback]);
+  }, [tUi, file, rows, cols, pageSize, orientation, getOverlapInPoints, scalingMode, pageRange, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -204,8 +205,8 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('posterizePdf.uploadLabel') || 'Upload PDF File'}
-          description={tTools('posterizePdf.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+          label={tTools('posterizePdf.uploadLabel')}
+          description={tTools('posterizePdf.uploadDescription')}
         />
       )}
 
@@ -232,7 +233,7 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
               <div>
                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                  {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                 </p>
               </div>
             </div>
@@ -242,7 +243,7 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
               onClick={handleClearFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -253,14 +254,14 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
       {file && totalPages > 0 && (
         <Card variant="outlined" size="lg">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('posterizePdf.optionsTitle') || 'Posterize Options'}
+            {tTools('posterizePdf.optionsTitle')}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Rows */}
             <div>
               <label htmlFor="rows" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('posterizePdf.rows') || 'Rows'}
+                {tTools('posterizePdf.rows')}
               </label>
               <input
                 type="number"
@@ -277,7 +278,7 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
             {/* Columns */}
             <div>
               <label htmlFor="cols" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('posterizePdf.cols') || 'Columns'}
+                {tTools('posterizePdf.cols')}
               </label>
               <input
                 type="number"
@@ -294,7 +295,7 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
             {/* Page size */}
             <div>
               <label htmlFor="pageSize" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('posterizePdf.pageSize') || 'Output Page Size'}
+                {tTools('posterizePdf.pageSize')}
               </label>
               <select
                 id="pageSize"
@@ -304,8 +305,8 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               >
                 <option value="A4">A4</option>
-                <option value="Letter">Letter</option>
-                <option value="Legal">Legal</option>
+                <option value="Letter">{tUi('interfaceText.letter')}</option>
+                <option value="Legal">{tUi('interfaceText.legal')}</option>
                 <option value="A3">A3</option>
               </select>
             </div>
@@ -313,7 +314,7 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
             {/* Orientation */}
             <div>
               <label htmlFor="orientation" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('posterizePdf.orientation') || 'Orientation'}
+                {tTools('posterizePdf.orientation')}
               </label>
               <select
                 id="orientation"
@@ -322,16 +323,16 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               >
-                <option value="auto">{t('options.auto') || 'Auto'}</option>
-                <option value="portrait">{t('options.portrait') || 'Portrait'}</option>
-                <option value="landscape">{t('options.landscape') || 'Landscape'}</option>
+                <option value="auto">{t('options.auto')}</option>
+                <option value="portrait">{t('options.portrait')}</option>
+                <option value="landscape">{t('options.landscape')}</option>
               </select>
             </div>
 
             {/* Overlap */}
             <div>
               <label htmlFor="overlap" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('posterizePdf.overlap') || 'Overlap'}
+                {tTools('posterizePdf.overlap')}
               </label>
               <div className="flex gap-2">
                 <input
@@ -360,7 +361,7 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
             {/* Scaling mode */}
             <div>
               <label htmlFor="scalingMode" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('posterizePdf.scalingMode') || 'Scaling Mode'}
+                {tTools('posterizePdf.scalingMode')}
               </label>
               <select
                 id="scalingMode"
@@ -369,22 +370,22 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               >
-                <option value="fit">{tTools('posterizePdf.fit') || 'Fit (preserve aspect ratio)'}</option>
-                <option value="fill">{tTools('posterizePdf.fill') || 'Fill (may crop)'}</option>
+                <option value="fit">{tTools('posterizePdf.fit')}</option>
+                <option value="fill">{tTools('posterizePdf.fill')}</option>
               </select>
             </div>
 
             {/* Page range */}
             <div className="md:col-span-2 lg:col-span-3">
               <label htmlFor="pageRange" className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-1">
-                {tTools('posterizePdf.pageRange') || 'Page Range (optional)'}
+                {tTools('posterizePdf.pageRange')}
               </label>
               <input
                 type="text"
                 id="pageRange"
                 value={pageRange}
                 onChange={(e) => setPageRange(e.target.value)}
-                placeholder={tTools('posterizePdf.pageRangePlaceholder') || 'e.g., 1-5, 8, 10-15 (leave empty for all pages)'}
+                placeholder={tTools('posterizePdf.pageRangePlaceholder')}
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               />
@@ -424,8 +425,8 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
             loading={isProcessing}
           >
             {isProcessing 
-              ? (t('status.processing') || 'Processing...') 
-              : (tTools('posterizePdf.createButton') || 'Posterize PDF')
+              ? (t('status.processing'))
+              : (tTools('posterizePdf.createButton'))
             }
           </Button>
 
@@ -448,7 +449,7 @@ export function PosterizePDFTool({ className = '' }: PosterizePDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('posterizePdf.successMessage') || 'PDF posterized successfully! Click the download button to save your file.'}
+            {tTools('posterizePdf.successMessage')}
           </p>
         </div>
       )}

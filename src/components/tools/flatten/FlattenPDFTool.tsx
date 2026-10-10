@@ -23,6 +23,7 @@ export interface FlattenPDFToolProps {
  * Converts interactive elements into static page content.
  */
 export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -112,16 +113,16 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
           setFlattenedItems(output.metadata.flattenedItems as string[]);
         }
       } else {
-        setError(output.error?.message || 'Failed to flatten PDF file.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToFlattenPdfFile'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, options, tFeedback]);
+  }, [tUi, file, options, tFeedback]);
 
   const handleCancel = useCallback(() => {
     cancelledRef.current = true;
@@ -148,8 +149,8 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('flattenPdf.uploadLabel') || 'Upload PDF File'}
-        description={tTools('flattenPdf.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+        label={tTools('flattenPdf.uploadLabel')}
+        description={tTools('flattenPdf.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -189,7 +190,7 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -199,14 +200,14 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('flattenPdf.optionsTitle') || 'Flatten Options'}
+            {tTools('flattenPdf.optionsTitle')}
           </h3>
           
           <div className="space-y-4">
             {/* Info */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-blue-50 border border-blue-200">
               <p className="text-sm text-blue-700">
-                {tTools('flattenPdf.info') || 'Flattening converts interactive elements (forms, annotations) into static page content. This makes the PDF non-editable but ensures consistent appearance across all viewers.'}
+                {tUi('interfaceText.flattenInfo')}
               </p>
             </div>
 
@@ -222,10 +223,10 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
                 />
                 <div>
                   <span className="text-sm text-[hsl(var(--color-foreground))]">
-                    {tTools('flattenPdf.flattenForms') || 'Flatten Form Fields'}
+                    {tTools('flattenPdf.flattenForms')}
                   </span>
                   <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                    {tTools('flattenPdf.flattenFormsDesc') || 'Convert fillable form fields to static text'}
+                    {tUi('interfaceText.flattenFormsDescription')}
                   </p>
                 </div>
               </label>
@@ -240,10 +241,10 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
                 />
                 <div>
                   <span className="text-sm text-[hsl(var(--color-foreground))]">
-                    {tTools('flattenPdf.flattenAnnotations') || 'Flatten Annotations'}
+                    {tTools('flattenPdf.flattenAnnotations')}
                   </span>
                   <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                    {tTools('flattenPdf.flattenAnnotationsDesc') || 'Merge comments, highlights, and stamps into page content'}
+                    {tUi('interfaceText.flattenAnnotationsDescription')}
                   </p>
                 </div>
               </label>
@@ -258,10 +259,10 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
                 />
                 <div>
                   <span className="text-sm text-[hsl(var(--color-foreground))]">
-                    {tTools('flattenPdf.flattenLayers') || 'Flatten Layers'}
+                    {tUi('interfaceText.flattenLayers')}
                   </span>
                   <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                    {tTools('flattenPdf.flattenLayersDesc') || 'Merge all visible layers into a single layer'}
+                    {tUi('interfaceText.flattenLayersDescription')}
                   </p>
                 </div>
               </label>
@@ -291,8 +292,8 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('flattenPdf.flattenButton') || 'Flatten PDF')
+            ? (t('status.processing'))
+            : (tTools('flattenPdf.flattenButton'))
           }
         </Button>
 
@@ -314,11 +315,11 @@ export function FlattenPDFTool({ className = '' }: FlattenPDFToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('flattenPdf.successMessage') || 'PDF flattened successfully!'}
+            {tTools('flattenPdf.successMessage')}
           </p>
           {flattenedItems.length > 0 && (
             <p className="text-xs mt-1 text-green-600">
-              {tTools('flattenPdf.flattenedItems') || 'Flattened:'} {flattenedItems.join(', ')}
+              {tUi('interfaceText.flattenedItems')} {flattenedItems.join(', ')}
             </p>
           )}
         </div>

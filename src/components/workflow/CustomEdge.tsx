@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { 
     EdgeProps, 
@@ -30,6 +31,7 @@ export function CustomEdge({
     animated,
     sourceHandleId,
 }: EdgeProps) {
+  const tUi = useTranslations();
     const { setEdges, getNode } = useReactFlow();
     const [edgePath, labelX, labelY] = getBezierPath({
         sourceX,
@@ -94,13 +96,13 @@ export function CustomEdge({
                 >
                     {isTrueBranch && (
                         <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200 border border-emerald-400 shadow-sm select-none">
-                            ✓ True
+                            {tUi('interfaceText.true')}
                         </span>
                     )}
 
                     {isFalseBranch && (
                         <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200 border border-amber-400 shadow-sm select-none">
-                            ✗ False
+                            {tUi('interfaceText.false')}
                         </span>
                     )}
 
@@ -108,7 +110,7 @@ export function CustomEdge({
                         <button
                             onClick={onEdgeDelete}
                             className="w-5 h-5 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
-                            title="删除连接 (Delete)"
+                            title={tUi('interfaceText.deleteConnectionDelete')}
                         >
                             <X className="w-3 h-3" />
                         </button>

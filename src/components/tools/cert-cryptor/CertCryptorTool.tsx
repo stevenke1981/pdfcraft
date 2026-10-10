@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 
 export function CertCryptorTool() {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools.certCryptor');
 
@@ -95,12 +96,12 @@ export function CertCryptorTool() {
             setStatus('complete');
             setStampState('stamped');
           } else {
-            setError(output.error?.message || 'Failed to apply wax seal encryption.');
+            setError(output.error?.message || tUi('interfaceFeedback.failedToApplyWaxSealEncryption'));
             setStatus('error');
             setStampState('idle');
           }
         } catch (err) {
-          setError(err instanceof Error ? err.message : 'An error occurred.');
+          setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
           setStatus('error');
           setStampState('idle');
         }
@@ -272,8 +273,8 @@ export function CertCryptorTool() {
                 </div>
 
                 <div className="space-y-2 pointer-events-none mt-12 text-center text-[10px] text-neutral-400 border-t border-neutral-100 pt-10">
-                  <p className="font-serif italic font-bold">CERTIFICATE OF INTEGRITY & TRUST</p>
-                  <p className="scale-90 opacity-75">All properties verified & digitally locked by Public Key Infrastructure.</p>
+                  <p className="font-serif italic font-bold">{tUi('interfaceText.certificateOfIntegrityTrust')}</p>
+                  <p className="scale-90 opacity-75">{tUi('interfaceText.allPropertiesVerifiedDigitallyLockedByPublicKeyInfrastructure')}</p>
                 </div>
 
                 {/* The 3D Wax Seal Placement / Imprinted Graphic */}

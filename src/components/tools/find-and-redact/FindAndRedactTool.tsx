@@ -27,6 +27,7 @@ export interface FindAndRedactToolProps {
  * like account numbers, names, etc. from multi-page documents.
  */
 export function FindAndRedactTool({ className = '' }: FindAndRedactToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools.findAndRedact');
 
@@ -561,7 +562,7 @@ export function FindAndRedactTool({ className = '' }: FindAndRedactToolProps) {
                                 <Card variant="outlined" size="lg" className="h-full">
                                     <div className="flex items-center justify-between mb-3">
                                         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                            {tTools('previewTitle') || 'Preview'}
+                                            {tTools('previewTitle')}
                                         </h3>
                                         <div className="flex items-center gap-2">
                                             <Button
@@ -601,7 +602,7 @@ export function FindAndRedactTool({ className = '' }: FindAndRedactToolProps) {
                                     {pagesWithMatches.length > 1 && (
                                         <div className="mb-3 flex flex-wrap gap-1">
                                             <span className="text-xs text-gray-500 dark:text-gray-400 mr-2">
-                                                {tTools('pagesWithMatches') || 'Pages with matches:'}
+                                                {tTools('pagesWithMatches')}
                                             </span>
                                             {pagesWithMatches.map(page => (
                                                 <button
@@ -625,11 +626,11 @@ export function FindAndRedactTool({ className = '' }: FindAndRedactToolProps) {
                                     <div className="mb-3 flex gap-4 text-xs">
                                         <div className="flex items-center gap-1">
                                             <span className="inline-block w-4 h-4 bg-red-500/30 border-2 border-red-500 rounded"></span>
-                                            <span className="text-gray-600 dark:text-gray-400">{tTools('selectedMatch') || 'Selected'}</span>
+                                            <span className="text-gray-600 dark:text-gray-400">{tTools('selectedMatch')}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
                                             <span className="inline-block w-4 h-4 bg-yellow-500/30 border-2 border-yellow-500 rounded"></span>
-                                            <span className="text-gray-600 dark:text-gray-400">{tTools('unselectedMatch') || 'Not selected'}</span>
+                                            <span className="text-gray-600 dark:text-gray-400">{tTools('unselectedMatch')}</span>
                                         </div>
                                     </div>
 
@@ -679,7 +680,7 @@ export function FindAndRedactTool({ className = '' }: FindAndRedactToolProps) {
                                                         }`}
                                                     disabled={isProcessing}
                                                 >
-                                                    {tTools('allMatches', { count: matches.length })}
+                                                    {tUi('interfaceText.allMatchesCount', { count: matches.length })}
                                                 </button>
                                                 {pagesWithMatches.map(page => {
                                                     const pageMatchCount = matches.filter(m => m.page === page).length;

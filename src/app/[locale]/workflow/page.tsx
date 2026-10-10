@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: WorkflowPageProps): Promise<M
     return generateBaseMetadata({
         locale: validLocale,
         path: '/workflow',
-        title: t('navigation.workflow') || 'Workflow',
-        description: t('tagline') || 'Professional, secure, and free PDF tools for everyone.',
+        title: t('navigation.workflow'),
+        description: t('tagline'),
     });
 }
 

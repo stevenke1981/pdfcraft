@@ -15,6 +15,7 @@ export interface TableOfContentsToolProps {
 }
 
 export function TableOfContentsTool({ className = '' }: TableOfContentsToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools.tableOfContents');
   const [file, setFile] = useState<File | null>(null);
@@ -79,14 +80,14 @@ export function TableOfContentsTool({ className = '' }: TableOfContentsToolProps
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to generate table of contents.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToGenerateTableOfContents'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred2'));
       setStatus('error');
     }
-  }, [file, title, fontSize, fontFamily, addBookmark]);
+  }, [tUi, file, title, fontSize, fontFamily, addBookmark]);
 
   const isProcessing = status === 'processing';
 
@@ -148,7 +149,7 @@ export function TableOfContentsTool({ className = '' }: TableOfContentsToolProps
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
                   disabled={isProcessing}
-                  placeholder="Table of Contents"
+                  placeholder={tUi('interfaceText.tableOfContents')}
                 />
               </div>
 

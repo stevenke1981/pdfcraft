@@ -28,6 +28,7 @@ interface PagePreview {
  * Provides the UI for rotating PDF pages by arbitrary degrees.
  */
 export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -101,11 +102,11 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
             setPagePreviews(previews);
         } catch (err) {
             console.error('Failed to load PDF previews:', err);
-            setError(t('errors.fileCorrupted') || 'Failed to load PDF preview.');
+            setError(tUi('interfaceFeedback.failedToLoadPdfPreview'));
         } finally {
             setIsLoadingPreviews(false);
         }
-    }, [t]);
+    }, [tUi]);
 
     /**
      * Handle file selected from uploader
@@ -192,7 +193,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
      */
     const handleRotate = useCallback(async () => {
         if (!file) {
-            setError(t('errors.uploadFile') || 'Please upload a PDF file.');
+            setError(tUi('common.toolFeedback.uploadPdf'));
             return;
         }
 
@@ -224,7 +225,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                 (prog) => {
                     if (!cancelledRef.current) {
                         setProgress(prog);
-                        setProgressMessage(t('status.processing') || 'Processing...');
+                        setProgressMessage(t('status.processing'));
                     }
                 }
             );
@@ -238,16 +239,16 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                 setResult(output.result as Blob);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || t('errors.processingFailed') || 'Failed to rotate PDF.');
+                setError(output.error?.message || tUi('errors.processingFailed') || tUi('interfaceFeedback.failedToRotatePdf'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : t('errors.unknown') || 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, pagePreviews, t, tFeedback]);
+    }, [tUi, file, pagePreviews, t, tFeedback]);
 
     /**
      * Handle cancel operation
@@ -311,7 +312,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                             <div>
                                 <p className="font-medium text-[hsl(var(--color-foreground))]">{file.name}</p>
                                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                                    {formatSize(file.size)} • {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                                    {formatSize(file.size)} • {totalPages} {totalPages === 1 ? tUi('tools.gridCombine.page') : tUi('tools.gridCombine.pages')}
                                 </p>
                             </div>
                         </div>
@@ -321,7 +322,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                             onClick={handleClearFile}
                             disabled={isProcessing}
                         >
-                            {t('buttons.remove') || 'Remove'}
+                            {t('buttons.remove')}
                         </Button>
                     </div>
                 </Card>
@@ -332,16 +333,16 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                 <Card variant="outlined" size="lg">
                     <div className="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-[hsl(var(--color-border))]">
                         <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-                            Custom Rotation
+                            {tUi('tools.rotateCustom.title')}
                             {rotatedCount > 0 && (
                                 <span className="ml-2 text-[hsl(var(--color-primary))] text-sm">
-                                    ({rotatedCount} page{rotatedCount !== 1 ? 's' : ''} set)
+                                    ({rotatedCount} {tUi('tools.gridCombine.page')}{rotatedCount !== 1 ? tUi('interfaceText.s') : ''} {tUi('interfaceText.set')}
                                 </span>
                             )}
                         </h3>
 
                         <div className="flex items-center gap-2">
-                            <span className="text-sm text-[hsl(var(--color-muted-foreground))]">Set all pages to:</span>
+                            <span className="text-sm text-[hsl(var(--color-muted-foreground))]">{tUi('tools.rotateCustom.setAllLabel')}</span>
                             <div className="flex items-center">
                                 <Button
                                     variant="outline"
@@ -367,10 +368,10 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                                 </Button>
                             </div>
                             <Button variant="secondary" size="sm" onClick={handleBatchApply}>
-                                Apply to All
+                                {tUi('tools.rotateCustom.applyToAll')}
                             </Button>
                             <Button variant="ghost" size="sm" onClick={handleResetAll} disabled={!hasRotations}>
-                                {t('buttons.reset') || 'Reset'}
+                                {t('buttons.reset')}
                             </Button>
                         </div>
                     </div>
@@ -380,7 +381,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                             <div className="flex flex-col items-center gap-3">
                                 <div className="w-8 h-8 border-2 border-[hsl(var(--color-primary))] border-t-transparent rounded-full animate-spin" />
                                 <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                                    {t('status.loading') || 'Loading previews...'}
+                                    {t('status.loading')}
                                 </p>
                             </div>
                         </div>
@@ -399,7 +400,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                                             {preview.thumbnail ? (
                                                 <img
                                                     src={preview.thumbnail}
-                                                    alt={`Page ${preview.pageNumber}`}
+                                                    alt={tUi('dynamicUi.pageNumber', { page: preview.pageNumber })}
                                                     className="max-w-full max-h-full object-contain shadow-sm"
                                                 />
                                             ) : (
@@ -466,8 +467,8 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                         className="min-w-[200px]"
                     >
                         {isProcessing
-                            ? (t('status.processing') || 'Processing...')
-                            : 'Rotate PDF'
+                            ? (t('status.processing'))
+                            : tUi('interfaceText.rotatePdf')
                         }
                     </Button>
 
@@ -490,7 +491,7 @@ export function RotateCustomTool({ className = '' }: RotateCustomToolProps) {
                     role="status"
                 >
                     <p className="text-sm font-medium">
-                        Rotation completed successfully! Click the download button to save your file.
+                        {tUi('tools.rotateCustom.successMessage')}
                     </p>
                 </div>
             )}

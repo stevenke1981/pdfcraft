@@ -101,6 +101,7 @@ const DRAFT_COLORS = [
 ];
 
 export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
 
   // File state
@@ -238,11 +239,11 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
       } catch {}
     } catch (err: any) {
       console.error('Failed to load PDF:', err);
-      setError(err?.message || 'Failed to load PDF document');
+      setError(err?.message || tUi('interfaceFeedback.failedToLoadPdfDocument'));
     } finally {
       setIsPageLoading(false);
     }
-  }, [pushHistory]);
+  }, [tUi, pushHistory]);
 
   const handleClear = useCallback(() => {
     if (renderTaskRef.current) {
@@ -441,11 +442,11 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
         return;
       }
       console.error('Render page error:', err);
-      setError(err?.message || 'Failed to render PDF page');
+      setError(err?.message || tUi('interfaceFeedback.failedToRenderPdfPage'));
     } finally {
       setIsPageLoading(false);
     }
-  }, [currentPage, pageScale, pdfDoc]);
+  }, [tUi, currentPage, pageScale, pdfDoc]);
 
   // Redraw Overlay Canvas (handles drawing & live preview)
   const drawOverlay = useCallback(() => {
@@ -1382,7 +1383,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
     try {
       setStatus('processing');
       setProgress(5);
-      setProgressMessage('正在准备文档与安全选项...');
+      setProgressMessage(tUi('interfaceFeedback.preparingDocumentAndSecurityOptions'));
       setError(null);
 
       const options: RedactOptions = {
@@ -1407,7 +1408,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
       setResult(outputBlob);
       setStatus('complete');
       setProgress(100);
-      setProgressMessage('脱敏完成，正在启动下载...');
+      setProgressMessage(tUi('interfaceFeedback.redactionCompleteStartingDownload'));
 
       // Automatically trigger file download
       const downloadFilename = file.name
@@ -1416,10 +1417,10 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
       await saveBlobFile(outputBlob, downloadFilename);
     } catch (err: any) {
       console.error('Redaction failed:', err);
-      setError(err?.message || '处理脱敏 PDF 时出错');
+      setError(err?.message || tUi('interfaceFeedback.errorProcessingTheRedactedPdf'));
       setStatus('error');
     }
-  }, [file, redactions, flattenAllPages, stripMetadata, purgeAnnotations, renderScale]);
+  }, [tUi, file, redactions, flattenAllPages, stripMetadata, purgeAnnotations, renderScale]);
 
   return (
     <div className={`w-full max-w-7xl mx-auto p-4 space-y-6 ${className}`}>
@@ -1437,22 +1438,22 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
               <div className="flex items-start gap-2 p-3 rounded-lg bg-muted/40">
                 <Lock className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
                 <div className="text-xs">
-                  <div className="font-semibold text-foreground">不可逆物理销毁</div>
-                  <div className="text-muted-foreground mt-0.5">彻底消灭底层文字与矢量流，杜绝复制或文本提取</div>
+                  <div className="font-semibold text-foreground">{tUi('interfaceText.irreversibleRemoval')}</div>
+                  <div className="text-muted-foreground mt-0.5">{tUi('interfaceText.removeUnderlyingTextAndVectorStreamsToPreventCopyingOrTextExtraction')}</div>
                 </div>
               </div>
               <div className="flex items-start gap-2 p-3 rounded-lg bg-muted/40">
                 <Shield className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
                 <div className="text-xs">
-                  <div className="font-semibold text-foreground">深度元数据擦除</div>
-                  <div className="text-muted-foreground mt-0.5">清空作者、标题、创建日期及 XMP 扩展隐私指纹</div>
+                  <div className="font-semibold text-foreground">{tUi('interfaceText.deepMetadataRemoval')}</div>
+                  <div className="text-muted-foreground mt-0.5">{tUi('interfaceText.clearAuthorTitleCreationDateAndXmpPrivacyMetadata')}</div>
                 </div>
               </div>
               <div className="flex items-start gap-2 p-3 rounded-lg bg-muted/40">
                 <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                 <div className="text-xs">
-                  <div className="font-semibold text-foreground">100% 本地计算</div>
-                  <div className="text-muted-foreground mt-0.5">文件无需上传至云端服务器，保障极致安全</div>
+                  <div className="font-semibold text-foreground">{tUi('interfaceText.100LocalProcessing')}</div>
+                  <div className="text-muted-foreground mt-0.5">{tUi('interfaceText.filesStayOnYourDeviceAndAreNeverUploadedToACloudServer')}</div>
                 </div>
               </div>
             </div>
@@ -1470,33 +1471,33 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
               {/* Left: Tools & Styles */}
               <div className="flex flex-wrap items-center gap-2.5">
                 {/* Tool Selector: Brush vs Rect */}
-                <div className="flex items-center bg-muted/60 p-0.5 rounded-lg border border-border/80">
+                <div className="flex flex-wrap max-w-full items-center bg-muted/60 p-0.5 rounded-lg border border-border/80">
                   <Button
                     size="sm"
                     variant={activeTool === 'brush' ? 'primary' : 'ghost'}
                     onClick={() => setActiveTool('brush')}
                     className="gap-1.5 text-xs h-8 font-medium"
-                    title="自由画笔涂抹模式"
+                    title={tUi('interfaceText.freehandBrushMode')}
                   >
                     <Paintbrush className="w-3.5 h-3.5" />
-                    自由画笔
+                    {tUi('interfaceText.freehandBrush')}
                   </Button>
                   <Button
                     size="sm"
                     variant={activeTool === 'rect' ? 'primary' : 'ghost'}
                     onClick={() => setActiveTool('rect')}
                     className="gap-1.5 text-xs h-8 font-medium"
-                    title="矩形选区框选模式"
+                    title={tUi('interfaceText.rectangleSelectionMode')}
                   >
                     <Square className="w-3.5 h-3.5" />
-                    矩形选区
+                    {tUi('interfaceText.rectangleSelection')}
                   </Button>
                 </div>
 
                 <div className="hidden sm:block h-5 w-px bg-border/80" />
 
                 {/* Redaction Style Selector */}
-                <div className="flex items-center bg-muted/60 p-0.5 rounded-lg border border-border/80">
+                <div className="flex flex-wrap max-w-full items-center bg-muted/60 p-0.5 rounded-lg border border-border/80">
                   <Button
                     size="sm"
                     variant={activeStyle === 'blackout' ? 'primary' : 'ghost'}
@@ -1504,7 +1505,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     className="gap-1.5 text-xs h-8"
                   >
                     <span className="w-3 h-3 bg-black rounded-sm border border-neutral-600 inline-block" />
-                    涂黑遮蔽
+                    {tUi('interfaceText.blackout')}
                   </Button>
                   <Button
                     size="sm"
@@ -1513,7 +1514,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     className="gap-1.5 text-xs h-8"
                   >
                     <span className="w-3 h-3 bg-white rounded-sm border border-neutral-400 inline-block" />
-                    白条遮盖
+                    {tUi('interfaceText.whiteout')}
                   </Button>
                   <Button
                     size="sm"
@@ -1522,7 +1523,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     className="gap-1.5 text-xs h-8"
                   >
                     <Sliders className="w-3.5 h-3.5" />
-                    马赛克
+                    {tUi('interfaceText.pixelation')}
                   </Button>
                   <Button
                     size="sm"
@@ -1531,13 +1532,13 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     className="gap-1.5 text-xs h-8"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
-                    高斯模糊
+                    {tUi('interfaceText.gaussianBlur')}
                   </Button>
                 </div>
               </div>
 
               {/* Right: Preview, History & Clear */}
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap max-w-full items-center gap-2">
                 <Button
                   size="sm"
                   variant={previewMode ? 'primary' : 'outline'}
@@ -1545,7 +1546,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                   className="gap-1.5 text-xs h-8"
                 >
                   {previewMode ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-                  {previewMode ? '正在实时预览' : '预览脱敏效果'}
+                  {previewMode ? tUi('interfaceText.livePreviewEnabled') : tUi('interfaceText.previewRedaction')}
                 </Button>
 
                 <div className="flex items-center border-l border-border pl-1.5 gap-0.5">
@@ -1555,7 +1556,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     onClick={handleUndo}
                     disabled={historyIndex <= 0}
                     className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
-                    title="撤销 (Ctrl+Z)"
+                    title={tUi('tools.formCreator.undo')}
                   >
                     <Undo2 className="w-4 h-4" />
                   </Button>
@@ -1565,7 +1566,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     onClick={handleRedo}
                     disabled={historyIndex >= history.length - 1}
                     className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
-                    title="重做 (Ctrl+Y)"
+                    title={tUi('tools.formCreator.redo')}
                   >
                     <Redo2 className="w-4 h-4" />
                   </Button>
@@ -1579,7 +1580,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     className="gap-1 text-xs text-destructive hover:bg-destructive/10 h-8 border-destructive/30"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
-                    删除选中
+                    {tUi('interfaceText.deleteSelection')}
                   </Button>
                 )}
 
@@ -1590,7 +1591,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                   disabled={(redactions[currentPage] || []).length === 0}
                   className="text-xs text-muted-foreground hover:text-foreground h-8"
                 >
-                  清空本页
+                  {tUi('interfaceText.clearThisPage')}
                 </Button>
               </div>
             </div>
@@ -1604,20 +1605,20 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
               <div className="flex flex-wrap items-center gap-3">
                 {/* Brush Thickness Controls (when in Brush mode) */}
                 {activeTool === 'brush' && (
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-muted-foreground font-medium whitespace-nowrap">画笔粗细:</span>
-                    <div className="flex items-center bg-muted/60 p-0.5 rounded-lg border border-border/70">
+                  <div className="flex flex-wrap max-w-full items-center gap-2.5">
+                    <span className="text-muted-foreground font-medium whitespace-nowrap">{tUi('interfaceText.brushSize')}</span>
+                    <div className="flex flex-wrap max-w-full items-center bg-muted/60 p-0.5 rounded-lg border border-border/70">
                       {[
-                        { label: '细', size: 8 },
-                        { label: '中', size: 16 },
-                        { label: '粗', size: 28 },
-                        { label: '特粗', size: 44 },
+                        { label: tUi('dynamicUi.thin'), size: 8 },
+                        { label: tUi('dynamicUi.medium'), size: 16 },
+                        { label: tUi('dynamicUi.thick'), size: 28 },
+                        { label: tUi('dynamicUi.extraThick'), size: 44 },
                       ].map((preset) => (
                         <button
                           key={preset.size}
                           type="button"
                           onClick={() => setBrushWidth(preset.size)}
-                          className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
+                          className={`shrink-0 whitespace-nowrap px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
                             brushWidth === preset.size
                               ? 'bg-background text-foreground shadow-xs font-bold'
                               : 'text-muted-foreground hover:text-foreground'
@@ -1637,14 +1638,14 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                         value={brushWidth}
                         onChange={(e) => setBrushWidth(Number(e.target.value))}
                         className="w-24 cursor-pointer accent-primary"
-                        title="滑动调节画笔粗细"
+                        title={tUi('interfaceText.adjustBrushSize')}
                       />
                       <span className="font-mono text-xs font-semibold w-8 text-foreground">{brushWidth}px</span>
 
                       {/* Circle Preview */}
                       <div
                         className="flex items-center justify-center w-5 h-5 rounded bg-muted/80 border border-border/80"
-                        title={`当前画笔粗细: ${brushWidth}px`}
+                        title={tUi('dynamicUi.brushWidth', { width: brushWidth })}
                       >
                         <span
                           className="rounded-full bg-foreground inline-block"
@@ -1661,7 +1662,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                 {/* Mosaic Block Size Slider */}
                 {activeStyle === 'mosaic' && (
                   <div className={`flex items-center gap-2 ${activeTool === 'brush' ? 'pl-3 border-l border-border/70' : ''}`}>
-                    <span className="text-muted-foreground font-medium whitespace-nowrap">马赛克颗粒:</span>
+                    <span className="text-muted-foreground font-medium whitespace-nowrap">{tUi('interfaceText.pixelationSize')}</span>
                     <input
                       type="range"
                       min="4"
@@ -1678,7 +1679,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                 {/* Blur Radius Slider */}
                 {activeStyle === 'blur' && (
                   <div className={`flex items-center gap-2 ${activeTool === 'brush' ? 'pl-3 border-l border-border/70' : ''}`}>
-                    <span className="text-muted-foreground font-medium whitespace-nowrap">模糊强度:</span>
+                    <span className="text-muted-foreground font-medium whitespace-nowrap">{tUi('interfaceText.blurIntensity')}</span>
                     <input
                       type="range"
                       min="2"
@@ -1696,7 +1697,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                 {activeTool === 'rect' && activeStyle !== 'mosaic' && activeStyle !== 'blur' && (
                   <span className="text-muted-foreground text-[11px] flex items-center gap-1">
                     <span className="text-primary font-bold">💡</span>
-                    <span>按住鼠标左键在页面拖拽可绘制矩形遮盖区，点击选区可拖动或通过手柄缩放。</span>
+                    <span>{tUi('interfaceText.dragWithTheLeftMouseButtonToDrawARectangleDragTheSelectionToMoveItOrUseItsHandlesToResizeI')}</span>
                   </span>
                 )}
               </div>
@@ -1705,7 +1706,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
               <div className="flex items-center gap-2 ml-auto">
                 <span className="text-xs text-muted-foreground flex items-center gap-1">
                   <Palette className="w-3.5 h-3.5 text-muted-foreground" />
-                  <span>框选标色:</span>
+                  <span>{tUi('interfaceText.selectionColor')}</span>
                 </span>
                 <div className="flex items-center gap-1 bg-muted/40 px-2 py-1 rounded-lg border border-border/60">
                   {DRAFT_COLORS.map((c) => (
@@ -1719,7 +1720,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                           : 'opacity-70 hover:opacity-100 hover:scale-110'
                       }`}
                       style={{ backgroundColor: c.stroke }}
-                      title={`${c.name} 标色`}
+                      title={tUi('dynamicUi.highlightColor', { color: tUi('dynamicUi.' + c.id) })}
                     />
                   ))}
                 </div>
@@ -1728,15 +1729,15 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
           </Card>
 
           {/* Main Grid: Thumbnails/Security + Canvas Viewport */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
+          <div className="grid min-w-0 grid-cols-1 lg:grid-cols-4 gap-4 items-start">
             {/* Left Sidebar: Page List & Security Settings */}
-            <div className="space-y-4 lg:col-span-1">
+            <div className="min-w-0 space-y-4 lg:col-span-1">
               {/* 1. Page Navigator Card */}
               <Card className="p-3 bg-card border border-border rounded-xl space-y-2.5">
-                <div className="flex items-center justify-between px-1">
+                <div className="flex flex-wrap items-center justify-between gap-2 px-1">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-semibold text-foreground">页面导航</span>
-                    <span className="text-[11px] text-muted-foreground">({numPages} 页)</span>
+                    <span className="text-xs font-semibold text-foreground">{tUi('interfaceText.pageNavigation')}</span>
+                    <span className="text-[11px] text-muted-foreground">({numPages} {tUi('interfaceText.pages')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     {/* Filter Redacted Pages */}
@@ -1748,10 +1749,10 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                           ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 font-semibold border border-rose-500/30'
                           : 'text-muted-foreground hover:text-foreground bg-muted/40 hover:bg-muted'
                       }`}
-                      title="仅查看已有脱敏标记的页面"
+                      title={tUi('interfaceText.showOnlyPagesWithRedactionMarks')}
                     >
                       <Shield className="w-3 h-3 text-rose-500" />
-                      <span>已脱敏</span>
+                      <span>{tUi('interfaceText.markedForRedaction')}</span>
                       <span className="font-mono font-bold">({pagesWithRedactions.length})</span>
                     </button>
 
@@ -1765,7 +1766,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                             ? 'bg-background text-foreground shadow-xs'
                             : 'text-muted-foreground hover:text-foreground'
                         }`}
-                        title="网格视图（紧凑）"
+                        title={tUi('interfaceText.compactGridView')}
                       >
                         <LayoutGrid className="w-3.5 h-3.5" />
                       </button>
@@ -1777,7 +1778,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                             ? 'bg-background text-foreground shadow-xs'
                             : 'text-muted-foreground hover:text-foreground'
                         }`}
-                        title="列表视图"
+                        title={tUi('interfaceText.listView')}
                       >
                         <List className="w-3.5 h-3.5" />
                       </button>
@@ -1789,7 +1790,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                 <div className="max-h-72 overflow-y-auto pr-1">
                   {displayedPages.length === 0 ? (
                     <div className="text-center py-6 text-xs text-muted-foreground">
-                      暂无已脱敏页面
+                      {tUi('interfaceText.noPagesWithRedactionMarks')}
                     </div>
                   ) : sidebarViewMode === 'grid' ? (
                     /* Grid Mode: 4 columns of compact page chips */
@@ -1817,7 +1818,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                                     ? 'bg-rose-500 text-white shadow-xs'
                                     : 'bg-rose-500 text-white'
                                 }`}
-                                title={`第 ${p} 页有 ${count} 处脱敏`}
+                                title={tUi('dynamicUi.pageRedactionCount', { page: p, count })}
                               >
                                 {count}
                               </span>
@@ -1844,7 +1845,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                                 : 'bg-muted/40 hover:bg-muted text-foreground'
                             }`}
                           >
-                            <span>第 {p} 页</span>
+                            <span>{tUi('interfaceText.pageNumberPrefix')} {p} {tUi('interfaceText.pageNumberSuffix')}</span>
                             {count > 0 && (
                               <span
                                 className={`px-1.5 py-0.5 rounded-full text-[10px] ${
@@ -1853,7 +1854,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                                     : 'bg-rose-500/15 text-rose-500 font-semibold'
                                 }`}
                               >
-                                {count} 处脱敏
+                                {count} {tUi('interfaceText.redactions')}
                               </span>
                             )}
                           </button>
@@ -1867,12 +1868,12 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
               {/* 2. Redaction Statistics & Action */}
               <Card className="p-4 bg-card border border-border rounded-xl space-y-3">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-muted-foreground">当前页面脱敏区:</span>
-                  <span className="font-bold text-foreground">{(redactions[currentPage] || []).length} 处</span>
+                  <span className="text-muted-foreground">{tUi('interfaceText.redactionsOnThisPage')}</span>
+                  <span className="font-bold text-foreground">{(redactions[currentPage] || []).length} {tUi('interfaceText.areas')}</span>
                 </div>
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-muted-foreground">全文档总脱敏区:</span>
-                  <span className="font-bold text-primary">{totalRedactionsCount} 处</span>
+                  <span className="text-muted-foreground">{tUi('interfaceText.redactionsInThisDocument')}</span>
+                  <span className="font-bold text-primary">{totalRedactionsCount} {tUi('interfaceText.areas')}</span>
                 </div>
 
                 {/* In-sidebar processing progress feedback */}
@@ -1903,7 +1904,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                 {status === 'complete' && result && (
                   <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-                    <span>脱敏完成！已自动启动下载。</span>
+                    <span>{tUi('interfaceText.redactionCompleteDownloadStartedAutomatically')}</span>
                   </div>
                 )}
 
@@ -1921,7 +1922,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                       onClick={handleProcess}
                       className="w-full text-xs text-muted-foreground"
                     >
-                      重新生成脱敏 PDF
+                      {tUi('interfaceText.regenerateRedactedPdf')}
                     </Button>
                   </div>
                 ) : (
@@ -1933,12 +1934,12 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     {status === 'processing' ? (
                       <>
                         <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-                        <span>正在生成 ({progress}%)...</span>
+                        <span>{tUi('interfaceText.generating')}{progress}%)...</span>
                       </>
                     ) : (
                       <>
                         <Download className="w-4 h-4" />
-                        <span>生成脱敏安全 PDF</span>
+                        <span>{tUi('interfaceText.generateRedactedPdf')}</span>
                       </>
                     )}
                   </Button>
@@ -1950,7 +1951,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                   onClick={handleClear}
                   className="w-full text-xs text-muted-foreground hover:text-foreground"
                 >
-                  更换其他文件
+                  {tUi('interfaceText.chooseAnotherFile')}
                 </Button>
               </Card>
 
@@ -1958,7 +1959,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
               <Card className="p-4 bg-card border border-border rounded-xl space-y-3">
                 <div className="flex items-center gap-2 pb-2 border-b border-border">
                   <Shield className="w-4 h-4 text-emerald-500" />
-                  <span className="text-xs font-bold uppercase tracking-wider">安全与隐私加固</span>
+                  <span className="text-xs font-bold uppercase tracking-wider">{tUi('interfaceText.securityAndPrivacyOptions')}</span>
                 </div>
 
                 <div className="space-y-2.5 text-xs">
@@ -1970,8 +1971,8 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                       className="mt-0.5 rounded border-muted-foreground accent-emerald-500"
                     />
                     <div>
-                      <span className="font-semibold text-foreground">物理不可逆销毁 (必选)</span>
-                      <p className="text-[11px] text-muted-foreground">脱敏区域以像素合并烧录，彻底清除底层文字与对象流</p>
+                      <span className="font-semibold text-foreground">{tUi('interfaceText.irreversibleRemovalRequired')}</span>
+                      <p className="text-[11px] text-muted-foreground">{tUi('interfaceText.mergeRedactedAreasIntoPixelsAndRemoveUnderlyingTextAndObjectStreams')}</p>
                     </div>
                   </label>
 
@@ -1983,8 +1984,8 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                       className="mt-0.5 rounded border-muted-foreground accent-primary"
                     />
                     <div>
-                      <span className="font-medium text-foreground">深度擦除元数据</span>
-                      <p className="text-[11px] text-muted-foreground">清空作者、标题、修改日期及 XMP 扩展隐私指纹</p>
+                      <span className="font-medium text-foreground">{tUi('interfaceText.removeMetadataThoroughly')}</span>
+                      <p className="text-[11px] text-muted-foreground">{tUi('interfaceText.clearAuthorTitleModificationDateAndXmpPrivacyMetadata')}</p>
                     </div>
                   </label>
 
@@ -1996,8 +1997,8 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                       className="mt-0.5 rounded border-muted-foreground accent-primary"
                     />
                     <div>
-                      <span className="font-medium text-foreground">清除残留批注与脚本</span>
-                      <p className="text-[11px] text-muted-foreground">移除浮动注释、AcroForm 脚本与潜在外链泄露</p>
+                      <span className="font-medium text-foreground">{tUi('interfaceText.removeRemainingAnnotationsAndScripts')}</span>
+                      <p className="text-[11px] text-muted-foreground">{tUi('interfaceText.removeAnnotationsAcroformScriptsAndPotentialExternalLinks')}</p>
                     </div>
                   </label>
 
@@ -2009,8 +2010,8 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                       className="mt-0.5 rounded border-muted-foreground accent-primary"
                     />
                     <div>
-                      <span className="font-medium text-foreground">全局统一栅格化</span>
-                      <p className="text-[11px] text-muted-foreground">将未涂黑页面也全部光栅化（体积增大但安全最高）</p>
+                      <span className="font-medium text-foreground">{tUi('interfaceText.rasterizeAllPages')}</span>
+                      <p className="text-[11px] text-muted-foreground">{tUi('interfaceText.rasterizeUnmarkedPagesTooLargerFileStrongerProtection')}</p>
                     </div>
                   </label>
                 </div>
@@ -2018,18 +2019,18 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
             </div>
 
             {/* Right: Canvas Viewport & Navigation */}
-            <div className="lg:col-span-3 space-y-3">
+            <div className="min-w-0 lg:col-span-3 space-y-3">
               {/* Viewport Toolbar */}
               <div className="flex flex-wrap items-center justify-between bg-muted/40 p-2 rounded-xl border border-border text-xs gap-2">
                 {/* Page Navigation Dock */}
-                <div className="flex items-center gap-1">
+                <div className="flex flex-wrap max-w-full items-center gap-1">
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => setCurrentPage(1)}
                     disabled={currentPage <= 1}
                     className="h-8 w-8 p-0"
-                    title="第一页 (Home)"
+                    title={tUi('interfaceText.firstPageHome')}
                   >
                     <ChevronFirst className="w-4 h-4" />
                   </Button>
@@ -2039,14 +2040,14 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage <= 1}
                     className="h-8 px-2 text-xs gap-1"
-                    title="上一页 (PageUp / ←)"
+                    title={tUi('interfaceText.previousPagePageup')}
                   >
                     <ChevronLeft className="w-4 h-4" />
-                    <span className="hidden sm:inline">上一页</span>
+                    <span className="hidden sm:inline">{tUi('interfaceText.previousPage')}</span>
                   </Button>
 
                   <div className="flex items-center gap-1 px-2 py-0.5 bg-background rounded-lg border border-border shadow-xs">
-                    <span className="text-muted-foreground text-xs">第</span>
+                    <span className="text-muted-foreground text-xs">{tUi('interfaceText.pageNumberPrefix')}</span>
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
@@ -2060,10 +2061,10 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                         onChange={(e) => setJumpInput(e.target.value)}
                         onBlur={() => handleJumpPage()}
                         className="w-10 h-6 text-center font-mono font-bold text-xs bg-transparent focus:outline-none focus:bg-muted/50 rounded"
-                        title="输入页码按 Enter 跳转"
+                        title={tUi('interfaceText.enterAPageNumberAndPressEnter')}
                       />
                     </form>
-                    <span className="text-muted-foreground text-xs">/ {numPages} 页</span>
+                    <span className="text-muted-foreground text-xs">/ {numPages} {tUi('interfaceText.pageNumberSuffix')}</span>
                   </div>
 
                   <Button
@@ -2072,9 +2073,9 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     onClick={() => setCurrentPage((p) => Math.min(numPages, p + 1))}
                     disabled={currentPage >= numPages}
                     className="h-8 px-2 text-xs gap-1"
-                    title="下一页 (PageDown / →)"
+                    title={tUi('interfaceText.nextPagePagedown')}
                   >
-                    <span className="hidden sm:inline">下一页</span>
+                    <span className="hidden sm:inline">{tUi('interfaceText.nextPage')}</span>
                     <ChevronRight className="w-4 h-4" />
                   </Button>
                   <Button
@@ -2083,20 +2084,20 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     onClick={() => setCurrentPage(numPages)}
                     disabled={currentPage >= numPages}
                     className="h-8 w-8 p-0"
-                    title="最后一页 (End)"
+                    title={tUi('interfaceText.lastPageEnd')}
                   >
                     <ChevronLast className="w-4 h-4" />
                   </Button>
                 </div>
 
                 {/* Zoom Controls */}
-                <div className="flex items-center gap-1">
+                <div className="flex flex-wrap max-w-full items-center gap-1">
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => setPageScale((s) => Math.max(0.6, Number((s - 0.2).toFixed(1))))}
                     className="h-8 w-8 p-0"
-                    title="缩小"
+                    title={tUi('tools.cropPdf.zoomOut')}
                   >
                     <ZoomOut className="w-4 h-4" />
                   </Button>
@@ -2106,7 +2107,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     variant="ghost"
                     onClick={() => setPageScale((s) => Math.min(2.5, Number((s + 0.2).toFixed(1))))}
                     className="h-8 w-8 p-0"
-                    title="放大"
+                    title={tUi('tools.cropPdf.zoomIn')}
                   >
                     <ZoomIn className="w-4 h-4" />
                   </Button>
@@ -2115,7 +2116,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     variant="ghost"
                     onClick={() => setPageScale(1.0)}
                     className="h-8 px-2 text-xs"
-                    title="原始尺寸 (100%)"
+                    title={tUi('interfaceText.originalSize100')}
                   >
                     100%
                   </Button>
@@ -2124,20 +2125,20 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     variant="ghost"
                     onClick={handleFitWidth}
                     className="h-8 px-2 text-xs gap-1"
-                    title="自适应页面宽度"
+                    title={tUi('interfaceText.fitToPageWidth')}
                   >
                     <Maximize className="w-3.5 h-3.5" />
-                    自适应宽
+                    {tUi('interfaceText.fitWidth')}
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={handleFitPage}
                     className="h-8 px-2 text-xs gap-1"
-                    title="自适应整页（显示完整页面）"
+                    title={tUi('interfaceText.fitEntirePage')}
                   >
                     <Maximize2 className="w-3.5 h-3.5" />
-                    自适应页
+                    {tUi('interfaceText.fitPage')}
                   </Button>
                 </div>
               </div>
@@ -2152,7 +2153,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                     <div className="absolute inset-0 bg-background/50 backdrop-blur-sm z-20 flex items-center justify-center">
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                        渲染页面中...
+                        {tUi('interfaceText.renderingPage')}
                       </div>
                     </div>
                   )}
@@ -2186,7 +2187,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       disabled={currentPage <= 1}
                       className="absolute left-3 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full bg-background/85 hover:bg-background shadow-lg backdrop-blur border border-border text-foreground transition-all opacity-40 group-hover:opacity-90 hover:!opacity-100 disabled:opacity-0 disabled:pointer-events-none hover:scale-110 active:scale-95"
-                      title="上一页 (PageUp / ←)"
+                      title={tUi('interfaceText.previousPagePageup')}
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
@@ -2196,7 +2197,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                       onClick={() => setCurrentPage((p) => Math.min(numPages, p + 1))}
                       disabled={currentPage >= numPages}
                       className="absolute right-3 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full bg-background/85 hover:bg-background shadow-lg backdrop-blur border border-border text-foreground transition-all opacity-40 group-hover:opacity-90 hover:!opacity-100 disabled:opacity-0 disabled:pointer-events-none hover:scale-110 active:scale-95"
-                      title="下一页 (PageDown / →)"
+                      title={tUi('interfaceText.nextPagePagedown')}
                     >
                       <ChevronRight className="w-5 h-5" />
                     </button>
@@ -2209,14 +2210,14 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
                 <div className="flex items-center gap-2">
                   <span>
                     {activeTool === 'brush'
-                      ? '💡 提示：按住鼠标左键可直接在 PDF 上自由涂抹遮盖，松开鼠标完成绘制。'
-                      : '💡 提示：按住鼠标左键拖拽可绘制脱敏选区，拖拽边缘手柄调整尺寸或拖动移动。'}
+                      ? tUi('interfaceText.holdTheLeftMouseButtonToDrawOverThePdfReleaseToFinish')
+                      : tUi('interfaceText.dragToDrawARedactionRectangleUseItsHandlesToResizeItOrDragToMoveIt')}
                   </span>
                   <span className="hidden sm:inline-block text-border">|</span>
-                  <span className="hidden sm:inline">快捷键：<kbd className="px-1 py-0.5 rounded bg-muted font-mono text-[10px]">Del</kbd> 删除 / <kbd className="px-1 py-0.5 rounded bg-muted font-mono text-[10px]">Ctrl+Z</kbd> 撤销 / <kbd className="px-1 py-0.5 rounded bg-muted font-mono text-[10px]">PgUp/PgDn</kbd> 翻页</span>
+                  <span className="hidden sm:inline">{tUi('interfaceText.keyboardShortcuts')}<kbd className="px-1 py-0.5 rounded bg-muted font-mono text-[10px]">Del</kbd> {tUi('interfaceText.delete')} <kbd className="px-1 py-0.5 rounded bg-muted font-mono text-[10px]">Ctrl+Z</kbd> {tUi('interfaceText.undo')} <kbd className="px-1 py-0.5 rounded bg-muted font-mono text-[10px]">PgUp/PgDn</kbd> {tUi('interfaceText.changePage')}</span>
                 </div>
                 <span className="font-medium">
-                  当前模式：{previewMode ? '真实脱敏预览' : activeTool === 'brush' ? '自由画笔涂抹' : '选区标定编辑'}
+                  {tUi('interfaceText.currentMode')}{previewMode ? tUi('interfaceText.redactionPreview') : activeTool === 'brush' ? '自由画笔涂抹' : '选区标定编辑'}
                 </span>
               </div>
             </div>
@@ -2241,9 +2242,9 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
             <CheckCircle2 className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-lg font-bold">PDF 脱敏处理已完成！</h3>
+            <h3 className="text-lg font-bold">{tUi('interfaceText.pdfRedactionComplete')}</h3>
             <p className="text-xs text-muted-foreground">
-              敏感信息已被物理像素级不可逆抹除，元数据与隐私指纹均已清除。
+              {tUi('interfaceText.sensitiveContentHasBeenIrreversiblyRemovedAtPixelLevelMetadataAndPrivacyFingerprintsHaveBe')}
             </p>
           </div>
           <div className="flex justify-center gap-3 pt-2">
@@ -2253,7 +2254,7 @@ export function RedactPDFTool({ className = '' }: RedactPDFToolProps) {
               className="gap-2"
             />
             <Button variant="outline" onClick={() => setStatus('idle')}>
-              继续编辑
+              {tUi('interfaceText.continueEditing')}
             </Button>
           </div>
         </Card>

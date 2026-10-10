@@ -31,6 +31,7 @@ export interface PDFToMarkdownToolProps {
  * Converts PDF files to Markdown format.
  */
 export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -99,7 +100,7 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
      */
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError(t('errors.uploadFile') || 'Please upload a PDF file.');
+            setError(tUi('common.toolFeedback.uploadPdf'));
             return;
         }
 
@@ -149,16 +150,16 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
 
                 setStatus('complete');
             } else {
-                setError(output.error?.message || tTools('pdfToMarkdown.failed') || 'Failed to convert PDF to Markdown.');
+                setError(output.error?.message || tTools('pdfToMarkdown.failed') || tUi('tools.pdfToMarkdown.failed'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : t('errors.unexpectedError') || 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, t, tTools, includePageNumbers, pageRange, preserveLineBreaks]);
+    }, [tUi, file, tTools, includePageNumbers, pageRange, preserveLineBreaks]);
 
     /**
      * Handle cancel operation
@@ -191,8 +192,8 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('pdfToMarkdown.uploadLabel') || 'Upload PDF'}
-                description={tTools('pdfToMarkdown.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+                label={tTools('pdfToMarkdown.uploadLabel')}
+                description={tTools('pdfToMarkdown.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -227,7 +228,7 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
                             className="text-[hsl(var(--color-muted-foreground))] hover:text-red-500 hover:bg-red-50"
                         >
                             <Trash2 className="w-5 h-5" />
-                            <span className="sr-only">{t('buttons.remove') || 'Remove'}</span>
+                            <span className="sr-only">{t('buttons.remove')}</span>
                         </Button>
                     </div>
                 </Card>
@@ -239,23 +240,23 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
                     <div className="space-y-4">
                         <div className="flex items-center gap-2 text-[hsl(var(--color-foreground))]">
                             <Settings2 className="w-5 h-5" />
-                            <h3 className="font-semibold">{tTools('pdfToMarkdown.optionsTitle') || 'Conversion Options'}</h3>
+                            <h3 className="font-semibold">{tTools('pdfToMarkdown.optionsTitle')}</h3>
                         </div>
 
                         {/* Page Range */}
                         <div className="space-y-2">
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))]">
-                                {tTools('pdfToMarkdown.pageRange') || 'Page Range'}
+                                {tTools('pdfToMarkdown.pageRange')}
                             </label>
                             <input
                                 type="text"
                                 value={pageRange}
                                 onChange={(e) => setPageRange(e.target.value)}
-                                placeholder={tTools('pdfToMarkdown.pageRangePlaceholder') || 'e.g., 1-3, 5, 7'}
+                                placeholder={tTools('pdfToMarkdown.pageRangePlaceholder')}
                                 className="w-full px-3 py-2 rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] placeholder:text-[hsl(var(--color-muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                             />
                             <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                                {tTools('pdfToMarkdown.pageRangeHint') || 'Leave empty for all pages'}
+                                {tTools('pdfToMarkdown.pageRangeHint')}
                             </p>
                         </div>
 
@@ -269,7 +270,7 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
                                 className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                             />
                             <label htmlFor="includePageNumbers" className="text-sm text-[hsl(var(--color-foreground))]">
-                                {tTools('pdfToMarkdown.includePageNumbers') || 'Include page numbers as headers'}
+                                {tTools('pdfToMarkdown.includePageNumbers')}
                             </label>
                         </div>
 
@@ -283,7 +284,7 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
                                 className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                             />
                             <label htmlFor="preserveLineBreaks" className="text-sm text-[hsl(var(--color-foreground))]">
-                                {tTools('pdfToMarkdown.preserveLineBreaks') || 'Preserve line breaks'}
+                                {tTools('pdfToMarkdown.preserveLineBreaks')}
                             </label>
                         </div>
                     </div>
@@ -313,8 +314,8 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
                 >
                     {!isProcessing && <RefreshCw className="w-5 h-5 mr-2" />}
                     {isProcessing
-                        ? (t('status.processing') || 'Converting...')
-                        : (tTools('pdfToMarkdown.convertButton') || 'Convert to Markdown')
+                        ? (t('status.processing'))
+                        : (tTools('pdfToMarkdown.convertButton'))
                     }
                 </Button>
 
@@ -339,9 +340,9 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
                         <CheckCircle2 className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle') || 'Conversion Successful!'}</h3>
+                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle')}</h3>
                     <p className="text-green-800/80 max-w-md mx-auto">
-                        {tTools('pdfToMarkdown.successMessage') || 'Your PDF has been converted to Markdown. You can now download the file.'}
+                        {tTools('pdfToMarkdown.successMessage')}
                     </p>
                 </div>
             )}
@@ -360,7 +361,7 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
                                     }`}
                             >
                                 <Eye className="w-4 h-4" />
-                                {tTools('pdfToMarkdown.previewTab') || 'Preview'}
+                                {tTools('pdfToMarkdown.previewTab')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('source')}
@@ -370,7 +371,7 @@ export function PDFToMarkdownTool({ className = '' }: PDFToMarkdownToolProps) {
                                     }`}
                             >
                                 <Code className="w-4 h-4" />
-                                {tTools('pdfToMarkdown.sourceTab') || 'Markdown Source'}
+                                {tTools('pdfToMarkdown.sourceTab')}
                             </button>
                         </div>
 

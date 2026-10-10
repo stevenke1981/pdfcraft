@@ -44,7 +44,7 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
     };
 
     const handleDelete = (id: string) => {
-        if (confirm(tWorkflow('confirmDelete') || 'Are you sure you want to delete this history record?')) {
+        if (confirm(tWorkflow('confirmDelete'))) {
             deleteExecutionRecord(id);
             refreshHistory();
             if (selectedRecord?.id === id) {
@@ -54,7 +54,7 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
     };
 
     const handleClearAll = () => {
-        if (confirm(tWorkflow('confirmClearAllHistory') || 'Are you sure you want to clear all history? This cannot be undone.')) {
+        if (confirm(tWorkflow('confirmClearAllHistory'))) {
             clearExecutionHistory();
             refreshHistory();
             setSelectedRecord(null);
@@ -101,11 +101,11 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
     const getStatusText = (status: string) => {
         switch (status) {
             case 'completed':
-                return tWorkflow('complete') || 'Completed';
+                return tWorkflow('complete');
             case 'failed':
-                return tWorkflow('error') || 'Failed';
+                return tWorkflow('error');
             case 'running':
-                return tWorkflow('running') || 'Running';
+                return tWorkflow('running');
             default:
                 return status;
         }
@@ -122,7 +122,7 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                                 {statistics.total}
                             </div>
                             <div className="text-xs text-gray-600">
-                                {tWorkflow('totalExecutions') || 'Total Runs'}
+                                {tWorkflow('totalExecutions')}
                             </div>
                         </div>
                         <div>
@@ -130,7 +130,7 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                                 {statistics.successRate.toFixed(0)}%
                             </div>
                             <div className="text-xs text-gray-600">
-                                {tWorkflow('successRate') || 'Success Rate'}
+                                {tWorkflow('successRate')}
                             </div>
                         </div>
                         <div>
@@ -138,7 +138,7 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                                 {formatDuration(statistics.avgDuration)}
                             </div>
                             <div className="text-xs text-gray-600">
-                                {tWorkflow('avgDuration') || 'Avg Duration'}
+                                {tWorkflow('avgDuration')}
                             </div>
                         </div>
                     </div>
@@ -151,7 +151,7 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                     <div className="flex items-center gap-2">
                         <Clock className="w-5 h-5 text-gray-600" />
                         <h3 className="font-semibold text-gray-900">
-                            {tWorkflow('executionHistory') || 'Execution History'}
+                            {tWorkflow('executionHistory')}
                         </h3>
                         <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded-full">
                             {records.length}
@@ -163,7 +163,7 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                             className="text-xs text-red-600 hover:text-red-700 flex items-center gap-1"
                         >
                             <Trash2 className="w-3 h-3" />
-                            {tWorkflow('clearAll') || 'Clear All'}
+                            {tWorkflow('clearAll')}
                         </button>
                     )}
                 </div>
@@ -175,10 +175,10 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                     <div className="flex flex-col items-center justify-center h-full p-8 text-center">
                         <Clock className="w-16 h-16 text-gray-300 mb-4" />
                         <p className="text-gray-500 mb-2">
-                            {tWorkflow('noHistory') || 'No execution history yet'}
+                            {tWorkflow('noHistory')}
                         </p>
                         <p className="text-sm text-gray-400">
-                            {tWorkflow('noHistoryHint') || 'Run a workflow to see history here'}
+                            {tWorkflow('noHistoryHint')}
                         </p>
                     </div>
                 ) : (
@@ -221,11 +221,11 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                                                 </span>
                                                 <span className="flex items-center gap-1">
                                                     <Layers className="w-3 h-3" />
-                                                    {record.nodes?.length || 0} {tWorkflow('nodes') || 'nodes'}
+                                                    {record.nodes?.length || 0} {tWorkflow('nodes')}
                                                 </span>
                                                 <span className="flex items-center gap-1">
                                                     <FileText className="w-3 h-3" />
-                                                    {record.fileCount || 0} {tWorkflow('filesCount') || 'files'}
+                                                    {record.fileCount || 0} {tWorkflow('filesCount')}
                                                 </span>
                                             </div>
                                         </div>
@@ -247,11 +247,11 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                                         {/* Node Statistics */}
                                         <div className="flex items-center gap-4 text-sm mb-3">
                                             <span className="text-green-600">
-                                                ✓ {record.successfulNodes || 0}/{record.totalNodes || 0} {tWorkflow('nodesSuccess') || 'nodes succeeded'}
+                                                ✓ {record.successfulNodes || 0}/{record.totalNodes || 0} {tWorkflow('nodesSuccess')}
                                             </span>
                                             {(record.totalNodes || 0) - (record.successfulNodes || 0) > 0 && (
                                                 <span className="text-red-600">
-                                                    ✗ {(record.totalNodes || 0) - (record.successfulNodes || 0)} {tWorkflow('nodesFailed') || 'failed'}
+                                                    ✗ {(record.totalNodes || 0) - (record.successfulNodes || 0)} {tWorkflow('nodesFailed')}
                                                 </span>
                                             )}
                                         </div>
@@ -259,7 +259,7 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                                         {/* Error Message */}
                                         {record.errorMessage && (
                                             <div className="p-2 bg-red-50 border border-red-200 rounded text-sm text-red-700 mb-3">
-                                                <span className="font-medium">{tWorkflow('error') || 'Error'}:</span> {record.errorMessage}
+                                                <span className="font-medium">{tWorkflow('error')}:</span> {record.errorMessage}
                                             </div>
                                         )}
 
@@ -274,7 +274,7 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                                                     className="flex-1 px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
                                                 >
                                                     <RotateCcw className="w-4 h-4" />
-                                                    {tWorkflow('loadWorkflow') || 'Load Workflow'}
+                                                    {tWorkflow('loadWorkflow')}
                                                 </button>
                                             )}
                                             <button
@@ -285,12 +285,12 @@ export function WorkflowHistory({ onLoadFromHistory }: WorkflowHistoryProps) {
                                                         edges: record.edges || [],
                                                         record,
                                                     });
-                                                    alert(tWorkflow('detailsInConsole') || 'Details logged to console (F12)');
+                                                    alert(tWorkflow('detailsInConsole'));
                                                 }}
                                                 className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors flex items-center gap-2"
                                             >
                                                 <TrendingUp className="w-4 h-4" />
-                                                {tWorkflow('viewDetails') || 'View Details'}
+                                                {tWorkflow('viewDetails')}
                                             </button>
                                         </div>
                                     </div>

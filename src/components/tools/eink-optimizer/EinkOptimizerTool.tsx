@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 
 export function EinkOptimizerTool() {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools.einkOptimizer');
 
@@ -61,11 +62,11 @@ export function EinkOptimizerTool() {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to optimize PDF.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToOptimizePdf'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred.');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anErrorOccurred'));
       setStatus('error');
     }
   };
@@ -182,7 +183,7 @@ export function EinkOptimizerTool() {
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { val: 0, label: t('einkOptimizer.originalInk') },
+                    { val: 0, label: tUi('common.einkOptimizer.originalStroke') },
                     { val: 1, label: t('einkOptimizer.microDilation') },
                     { val: 2, label: t('einkOptimizer.strongDilation') }
                   ].map((option) => (
@@ -244,7 +245,7 @@ export function EinkOptimizerTool() {
               {/* Right Side: e-Ink Optimized (Clean White background, bold text) */}
               <div className="absolute inset-0 bg-neutral-100 flex flex-col justify-center p-8 text-neutral-900 font-serif leading-relaxed text-xs">
                 <div className="text-right text-[9px] text-teal-600 font-mono font-bold mb-3 tracking-widest">
-                  E-INK PAPER VIEW
+                  {tUi('interfaceText.eInkPaperView')}
                 </div>
                 <h3 className="text-sm font-bold border-b border-neutral-300 pb-1 mb-2 font-sans">
                   {t('einkOptimizer.afterLabel')}
@@ -265,7 +266,7 @@ export function EinkOptimizerTool() {
                 {/* Prevent content wrapping changes inside resized left pane */}
                 <div className="w-[300px] sm:w-[400px]">
                   <div className="text-[9px] text-neutral-500 font-mono mb-3 tracking-widest">
-                    MUDDY SCAN LOG (ORIGINAL)
+                    {tUi('interfaceText.muddyScanLogOriginal')}
                   </div>
                   <h3 className="text-sm font-bold border-b border-neutral-400/40 pb-1 mb-2 text-neutral-750 font-sans">
                     {t('einkOptimizer.beforeLabel')}

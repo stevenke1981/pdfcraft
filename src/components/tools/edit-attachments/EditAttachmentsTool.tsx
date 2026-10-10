@@ -27,6 +27,7 @@ export interface EditAttachmentsToolProps {
  * Provides the UI for viewing and removing attachments from PDF files.
  */
 export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
   
@@ -68,17 +69,17 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
       if (result.success && result.attachments) {
         setAttachments(result.attachments);
         if (result.attachments.length === 0) {
-          setError(tTools('editAttachments.noAttachments') || 'No attachments found in this PDF file.');
+          setError(tTools('editAttachments.noAttachments'));
         }
       } else {
-        setError(result.error || 'Failed to read attachments from PDF.');
+        setError(result.error || tUi('interfaceFeedback.failedToReadAttachmentsFromPdf'));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load PDF.');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.failedToLoadPdf'));
     } finally {
       setIsLoadingAttachments(false);
     }
-  }, []);
+  }, [tUi, tTools]);
 
   /**
    * Handle file upload error
@@ -145,7 +146,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
    */
   const handleRemoveSelected = useCallback(async () => {
     if (!pdfFile || selectedForRemoval.size === 0) {
-      setError(tTools('editAttachments.selectAtLeastOne') || 'Please select at least one attachment to remove.');
+      setError(tTools('editAttachments.selectAtLeastOne'));
       return;
     }
 
@@ -181,16 +182,16 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to remove attachments.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToRemoveAttachments'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [pdfFile, selectedForRemoval]);
+  }, [tUi, pdfFile, selectedForRemoval, tTools]);
 
   /**
    * Handle cancel operation
@@ -226,8 +227,8 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
         onFilesSelected={handlePdfSelected}
         onError={handleUploadError}
         disabled={isProcessing || isLoadingAttachments}
-        label={tTools('editAttachments.uploadLabel') || 'Upload PDF File'}
-        description={tTools('editAttachments.uploadDescription') || 'Select a PDF file to view and manage its attachments.'}
+        label={tTools('editAttachments.uploadLabel')}
+        description={tTools('editAttachments.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -249,7 +250,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
             </svg>
             <span className="text-sm text-[hsl(var(--color-muted-foreground))]">
-              {tTools('editAttachments.loadingAttachments') || 'Loading attachments...'}
+              {tTools('editAttachments.loadingAttachments')}
             </span>
           </div>
         </div>
@@ -270,7 +271,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
                   {pdfFile.name}
                 </p>
                 <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                  {formatSize(pdfFile.size)} • {attachments.length} {tTools('editAttachments.attachmentCount') || 'attachment(s)'}
+                  {formatSize(pdfFile.size)} • {attachments.length} {tTools('editAttachments.attachmentCount')}
                 </p>
               </div>
             </div>
@@ -280,7 +281,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
               onClick={handleClearAll}
               disabled={isProcessing}
             >
-              {t('buttons.clear') || 'Clear'}
+              {t('buttons.clear')}
             </Button>
           </div>
 
@@ -289,7 +290,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
             <>
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-sm font-medium text-[hsl(var(--color-foreground))]">
-                  {tTools('editAttachments.attachmentsTitle') || 'Attachments'}
+                  {tTools('editAttachments.attachmentsTitle')}
                 </h4>
                 <div className="flex gap-2">
                   <Button
@@ -298,7 +299,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
                     onClick={handleSelectAll}
                     disabled={isProcessing}
                   >
-                    {tTools('editAttachments.selectAll') || 'Select All'}
+                    {tTools('editAttachments.selectAll')}
                   </Button>
                   <Button
                     variant="ghost"
@@ -306,7 +307,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
                     onClick={handleDeselectAll}
                     disabled={isProcessing || selectedForRemoval.size === 0}
                   >
-                    {tTools('editAttachments.deselectAll') || 'Deselect All'}
+                    {tTools('editAttachments.deselectAll')}
                   </Button>
                 </div>
               </div>
@@ -327,7 +328,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
                       onChange={() => handleToggleSelection(index)}
                       disabled={isProcessing}
                       className="w-4 h-4 rounded border-[hsl(var(--color-border))]"
-                      aria-label={`Select ${attachment.name} for removal`}
+                      aria-label={tUi('dynamicUi.attachmentForRemoval', { filename: attachment.name })}
                     />
                     <svg className="w-6 h-6 text-[hsl(var(--color-muted-foreground))]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
@@ -347,7 +348,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
                       onClick={() => handleDownloadAttachment(attachment)}
                       disabled={isProcessing}
                     >
-                      {t('buttons.download') || 'Download'}
+                      {t('buttons.download')}
                     </Button>
                   </li>
                 ))}
@@ -385,8 +386,8 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
             loading={isProcessing}
           >
             {isProcessing 
-              ? (t('status.processing') || 'Processing...') 
-              : (tTools('editAttachments.removeButton') || 'Remove Selected')
+              ? (t('status.processing'))
+              : (tTools('editAttachments.removeButton'))
             }
           </Button>
 
@@ -409,7 +410,7 @@ export function EditAttachmentsTool({ className = '' }: EditAttachmentsToolProps
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('editAttachments.successMessage') || 'Attachments removed successfully! Click the download button to save your file.'}
+            {tTools('editAttachments.successMessage')}
           </p>
         </div>
       )}

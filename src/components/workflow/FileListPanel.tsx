@@ -196,10 +196,10 @@ export function FileListPanel({ files, onFilesChange, onClose }: FileListPanelPr
                         <div className="flex items-center gap-2">
                             <FileText className="w-5 h-5 text-[hsl(var(--color-primary))]" />
                             <h3 className="text-lg font-semibold text-[hsl(var(--color-foreground))]">
-                                {tWorkflow('selectedFiles') || 'Selected Files'}
+                                {tWorkflow('selectedFiles')}
                             </h3>
                             <span className="text-sm text-[hsl(var(--color-muted-foreground))] ml-2">
-                                ({files.length} {tWorkflow('filesCount') || 'files'})
+                                ({files.length} {tWorkflow('filesCount')})
                             </span>
                         </div>
                         <button
@@ -258,7 +258,7 @@ export function FileListPanel({ files, onFilesChange, onClose }: FileListPanelPr
                                             disabled={index === 0}
                                             className={`p-1.5 rounded hover:bg-[hsl(var(--color-muted))] transition-colors
                                                 ${index === 0 ? 'opacity-30 cursor-not-allowed' : ''}`}
-                                            title={tWorkflow('moveUp') || 'Move Up'}
+                                            title={tWorkflow('moveUp')}
                                         >
                                             <ChevronUp className="w-4 h-4 text-[hsl(var(--color-muted-foreground))]" />
                                         </button>
@@ -269,7 +269,7 @@ export function FileListPanel({ files, onFilesChange, onClose }: FileListPanelPr
                                             disabled={index === files.length - 1}
                                             className={`p-1.5 rounded hover:bg-[hsl(var(--color-muted))] transition-colors
                                                 ${index === files.length - 1 ? 'opacity-30 cursor-not-allowed' : ''}`}
-                                            title={tWorkflow('moveDown') || 'Move Down'}
+                                            title={tWorkflow('moveDown')}
                                         >
                                             <ChevronDown className="w-4 h-4 text-[hsl(var(--color-muted-foreground))]" />
                                         </button>
@@ -278,7 +278,7 @@ export function FileListPanel({ files, onFilesChange, onClose }: FileListPanelPr
                                         <button
                                             onClick={() => handlePreview(file)}
                                             className="p-1.5 rounded hover:bg-[hsl(var(--color-muted))] transition-colors"
-                                            title={tWorkflow('preview') || 'Preview'}
+                                            title={tWorkflow('preview')}
                                         >
                                             <Eye className="w-4 h-4 text-[hsl(var(--color-primary))]" />
                                         </button>
@@ -287,7 +287,7 @@ export function FileListPanel({ files, onFilesChange, onClose }: FileListPanelPr
                                         <button
                                             onClick={() => handleRemoveFile(index)}
                                             className="p-1.5 rounded hover:bg-red-50 transition-colors"
-                                            title={tWorkflow('removeFile') || 'Remove'}
+                                            title={tWorkflow('removeFile')}
                                         >
                                             <Trash2 className="w-4 h-4 text-red-500" />
                                         </button>
@@ -306,14 +306,14 @@ export function FileListPanel({ files, onFilesChange, onClose }: FileListPanelPr
                             className="text-red-600 hover:text-red-700 hover:bg-red-50"
                         >
                             <XCircle className="w-4 h-4 mr-2" />
-                            {tWorkflow('clearAll') || 'Clear All'}
+                            {tWorkflow('clearAll')}
                         </Button>
                         <Button
                             variant="primary"
                             size="sm"
                             onClick={handleClose}
                         >
-                            {tWorkflow('confirm') || 'Confirm'}
+                            {tWorkflow('confirm')}
                         </Button>
                     </div>
                 </div>
@@ -357,7 +357,7 @@ export function FileListPanel({ files, onFilesChange, onClose }: FileListPanelPr
                                 <div className="text-center p-8">
                                     <File className="w-16 h-16 text-[hsl(var(--color-muted-foreground))] mx-auto mb-4" />
                                     <p className="text-[hsl(var(--color-muted-foreground))]">
-                                        {tWorkflow('previewNotAvailable') || 'Preview not available for this file type'}
+                                        {tWorkflow('previewNotAvailable')}
                                     </p>
                                 </div>
                             )}

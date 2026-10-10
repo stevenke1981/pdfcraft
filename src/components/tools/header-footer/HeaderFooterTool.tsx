@@ -33,6 +33,7 @@ export interface HeaderFooterToolProps {
 }
 
 export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -240,14 +241,14 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to add header/footer.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToAddHeaderFooter'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : tUi('common.status.error'));
       setStatus('error');
     }
-  }, [file, headerLeft, headerCenter, headerRight, footerLeft, footerCenter, footerRight, fontSize, fontColor, margin, skipFirstPage, pageRange]);
+  }, [tUi, file, headerLeft, headerCenter, headerRight, footerLeft, footerCenter, footerRight, fontSize, fontColor, margin, skipFirstPage, pageRange]);
 
   const formatSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
@@ -275,8 +276,8 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={setError}
           disabled={isProcessing}
-          label={tTools('headerFooter.uploadLabel') || 'Upload PDF File'}
-          description={tTools('headerFooter.uploadDescription') || 'Drag and drop a PDF file here.'}
+          label={tTools('headerFooter.uploadLabel')}
+          description={tTools('headerFooter.uploadDescription')}
         />
       )}
 
@@ -300,50 +301,50 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
                   <div>
                     <p className="font-medium">{file.name}</p>
                     <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                      {formatSize(file.size)} • {totalPages} pages
+                      {formatSize(file.size)} • {totalPages} {tUi('tools.gridCombine.pages')}
                     </p>
                   </div>
                 </div>
                 <Button variant="ghost" size="sm" onClick={handleClearFile} disabled={isProcessing}>
-                  {t('buttons.remove') || 'Remove'}
+                  {t('buttons.remove')}
                 </Button>
               </div>
             </Card>
 
             <Card variant="outlined" size="lg">
               <h3 className="text-lg font-medium mb-4">
-                {tTools('headerFooter.headerTitle') || 'Header'}
+                {tTools('headerFooter.headerTitle')}
               </h3>
-              <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm mb-1">Left</label>
+                  <label className="block text-sm mb-1">{tUi('interfaceText.left')}</label>
                   <input
                     type="text"
                     value={headerLeft}
                     onChange={(e) => setHeaderLeft(e.target.value)}
-                    placeholder="e.g., Company Name"
+                    placeholder={tUi('interfaceText.eGCompanyName')}
                     className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                     disabled={isProcessing}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1">Center</label>
+                  <label className="block text-sm mb-1">{tUi('interfaceText.center')}</label>
                   <input
                     type="text"
                     value={headerCenter}
                     onChange={(e) => setHeaderCenter(e.target.value)}
-                    placeholder="e.g., Document Title"
+                    placeholder={tUi('interfaceText.eGDocumentTitle')}
                     className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                     disabled={isProcessing}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1">Right</label>
+                  <label className="block text-sm mb-1">{tUi('interfaceText.right')}</label>
                   <input
                     type="text"
                     value={headerRight}
                     onChange={(e) => setHeaderRight(e.target.value)}
-                    placeholder="e.g., {date}"
+                    placeholder={tUi('interfaceText.eGDate')}
                     className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                     disabled={isProcessing}
                   />
@@ -351,38 +352,38 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
               </div>
 
               <h3 className="text-lg font-medium mb-4">
-                {tTools('headerFooter.footerTitle') || 'Footer'}
+                {tTools('headerFooter.footerTitle')}
               </h3>
-              <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm mb-1">Left</label>
+                  <label className="block text-sm mb-1">{tUi('interfaceText.left')}</label>
                   <input
                     type="text"
                     value={footerLeft}
                     onChange={(e) => setFooterLeft(e.target.value)}
-                    placeholder="e.g., Confidential"
+                    placeholder={tUi('interfaceText.eGConfidential2')}
                     className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                     disabled={isProcessing}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1">Center</label>
+                  <label className="block text-sm mb-1">{tUi('interfaceText.center')}</label>
                   <input
                     type="text"
                     value={footerCenter}
                     onChange={(e) => setFooterCenter(e.target.value)}
-                    placeholder="e.g., Page {page} of {total}"
+                    placeholder={tUi('interfaceText.eGPagePageOfTotal')}
                     className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                     disabled={isProcessing}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1">Right</label>
+                  <label className="block text-sm mb-1">{tUi('interfaceText.right')}</label>
                   <input
                     type="text"
                     value={footerRight}
                     onChange={(e) => setFooterRight(e.target.value)}
-                    placeholder="e.g., {date}"
+                    placeholder={tUi('interfaceText.eGDate')}
                     className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                     disabled={isProcessing}
                   />
@@ -391,29 +392,29 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
 
               {/* Quick Insert Buttons */}
               <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">Quick Insert</label>
+                <label className="block text-sm font-medium mb-2">{tUi('interfaceText.quickInsert')}</label>
                 <div className="flex flex-wrap gap-2">
                   {quickInserts.map((item) => (
                     <button
                       key={item.label}
                       onClick={() => navigator.clipboard.writeText(item.label)}
                       className="px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
-                      title={`Copy "${item.label}" - ${item.desc}`}
+                      title={tUi('dynamicUi.copyTemplate', { label: item.label, description: item.desc })}
                     >
                       <code>{item.label}</code>
                     </button>
                   ))}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Click to copy, then paste into any field</p>
+                <p className="text-xs text-gray-500 mt-1">{tUi('interfaceText.clickToCopyThenPasteIntoAnyField')}</p>
               </div>
 
               {/* Style Options */}
               <h3 className="text-lg font-medium mb-4">
-                {tTools('headerFooter.styleTitle') || 'Style'}
+                {tTools('headerFooter.styleTitle')}
               </h3>
               <div className="grid grid-cols-3 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm mb-1">Font Size</label>
+                  <label className="block text-sm mb-1">{tUi('tools.editPdf.options.fontSize')}</label>
                   <input
                     type="number"
                     value={fontSize}
@@ -425,7 +426,7 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1">Margin (pt)</label>
+                  <label className="block text-sm mb-1">{tUi('interfaceText.marginPt')}</label>
                   <input
                     type="number"
                     value={margin}
@@ -437,7 +438,7 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1">Text Color</label>
+                  <label className="block text-sm mb-1">{tUi('tools.digitalSign.textColorLabel')}</label>
                   <input
                     type="color"
                     value={fontColor}
@@ -450,17 +451,17 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
 
               {/* Page Range */}
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">Page Range</label>
+                <label className="block text-sm font-medium mb-1">{tUi('tools.deletePages.pageRange')}</label>
                 <input
                   type="text"
                   value={pageRange}
                   onChange={(e) => setPageRange(e.target.value)}
-                  placeholder="e.g., 1-5, 8, 10-12 or 'all'"
+                  placeholder={tUi('interfaceText.eG1581012OrAll')}
                   className="w-full px-3 py-2 border rounded-[var(--radius-md)] text-sm"
                   disabled={isProcessing}
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Use &quot;all&quot; for all pages, or specify ranges like &quot;1-5, 8, 10-12&quot;
+                  {tUi('interfaceText.useAllForAllPagesOrSpecifyRangesLike1581012')}
                 </p>
               </div>
 
@@ -473,7 +474,7 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
                   className="w-4 h-4"
                   disabled={isProcessing}
                 />
-                <span className="text-sm">Skip first page (cover page)</span>
+                <span className="text-sm">{tUi('tools.pageNumbers.skipFirstPage')}</span>
               </label>
             </Card>
           </div>
@@ -483,7 +484,7 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
             <Card variant="outlined" size="lg">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium">
-                  {tTools('headerFooter.preview') || 'Preview'}
+                  {tTools('headerFooter.preview')}
                 </h3>
                 <div className="flex items-center gap-2">
                   <Button
@@ -495,7 +496,7 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
                     ←
                   </Button>
                   <span className="text-sm">
-                    Page {currentPreviewPage} of {totalPages}
+                    {tUi('interfaceText.page')} {currentPreviewPage} {tUi('interfaceText.of')} {totalPages}
                   </span>
                   <Button
                     variant="ghost"
@@ -523,21 +524,21 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Header/Footer will be added to this page
+                    {tUi('interfaceText.headerFooterWillBeAddedToThisPage')}
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-1 text-sm text-gray-500">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
-                    This page will be skipped
+                    {tUi('interfaceText.thisPageWillBeSkipped')}
                   </span>
                 )}
               </div>
 
               {!hasContent && (
                 <p className="text-sm text-center text-gray-500 mt-4">
-                  {tTools('headerFooter.previewHint') || 'Enter header or footer text to see preview'}
+                  {tTools('headerFooter.previewHint')}
                 </p>
               )}
             </Card>
@@ -564,7 +565,7 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
             disabled={!file || !hasContent || isProcessing}
             loading={isProcessing}
           >
-            {isProcessing ? 'Processing...' : (tTools('headerFooter.addButton') || 'Add Header & Footer')}
+            {isProcessing ? tUi('common.status.processing') : (tTools('headerFooter.addButton'))}
           </Button>
           {result && (
             <DownloadButton
@@ -581,7 +582,7 @@ export function HeaderFooterTool({ className = '' }: HeaderFooterToolProps) {
       {status === 'complete' && result && (
         <div className="p-4 rounded-[var(--radius-md)] bg-green-50 border border-green-200 text-green-700">
           <p className="text-sm font-medium">
-            {tTools('headerFooter.successMessage') || 'Header & footer added successfully!'}
+            {tTools('headerFooter.successMessage')}
           </p>
         </div>
       )}

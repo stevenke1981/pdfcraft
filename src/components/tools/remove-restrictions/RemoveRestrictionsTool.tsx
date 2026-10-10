@@ -25,6 +25,7 @@ export interface RemoveRestrictionsToolProps {
  * This removes owner password restrictions that prevent printing, copying, and editing.
  */
 export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -141,10 +142,10 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
           errorCode === 'INVALID_PASSWORD' ||
           errorMsg === 'INVALID_PASSWORD'
         ) {
-          setPasswordErrorMessage(tTools('removeRestrictions.invalidPassword') || 'The password you entered is incorrect. Please check and try again.');
+          setPasswordErrorMessage(tTools('removeRestrictions.invalidPassword'));
           setShowPasswordErrorModal(true);
         } else {
-          setError(errorMsg || 'Failed to remove PDF restrictions.');
+          setError(errorMsg || tUi('interfaceFeedback.failedToRemovePdfRestrictions'));
         }
         setStatus('error');
       }
@@ -153,15 +154,15 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
         const errMsg = err instanceof Error ? err.message : String(err);
         // Check for invalid password error in catch block
         if (errMsg === 'INVALID_PASSWORD') {
-          setPasswordErrorMessage(tTools('removeRestrictions.invalidPassword') || 'The password you entered is incorrect. Please check and try again.');
+          setPasswordErrorMessage(tTools('removeRestrictions.invalidPassword'));
           setShowPasswordErrorModal(true);
         } else {
-          setError(errMsg || 'An unexpected error occurred.');
+          setError(errMsg || tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         }
         setStatus('error');
       }
     }
-  }, [file, ownerPassword, tTools, tFeedback]);
+  }, [tUi, file, ownerPassword, tTools, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -194,8 +195,8 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('removeRestrictions.uploadLabel') || 'Upload PDF File'}
-        description={tTools('removeRestrictions.uploadDescription') || 'Drag and drop a restricted PDF file here, or click to browse.'}
+        label={tTools('removeRestrictions.uploadLabel')}
+        description={tTools('removeRestrictions.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -235,7 +236,7 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
               onClick={handleClear}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -245,14 +246,14 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('removeRestrictions.optionsTitle') || 'Options'}
+            {tTools('removeRestrictions.optionsTitle')}
           </h3>
           
           <div className="space-y-4">
             {/* Owner Password Input */}
             <div>
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('removeRestrictions.ownerPasswordLabel') || 'Owner Password (optional)'}
+                {tTools('removeRestrictions.ownerPasswordLabel')}
               </label>
               <div className="relative">
                 <input
@@ -260,7 +261,7 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
                   value={ownerPassword}
                   onChange={(e) => setOwnerPassword(e.target.value)}
                   disabled={isProcessing}
-                  placeholder={tTools('removeRestrictions.ownerPasswordPlaceholder') || 'Enter owner password if known'}
+                  placeholder={tTools('removeRestrictions.ownerPasswordPlaceholder')}
                   className="w-full px-3 py-2 pr-10 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] placeholder:text-[hsl(var(--color-muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))] disabled:opacity-50"
                 />
                 <button
@@ -272,21 +273,21 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
                 </button>
               </div>
               <p className="mt-1 text-xs text-[hsl(var(--color-muted-foreground))]">
-                {tTools('removeRestrictions.ownerPasswordHint') || 'If the PDF has an owner password, enter it here for better results.'}
+                {tTools('removeRestrictions.ownerPasswordHint')}
               </p>
             </div>
 
             {/* Info about restrictions */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-blue-50 border border-blue-200">
               <p className="text-sm text-blue-700">
-                {tTools('removeRestrictions.info') || 'This tool removes owner password restrictions that prevent printing, copying, and editing. It works on PDFs with permission restrictions but cannot remove user passwords required to open the document.'}
+                {tTools('removeRestrictions.info')}
               </p>
             </div>
 
             {/* Warning */}
             <div className="p-3 rounded-[var(--radius-sm)] bg-yellow-50 border border-yellow-200">
               <p className="text-sm text-yellow-700">
-                {tTools('removeRestrictions.warning') || 'Only use this tool on PDFs you own or have permission to modify. Removing restrictions from copyrighted material without authorization may violate copyright laws.'}
+                {tTools('removeRestrictions.warning')}
               </p>
             </div>
           </div>
@@ -314,8 +315,8 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('removeRestrictions.removeButton') || 'Remove Restrictions')
+            ? (t('status.processing'))
+            : (tTools('removeRestrictions.removeButton'))
           }
         </Button>
 
@@ -337,20 +338,20 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
           role="status"
         >
           <p className="text-sm font-medium mb-2">
-            {tTools('removeRestrictions.successMessage') || 'PDF restrictions removed successfully!'}
+            {tTools('removeRestrictions.successMessage')}
           </p>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="text-green-600">{tTools('removeRestrictions.originalSize') || 'Original:'}</span>
+              <span className="text-green-600">{tTools('removeRestrictions.originalSize')}</span>
               <span className="ml-1 font-medium">{formatSize(stats.originalSize)}</span>
             </div>
             <div>
-              <span className="text-green-600">{tTools('removeRestrictions.newSize') || 'New Size:'}</span>
+              <span className="text-green-600">{tTools('removeRestrictions.newSize')}</span>
               <span className="ml-1 font-medium">{formatSize(stats.newSize)}</span>
             </div>
           </div>
           <p className="text-xs mt-2 text-green-600">
-            {tTools('removeRestrictions.successHint') || 'The PDF can now be printed, copied, and edited without restrictions.'}
+            {tTools('removeRestrictions.successHint')}
           </p>
         </div>
       )}
@@ -359,7 +360,7 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
       <Modal
         isOpen={showPasswordErrorModal}
         onClose={() => setShowPasswordErrorModal(false)}
-        title={t('status.error') || 'Error'}
+        title={t('status.error')}
         size="sm"
       >
         <div className="space-y-4">
@@ -381,7 +382,7 @@ export function RemoveRestrictionsTool({ className = '' }: RemoveRestrictionsToo
               size="sm"
               onClick={() => setShowPasswordErrorModal(false)}
             >
-              {t('buttons.close') || 'Close'}
+              {t('buttons.close')}
             </Button>
           </div>
         </div>

@@ -27,6 +27,7 @@ export interface PDFToCBZToolProps {
 }
 
 export function PDFToCBZTool({ className = '' }: PDFToCBZToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -85,7 +86,7 @@ export function PDFToCBZTool({ className = '' }: PDFToCBZToolProps) {
     } finally {
       setIsLoadingFile(false);
     }
-  }, []);
+  }, [t]);
 
   const handleClearFile = () => {
     setFile(null);
@@ -188,7 +189,7 @@ export function PDFToCBZTool({ className = '' }: PDFToCBZToolProps) {
                   {file.name}
                 </p>
                 <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                  {totalPages > 0 ? t('pdfToCbz.uploadSuccess', { count: totalPages, size: (file.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata') || 'Loading...')}
+                  {totalPages > 0 ? t('pdfToCbz.uploadSuccess', { count: totalPages, size: (file.size / (1024 * 1024)).toFixed(2) }) : (t('aiPdfReflower.scanningMetadata'))}
                 </p>
               </div>
             </div>
@@ -265,21 +266,21 @@ export function PDFToCBZTool({ className = '' }: PDFToCBZToolProps) {
                   >
                     <div className="space-y-1">
                       <span className="text-[9px] font-black tracking-widest text-emerald-400 bg-emerald-950/60 border border-emerald-500/25 px-2 py-0.5 rounded-full uppercase">
-                        {manga === 'YesAndRightToLeft' ? '🇯🇵 MANGA (RTL)' : '📖 COMIC (LTR)'}
+                        {manga === 'YesAndRightToLeft' ? tUi('interfaceText.mangaRtl') : tUi('interfaceText.comicLtr')}
                       </span>
                       <h4 className="font-extrabold text-sm line-clamp-2 mt-3 leading-snug">
                         {series || title || t('pdfToCbz.comicTitleDefault')}
                       </h4>
                       {volume && (
                         <p className="text-[10px] font-bold text-zinc-400">
-                          VOL. {volume}
+                          {tUi('interfaceText.vol')} {volume}
                         </p>
                       )}
                     </div>
                     
                     <div className="border-t border-zinc-700/60 pt-2 flex justify-between items-end">
                       <div>
-                        <p className="text-[8px] text-zinc-500 uppercase tracking-wider font-bold">Artist / Writer</p>
+                        <p className="text-[8px] text-zinc-500 uppercase tracking-wider font-bold">{tUi('interfaceText.artistWriter')}</p>
                         <p className="text-[10px] font-bold truncate max-w-[100px] text-zinc-300">
                           {writer || t('pdfToCbz.comicArtistDefault')}
                         </p>
@@ -304,7 +305,7 @@ export function PDFToCBZTool({ className = '' }: PDFToCBZToolProps) {
                       textOrientation: 'mixed',
                     }}
                   >
-                    {series || title || 'BOOK SPIN TEXT'} • VOL.{volume}
+                    {series || title || 'BOOK SPIN TEXT'} {tUi('interfaceText.vol2')}{volume}
                   </div>
                 </div>
               </div>
@@ -562,7 +563,7 @@ export function PDFToCBZTool({ className = '' }: PDFToCBZToolProps) {
                 className="w-full py-4 font-bold shadow-lg shadow-[hsl(var(--color-primary)/0.15)] flex items-center justify-center gap-2"
               >
                 <BookOpen className="w-5 h-5" />
-                {isProcessing ? (t('pdfToCbz.processing') || 'Processing...') : t('pdfToCbz.processButton')}
+                {isProcessing ? (tUi('common.status.processing')) : t('pdfToCbz.processButton')}
               </Button>
 
               {result && (

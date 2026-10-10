@@ -26,6 +26,7 @@ export interface DeepSanitizeToolProps {
 }
 
 export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -195,7 +196,7 @@ export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
       // Auto scan first stage simulation
       setStatus('processing');
       setProgress(10);
-      setProgressMessage('Scrutinizing document layers...');
+      setProgressMessage(tUi('interfaceText.scrutinizingDocumentLayers'));
       
       setTimeout(() => {
         // Simulate finding structural logs
@@ -214,7 +215,7 @@ export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
     } finally {
       setIsLoadingMetadata(false);
     }
-  }, [tFeedback]);
+  }, [tUi, tFeedback]);
 
   /**
    * Run Sanitization Process
@@ -225,7 +226,7 @@ export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
     cancelledRef.current = false;
     setStatus('processing');
     setProgress(30);
-    setProgressMessage('Deconstruction in progress...');
+    setProgressMessage(tUi('interfaceText.deconstructionInProgress'));
     setError(null);
     setResult(null);
 
@@ -241,7 +242,7 @@ export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Purging structural trace metadata...');
+            setProgressMessage(message || tUi('interfaceFeedback.purgingStructuralTraceMetadata'));
           }
         }
       );
@@ -261,12 +262,12 @@ export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
           }
         }, 600);
       } else {
-        setError(output.error?.message || 'Purging sanitization logs failed.');
+        setError(output.error?.message || tUi('interfaceFeedback.purgingSanitizationLogsFailed'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred during sanitizing.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurredDuringSanitizing'));
         setStatus('error');
       }
     }
@@ -330,7 +331,7 @@ export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
             </div>
           </div>
           <Button variant="ghost" size="sm" onClick={handleClearFile} disabled={isProcessing}>
-            {t('buttons.remove') || 'Remove'}
+            {t('buttons.remove')}
           </Button>
         </Card>
       )}
@@ -439,12 +440,12 @@ export function DeepSanitizeTool({ className = '' }: DeepSanitizeToolProps) {
                   {status === 'processing' ? (
                     <div className="space-y-1">
                       <RefreshCw className="w-6 h-6 text-purple-400 animate-spin mx-auto" />
-                      <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest">Wiping</span>
+                      <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest">{tUi('interfaceText.wiping')}</span>
                     </div>
                   ) : (
                     <div className="space-y-1">
                       <Lock className="w-6 h-6 text-zinc-600 mx-auto" />
-                      <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Secured</span>
+                      <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">{tUi('interfaceText.secured')}</span>
                     </div>
                   )}
                 </div>

@@ -16,6 +16,7 @@ export interface SignatureInkOptimizerToolProps {
 }
 
 export function SignatureInkOptimizerTool({ className = '' }: SignatureInkOptimizerToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [threshold, setThreshold] = useState(200);
@@ -54,7 +55,7 @@ export function SignatureInkOptimizerTool({ className = '' }: SignatureInkOptimi
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Purifying ink curves...');
+            setProgressMessage(message || tUi('interfaceFeedback.purifyingInkCurves'));
           }
         }
       );
@@ -68,12 +69,12 @@ export function SignatureInkOptimizerTool({ className = '' }: SignatureInkOptimi
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to purify ink stamps.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToPurifyInkStamps'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error purifying ink.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorPurifyingInk'));
         setStatus('error');
       }
     }

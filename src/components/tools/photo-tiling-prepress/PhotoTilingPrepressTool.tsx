@@ -16,6 +16,7 @@ export interface PhotoTilingPrepressToolProps {
 }
 
 export function PhotoTilingPrepressTool({ className = '' }: PhotoTilingPrepressToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [photoSpec, setPhotoSpec] = useState<'1-inch' | '2-inch'>('1-inch');
@@ -50,7 +51,7 @@ export function PhotoTilingPrepressTool({ className = '' }: PhotoTilingPrepressT
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Engraving prepress tiled grids...');
+            setProgressMessage(message || tUi('interfaceFeedback.engravingPrepressTiledGrids'));
           }
         }
       );
@@ -64,12 +65,12 @@ export function PhotoTilingPrepressTool({ className = '' }: PhotoTilingPrepressT
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to arrange photo prepress.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToArrangePhotoPrepress'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error processing photo tiling.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorProcessingPhotoTiling'));
         setStatus('error');
       }
     }
@@ -121,23 +122,23 @@ export function PhotoTilingPrepressTool({ className = '' }: PhotoTilingPrepressT
                   
                   {/* Photo Matrix grids with strong snapping micro-animations */}
                   <div className="w-12 h-16 border border-dashed border-amber-900/20 bg-white/40 rounded flex items-center justify-center text-[8px] text-amber-900/40 transform hover:scale-105 duration-200 shadow-sm">
-                    Snapped
+                    {tUi('interfaceText.snapped')}
                   </div>
                   <div className="w-12 h-16 border border-dashed border-amber-900/20 bg-white/40 rounded flex items-center justify-center text-[8px] text-amber-900/40 transform hover:scale-105 duration-200 shadow-sm">
-                    Snapped
+                    {tUi('interfaceText.snapped')}
                   </div>
                   <div className="w-12 h-16 border border-dashed border-amber-900/20 bg-white/40 rounded flex items-center justify-center text-[8px] text-amber-900/40 transform hover:scale-105 duration-200 shadow-sm">
-                    Snapped
+                    {tUi('interfaceText.snapped')}
                   </div>
                   <div className="w-12 h-16 border border-dashed border-amber-900/20 bg-white/40 rounded flex items-center justify-center text-[8px] text-amber-900/40 transform hover:scale-105 duration-200 shadow-sm">
-                    Snapped
+                    {tUi('interfaceText.snapped')}
                   </div>
                   <div className="w-12 h-16 border border-dashed border-amber-900/20 bg-white/40 rounded flex items-center justify-center text-[8px] text-amber-900/40 transform hover:scale-105 duration-200 shadow-sm">
-                    Snapped
+                    {tUi('interfaceText.snapped')}
                   </div>
 
                   <div className="absolute top-2 right-2 text-[7px] text-amber-800 font-mono font-bold">
-                    GRID snaps ON
+                    {tUi('interfaceText.gridSnapsOn')}
                   </div>
                 </div>
               </div>

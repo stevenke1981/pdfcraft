@@ -20,6 +20,7 @@ export interface DJVUToPDFToolProps {
 }
 
 export function DJVUToPDFTool({ className = '' }: DJVUToPDFToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -62,7 +63,7 @@ export function DJVUToPDFTool({ className = '' }: DJVUToPDFToolProps) {
 
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError(t('errors.uploadFile') || 'Please upload a DJVU file.');
+            setError(tUi('interfaceFeedback.pleaseUploadADjvuFile'));
             return;
         }
 
@@ -93,16 +94,16 @@ export function DJVUToPDFTool({ className = '' }: DJVUToPDFToolProps) {
                 setResult(output.result);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || 'Failed to convert DJVU to PDF.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToConvertDjvuToPdf'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, t, dpi, quality]);
+    }, [tUi, file, dpi, quality]);
 
     const handleCancel = useCallback(() => {
         cancelledRef.current = true;
@@ -128,8 +129,8 @@ export function DJVUToPDFTool({ className = '' }: DJVUToPDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('djvuToPdf.uploadLabel') || 'Upload DJVU File'}
-                description={tTools('djvuToPdf.uploadDescription') || 'Drag and drop a DJVU file here, or click to browse.'}
+                label={tTools('djvuToPdf.uploadLabel')}
+                description={tTools('djvuToPdf.uploadDescription')}
             />
 
             {error && (
@@ -163,13 +164,13 @@ export function DJVUToPDFTool({ className = '' }: DJVUToPDFToolProps) {
                 <div className="flex items-center gap-2 mb-4">
                     <Settings2 className="w-5 h-5 text-[hsl(var(--color-primary))]" />
                     <h3 className="font-semibold text-[hsl(var(--color-foreground))]">
-                        {tTools('djvuToPdf.optionsTitle') || 'Conversion Options'}
+                        {tTools('djvuToPdf.optionsTitle')}
                     </h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                            {tTools('djvuToPdf.dpiLabel') || 'Output DPI'}
+                            {tTools('djvuToPdf.dpiLabel')}
                         </label>
                         <select
                             value={dpi}
@@ -177,17 +178,17 @@ export function DJVUToPDFTool({ className = '' }: DJVUToPDFToolProps) {
                             disabled={isProcessing}
                             className="w-full px-4 py-2.5 rounded-xl border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                         >
-                            <option value={72}>72 DPI (Web)</option>
-                            <option value={150}>150 DPI (Standard)</option>
-                            <option value={300}>300 DPI (Print)</option>
+                            <option value={72}>{tUi('interfaceText.72DpiWeb')}</option>
+                            <option value={150}>{tUi('interfaceText.150DpiStandard')}</option>
+                            <option value={300}>{tUi('interfaceText.300DpiPrint')}</option>
                         </select>
                         <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                            {tTools('djvuToPdf.dpiHint') || 'Higher DPI = larger file size, better quality'}
+                            {tTools('djvuToPdf.dpiHint')}
                         </p>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                            {tTools('djvuToPdf.qualityLabel') || 'Image Quality'}
+                            {tTools('djvuToPdf.qualityLabel')}
                         </label>
                         <select
                             value={quality}
@@ -195,13 +196,13 @@ export function DJVUToPDFTool({ className = '' }: DJVUToPDFToolProps) {
                             disabled={isProcessing}
                             className="w-full px-4 py-2.5 rounded-xl border border-[hsl(var(--color-border))] bg-[hsl(var(--color-background))] text-[hsl(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                         >
-                            <option value={0.7}>70% (Smaller file)</option>
-                            <option value={0.85}>85% (Balanced)</option>
-                            <option value={0.92}>92% (High quality)</option>
-                            <option value={1.0}>100% (Maximum)</option>
+                            <option value={0.7}>{tUi('interfaceText.70SmallerFile')}</option>
+                            <option value={0.85}>{tUi('interfaceText.85Balanced')}</option>
+                            <option value={0.92}>{tUi('interfaceText.92HighQuality')}</option>
+                            <option value={1.0}>{tUi('interfaceText.100Maximum')}</option>
                         </select>
                         <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                            {tTools('djvuToPdf.qualityHint') || 'JPEG compression quality for pages'}
+                            {tTools('djvuToPdf.qualityHint')}
                         </p>
                     </div>
                 </div>
@@ -214,7 +215,7 @@ export function DJVUToPDFTool({ className = '' }: DJVUToPDFToolProps) {
             <div className="flex flex-wrap items-center justify-center gap-4">
                 <Button variant="primary" size="lg" onClick={handleConvert} disabled={!canConvert} loading={isProcessing} className="min-w-[200px] shadow-lg hover:shadow-primary/25 transition-all hover:-translate-y-0.5">
                     {!isProcessing && <RefreshCw className="w-5 h-5 mr-2" />}
-                    {isProcessing ? (t('status.processing') || 'Converting...') : (tTools('djvuToPdf.convertButton') || 'Convert to PDF')}
+                    {isProcessing ? (t('status.processing')) : (tTools('djvuToPdf.convertButton'))}
                 </Button>
 
                 {result && !Array.isArray(result) && (
@@ -227,9 +228,9 @@ export function DJVUToPDFTool({ className = '' }: DJVUToPDFToolProps) {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
                         <CheckCircle2 className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle') || 'Conversion Successful!'}</h3>
+                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle')}</h3>
                     <p className="text-green-800/80 max-w-md mx-auto">
-                        {tTools('djvuToPdf.successMessage') || 'Your DJVU file has been converted to PDF.'}
+                        {tTools('djvuToPdf.successMessage')}
                     </p>
                 </div>
             )}

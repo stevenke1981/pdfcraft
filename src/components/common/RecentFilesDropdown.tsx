@@ -7,6 +7,8 @@
 
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Clock, X, Trash2, FileText, ChevronDown } from 'lucide-react';
@@ -29,6 +31,7 @@ export const RecentFilesDropdown: React.FC<RecentFilesDropdownProps> = ({
   locale,
   translations,
 }) => {
+  const tUi = useTranslations();
   const { recentFiles, removeFile, clearAll, isLoading } = useRecentFiles();
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -218,7 +221,7 @@ export const RecentFilesDropdown: React.FC<RecentFilesDropdownProps> = ({
                         removeFile(file.id);
                       }}
                       className="opacity-0 group-hover:opacity-100 focus:opacity-100 p-1 text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-destructive))] focus:text-[hsl(var(--color-destructive))] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--color-ring))] rounded-sm"
-                      aria-label={`Remove ${file.name}`}
+                      aria-label={tUi('dynamicUi.removeFileName', { filename: file.name })}
                       tabIndex={-1}
                     >
                       <X className="h-4 w-4" aria-hidden="true" />

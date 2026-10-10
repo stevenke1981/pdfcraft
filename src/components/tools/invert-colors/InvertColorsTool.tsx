@@ -13,6 +13,7 @@ import type { ProcessOutput } from '@/types/pdf';
 export interface InvertColorsToolProps { className?: string; }
 
 export function InvertColorsTool({ className = '' }: InvertColorsToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('tools.invertColors');
   const tCommon = useTranslations('common.buttons');
   
@@ -30,9 +31,9 @@ export function InvertColorsTool({ className = '' }: InvertColorsToolProps) {
     try {
       const output: ProcessOutput = await invertColors(file, { pages: 'all' }, (prog) => { if (!cancelledRef.current) setProgress(prog); });
       if (output.success && output.result) { setResult(output.result as Blob); setStatus('complete'); }
-      else { setError(output.error?.message || 'Failed.'); setStatus('error'); }
-    } catch (err) { setError(err instanceof Error ? err.message : 'Error'); setStatus('error'); }
-  }, [file]);
+      else { setError(output.error?.message || tUi('interfaceFeedback.failed')); setStatus('error'); }
+    } catch (err) { setError(err instanceof Error ? err.message : tUi('common.status.error')); setStatus('error'); }
+  }, [tUi, file]);
 
   const isProcessing = status === 'processing';
 

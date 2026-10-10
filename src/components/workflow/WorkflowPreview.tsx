@@ -26,6 +26,7 @@ interface PreviewPage {
  * Shows a preview of how the PDF will look after the workflow is applied
  */
 export function WorkflowPreview({ nodes, edges, inputFiles, isVisible, onToggle }: WorkflowPreviewProps) {
+  const tUi = useTranslations();
     const tWorkflow = useTranslations('workflow');
     const [previews, setPreviews] = useState<PreviewPage[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -234,7 +235,7 @@ export function WorkflowPreview({ nodes, edges, inputFiles, isVisible, onToggle 
                 <div className="flex items-center gap-2">
                     <Eye className="w-4 h-4 text-[hsl(var(--color-primary))]" />
                     <span className="text-sm font-medium text-[hsl(var(--color-foreground))]">
-                        {tWorkflow('preview') || 'Preview'}
+                        {tWorkflow('preview')}
                     </span>
                     {isLoading && (
                         <RefreshCw className="w-3 h-3 text-[hsl(var(--color-muted-foreground))] animate-spin" />
@@ -244,7 +245,7 @@ export function WorkflowPreview({ nodes, edges, inputFiles, isVisible, onToggle 
                     <button
                         onClick={() => generatePreview()}
                         className="p-1.5 rounded hover:bg-[hsl(var(--color-muted))] transition-colors"
-                        title="Refresh preview"
+                        title={tUi('interfaceText.refreshPreview')}
                     >
                         <RefreshCw className="w-3.5 h-3.5 text-[hsl(var(--color-muted-foreground))]" />
                     </button>
@@ -272,20 +273,20 @@ export function WorkflowPreview({ nodes, edges, inputFiles, isVisible, onToggle 
                     <div className="flex flex-col items-center justify-center h-full p-4 text-center">
                         <EyeOff className="w-12 h-12 text-[hsl(var(--color-muted-foreground))] opacity-50" />
                         <p className="mt-3 text-sm text-[hsl(var(--color-muted-foreground))]">
-                            {tWorkflow('noFilesForPreview') || 'Select files to see preview'}
+                            {tWorkflow('noFilesForPreview')}
                         </p>
                     </div>
                 ) : isLoading ? (
                     <div className="flex flex-col items-center justify-center h-full">
                         <div className="w-8 h-8 border-3 border-[hsl(var(--color-primary))] border-t-transparent rounded-full animate-spin" />
                         <p className="mt-3 text-sm text-[hsl(var(--color-muted-foreground))]">
-                            {tWorkflow('generatingPreview') || 'Generating preview...'}
+                            {tWorkflow('generatingPreview')}
                         </p>
                     </div>
                 ) : previews.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full p-4 text-center">
                         <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-                            {tWorkflow('noPreviewAvailable') || 'No preview available'}
+                            {tWorkflow('noPreviewAvailable')}
                         </p>
                     </div>
                 ) : (
@@ -306,7 +307,7 @@ export function WorkflowPreview({ nodes, edges, inputFiles, isVisible, onToggle 
                                 >
                                     <img
                                         src={preview.thumbnail}
-                                        alt={`Page ${preview.pageNumber}`}
+                                        alt={tUi('dynamicUi.pageNumber', { page: preview.pageNumber })}
                                         className="w-full h-full object-cover"
                                     />
                                 </button>
@@ -318,7 +319,7 @@ export function WorkflowPreview({ nodes, edges, inputFiles, isVisible, onToggle 
                             {previews[selectedPageIndex] && (
                                 <img
                                     src={previews[selectedPageIndex].thumbnail}
-                                    alt={`Preview page ${previews[selectedPageIndex].pageNumber}`}
+                                    alt={tUi('dynamicUi.previewPage', { page: previews[selectedPageIndex].pageNumber })}
                                     className="max-w-full max-h-full object-contain rounded shadow-lg"
                                 />
                             )}

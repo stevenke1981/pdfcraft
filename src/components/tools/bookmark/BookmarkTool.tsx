@@ -47,6 +47,7 @@ interface BookmarkNode {
  * Provides a visual interface for editing PDF bookmarks with PDF preview
  */
 export function BookmarkTool({ className = '' }: BookmarkToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -113,7 +114,7 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
     if (!pdfDoc) return;
 
     if (bookmarks.length > 0) {
-      if (!confirm(tTools('bookmark.replaceConfirm') || 'This will replace current bookmarks. Continue?')) {
+      if (!confirm(tTools('bookmark.replaceConfirm'))) {
         return;
       }
     }
@@ -125,11 +126,11 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
         const extracted = await parseOutline(outline, pdfDoc);
         setBookmarks(extracted);
       } else {
-        alert(tTools('bookmark.noBookmarksFound') || 'No bookmarks found in this PDF.');
+        alert(tTools('bookmark.noBookmarksFound'));
       }
     } catch (err) {
       console.warn('Failed to extract bookmarks:', err);
-      alert(tTools('bookmark.failedExtract') || 'Failed to extract bookmarks.');
+      alert(tTools('bookmark.failedExtract'));
     }
     setIsExtractingBookmarks(false);
   }, [pdfDoc, bookmarks, tTools]);
@@ -509,14 +510,14 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to process bookmarks.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToProcessBookmarks'));
         setStatus('error');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+      setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
       setStatus('error');
     }
-  }, [file, bookmarks]);
+  }, [tUi, file, bookmarks]);
 
   const isProcessing = status === 'processing';
 
@@ -571,18 +572,18 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
             <div className="flex-1 flex flex-col gap-2 p-2 bg-gray-50 rounded border border-blue-200" onClick={(e) => e.stopPropagation()}>
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">{tTools('bookmark.title') || 'Title'}</label>
+                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">{tTools('bookmark.title')}</label>
                   <input
                     type="text"
                     value={editingBookmark.title}
                     onChange={(e) => setEditingBookmark({ ...editingBookmark, title: e.target.value })}
                     className="w-full px-2 py-1 border rounded text-sm"
-                    placeholder={tTools('bookmark.title') || 'Title'}
+                    placeholder={tTools('bookmark.title')}
                     autoFocus
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">{tTools('bookmark.page') || 'Page'}</label>
+                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">{tTools('bookmark.page')}</label>
                   <div className="flex items-center gap-1">
                     <input
                       type="text"
@@ -604,7 +605,7 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
                       type="button"
                       onClick={() => setEditingBookmark({ ...editingBookmark, pageNumber: currentPage })}
                       className="p-1 text-blue-500 hover:text-blue-700 bg-white border rounded h-8 w-8 flex items-center justify-center transition-colors"
-                      title={tTools('bookmark.setToCurrentPage') || 'Set to current page'}
+                      title={tTools('bookmark.setToCurrentPage')}
                     >
                       📍
                     </button>
@@ -613,31 +614,31 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex-shrink-0">
-                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">{tTools('bookmark.color') || 'Color'}</label>
+                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">{tTools('bookmark.color')}</label>
                   <input
                     type="color"
                     value={editingBookmark.color || '#000000'}
                     onChange={(e) => setEditingBookmark({ ...editingBookmark, color: e.target.value })}
                     className="w-10 h-8 p-0 border rounded cursor-pointer"
-                    title={tTools('bookmark.color') || 'Color'}
+                    title={tTools('bookmark.color')}
                   />
                 </div>
                 <div className="flex-1">
-                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">{tTools('bookmark.style') || 'Style'}</label>
+                  <label className="block text-[10px] text-gray-500 uppercase font-bold mb-1">{tTools('bookmark.style')}</label>
                   <select
                     value={editingBookmark.style || ''}
                     onChange={(e) => setEditingBookmark({ ...editingBookmark, style: e.target.value as any || undefined })}
                     className="w-full px-2 py-1 border rounded text-sm h-8"
                   >
-                    <option value="">{tTools('bookmark.normal') || 'Normal'}</option>
-                    <option value="bold">{tTools('bookmark.bold') || 'Bold'}</option>
-                    <option value="italic">{tTools('bookmark.italic') || 'Italic'}</option>
-                    <option value="bold-italic">{tTools('bookmark.boldItalic') || 'Bold & Italic'}</option>
+                    <option value="">{tTools('bookmark.normal')}</option>
+                    <option value="bold">{tTools('bookmark.bold')}</option>
+                    <option value="italic">{tTools('bookmark.italic')}</option>
+                    <option value="bold-italic">{tTools('bookmark.boldItalic')}</option>
                   </select>
                 </div>
                 <div className="flex gap-1 self-end mb-0.5">
-                  <Button size="sm" onClick={() => handleUpdateBookmark(editingBookmark)} title={t('buttons.save') || 'Save'}>✓</Button>
-                  <Button size="sm" variant="ghost" onClick={() => setEditingBookmark(null)} title={t('buttons.cancel') || 'Cancel'}>✕</Button>
+                  <Button size="sm" onClick={() => handleUpdateBookmark(editingBookmark)} title={t('buttons.save')}>✓</Button>
+                  <Button size="sm" variant="ghost" onClick={() => setEditingBookmark(null)} title={t('buttons.cancel')}>✕</Button>
                 </div>
               </div>
             </div>
@@ -660,21 +661,21 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
                 <button
                   onClick={(e) => { e.stopPropagation(); setEditingBookmark(bookmark); }}
                   className="p-1 text-gray-400 hover:text-blue-500"
-                  title="Edit"
+                  title={tUi('common.buttons.edit')}
                 >
                   ✎
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); handleAddChild(bookmark.id); }}
                   className="p-1 text-gray-400 hover:text-green-500"
-                  title="Add child"
+                  title={tUi('interfaceText.addChild')}
                 >
                   +
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); handleDeleteBookmark(bookmark.id); }}
                   className="p-1 text-gray-400 hover:text-red-500"
-                  title="Delete"
+                  title={tUi('common.buttons.delete')}
                 >
                   ×
                 </button>
@@ -703,8 +704,8 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={setError}
           disabled={isProcessing}
-          label={tTools('bookmark.uploadLabel') || 'Upload PDF File'}
-          description={tTools('bookmark.uploadDescription') || 'Drag and drop a PDF file to edit bookmarks.'}
+          label={tTools('bookmark.uploadLabel')}
+          description={tTools('bookmark.uploadDescription')}
         />
       )}
 
@@ -719,9 +720,9 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
           {/* PDF Preview Panel */}
           <Card variant="outlined" size="lg">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium">{tTools('bookmark.pdfPreview') || 'PDF Preview'}</h3>
+              <h3 className="font-medium">{tTools('bookmark.pdfPreview')}</h3>
               <Button variant="ghost" size="sm" onClick={handleClearFile}>
-                {t('buttons.close') || 'Close'}
+                {t('buttons.close')}
               </Button>
             </div>
 
@@ -733,10 +734,10 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage <= 1}
               >
-                ← {t('buttons.back') || 'Prev'}
+                ← {t('buttons.back')}
               </Button>
               <span className="text-sm">
-                Page {currentPage} / {totalPages}
+                {tUi('interfaceText.page')} {currentPage} / {totalPages}
               </span>
               <Button
                 variant="secondary"
@@ -744,7 +745,7 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                 disabled={currentPage >= totalPages}
               >
-                {t('buttons.next') || 'Next'} →
+                {t('buttons.next')} →
               </Button>
             </div>
 
@@ -757,40 +758,40 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
           {/* Bookmark Editor Panel */}
           <Card variant="outlined" size="lg">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium">{tTools('bookmark.bookmarksTitle') || 'Bookmarks'}</h3>
+              <h3 className="font-medium">{tTools('bookmark.bookmarksTitle')}</h3>
               <div className="flex gap-1">
                 <Button 
                   variant="secondary" 
                   size="sm" 
                   onClick={handleExtractBookmarks}
-                  title={tTools('bookmark.extractExisting') || 'Extract Existing Bookmarks'}
+                  title={tTools('bookmark.extractExisting')}
                 >
-                  📥 {tTools('bookmark.extractExisting') || 'Extract'}
+                  📥 {tTools('bookmark.extractExisting')}
                 </Button>
                 <Button 
                   variant="secondary" 
                   size="sm" 
                   onClick={handleSortBookmarks}
-                  title={tTools('bookmark.sortByPage') || 'Sort by page number'}
+                  title={tTools('bookmark.sortByPage')}
                   disabled={bookmarks.length === 0}
                 >
-                  ↑↓ {tTools('bookmark.sort') || 'Sort'}
+                  ↑↓ {tTools('bookmark.sort')}
                 </Button>
                 <Button variant="primary" size="sm" onClick={handleAddBookmark}>
-                  + {tTools('bookmark.addBookmark') || 'Add Bookmark'}
+                  + {tTools('bookmark.addBookmark')}
                 </Button>
               </div>
             </div>
 
             {isExtractingBookmarks && (
-              <p className="text-sm text-gray-500 mb-4">{tTools('bookmark.extracting') || 'Extracting existing bookmarks...'}</p>
+              <p className="text-sm text-gray-500 mb-4">{tTools('bookmark.extracting')}</p>
             )}
 
             {/* Bookmark list */}
             <div className="border rounded max-h-[500px] overflow-y-auto">
               {bookmarks.length === 0 ? (
                 <div className="p-8 text-center text-gray-500">
-                  <p>{tTools('bookmark.noBookmarks') || 'No bookmarks yet. Click "Add Bookmark" to create one.'}</p>
+                  <p>{tTools('bookmark.noBookmarks')}</p>
                 </div>
               ) : (
                 <div className="p-2 space-y-1">
@@ -802,10 +803,10 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
             {/* Hint */}
             <div className="mt-2 space-y-1">
               <p className="text-xs text-gray-500">
-                {tTools('bookmark.hint') || 'Click a bookmark to preview its page. Use +/✎/× to add child, edit, or delete.'}
+                {tTools('bookmark.hint')}
               </p>
               <p className="text-xs text-blue-500 font-medium">
-                {tTools('bookmark.dragHint') || 'Drag and drop to reorder bookmarks.'}
+                {tTools('bookmark.dragHint')}
               </p>
             </div>
           </Card>
@@ -831,8 +832,8 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
             loading={isProcessing}
           >
             {isProcessing
-              ? (t('status.processing') || 'Processing...')
-              : (tTools('bookmark.saveButton') || 'Save Bookmarks')}
+              ? (t('status.processing'))
+              : (tTools('bookmark.saveButton'))}
           </Button>
 
           {result && (
@@ -850,7 +851,7 @@ export function BookmarkTool({ className = '' }: BookmarkToolProps) {
       {status === 'complete' && result && (
         <div className="p-4 rounded-[var(--radius-md)] bg-green-50 border border-green-200 text-green-700">
           <p className="text-sm font-medium">
-            {tTools('bookmark.successMessage') || 'Bookmarks saved successfully!'}
+            {tTools('bookmark.successMessage')}
           </p>
         </div>
       )}

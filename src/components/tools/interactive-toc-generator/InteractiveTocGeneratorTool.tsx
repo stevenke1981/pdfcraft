@@ -16,6 +16,7 @@ export interface InteractiveTocGeneratorToolProps {
 }
 
 export function InteractiveTocGeneratorTool({ className = '' }: InteractiveTocGeneratorToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('Table of Contents');
@@ -52,7 +53,7 @@ export function InteractiveTocGeneratorTool({ className = '' }: InteractiveTocGe
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Weaving interactive paths...');
+            setProgressMessage(message || tUi('interfaceFeedback.weavingInteractivePaths'));
           }
         }
       );
@@ -66,12 +67,12 @@ export function InteractiveTocGeneratorTool({ className = '' }: InteractiveTocGe
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to generate interactive TOC.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToGenerateInteractiveToc'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error generating TOC.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorGeneratingToc'));
         setStatus('error');
       }
     }
@@ -154,7 +155,7 @@ export function InteractiveTocGeneratorTool({ className = '' }: InteractiveTocGe
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      placeholder="Table of Contents"
+                      placeholder={tUi('interfaceText.tableOfContents')}
                       className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3"
                     />
                   </div>

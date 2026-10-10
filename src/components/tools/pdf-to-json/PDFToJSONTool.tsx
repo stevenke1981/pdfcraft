@@ -29,6 +29,7 @@ export interface PDFToJSONToolProps {
  * Extracts PDF content and metadata to JSON format.
  */
 export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -170,16 +171,16 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
         
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to convert PDF to JSON.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToConvertPdfToJson'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, includeText, includeMetadata, includePageInfo, includeOutline, prettyPrint, pageRange, tFeedback]);
+  }, [tUi, file, includeText, includeMetadata, includePageInfo, includeOutline, prettyPrint, pageRange, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -212,8 +213,8 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('pdfToJson.uploadLabel') || 'Upload PDF'}
-        description={tTools('pdfToJson.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+        label={tTools('pdfToJson.uploadLabel')}
+        description={tTools('pdfToJson.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -248,7 +249,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
               onClick={handleRemoveFile}
               disabled={isProcessing}
             >
-              {t('buttons.remove') || 'Remove'}
+              {t('buttons.remove')}
             </Button>
           </div>
         </Card>
@@ -258,7 +259,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
       {file && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('pdfToJson.optionsTitle') || 'Extraction Options'}
+            {tTools('pdfToJson.optionsTitle')}
           </h3>
           
           <div className="space-y-4">
@@ -272,7 +273,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('pdfToJson.includeText') || 'Include Text'}
+                  {tTools('pdfToJson.includeText')}
                 </span>
               </label>
 
@@ -285,7 +286,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('pdfToJson.includeMetadata') || 'Include Metadata'}
+                  {tTools('pdfToJson.includeMetadata')}
                 </span>
               </label>
 
@@ -298,7 +299,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('pdfToJson.includePageInfo') || 'Include Page Info'}
+                  {tTools('pdfToJson.includePageInfo')}
                 </span>
               </label>
 
@@ -311,7 +312,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('pdfToJson.includeOutline') || 'Include Outline'}
+                  {tTools('pdfToJson.includeOutline')}
                 </span>
               </label>
 
@@ -324,7 +325,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
                   className="w-4 h-4 rounded border-[hsl(var(--color-border))] text-[hsl(var(--color-primary))] focus:ring-[hsl(var(--color-primary))]"
                 />
                 <span className="text-sm text-[hsl(var(--color-foreground))]">
-                  {tTools('pdfToJson.prettyPrint') || 'Pretty Print'}
+                  {tTools('pdfToJson.prettyPrint')}
                 </span>
               </label>
             </div>
@@ -332,18 +333,18 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
             {/* Page Range */}
             <div className="max-w-xs">
               <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                {tTools('pdfToJson.pageRange') || 'Page Range'}
+                {tTools('pdfToJson.pageRange')}
               </label>
               <input
                 type="text"
                 value={pageRange}
                 onChange={(e) => setPageRange(e.target.value)}
-                placeholder={tTools('pdfToJson.pageRangePlaceholder') || 'e.g., 1-3, 5, 7'}
+                placeholder={tTools('pdfToJson.pageRangePlaceholder')}
                 disabled={isProcessing}
                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
               />
               <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                {tTools('pdfToJson.pageRangeHint') || 'Leave empty for all pages'}
+                {tTools('pdfToJson.pageRangeHint')}
               </p>
             </div>
           </div>
@@ -371,8 +372,8 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('pdfToJson.convertButton') || 'Extract to JSON')
+            ? (t('status.processing'))
+            : (tTools('pdfToJson.convertButton'))
           }
         </Button>
 
@@ -391,7 +392,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
       {jsonPreview && (
         <Card variant="outlined" size="lg">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('pdfToJson.previewTitle') || 'JSON Preview'}
+            {tTools('pdfToJson.previewTitle')}
           </h3>
           <pre className="p-4 bg-[hsl(var(--color-muted)/0.3)] rounded-[var(--radius-md)] overflow-auto max-h-96 text-xs font-mono text-[hsl(var(--color-foreground))]">
             {jsonPreview}
@@ -406,7 +407,7 @@ export function PDFToJSONTool({ className = '' }: PDFToJSONToolProps) {
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('pdfToJson.successMessage') || 'PDF extracted to JSON successfully! Click the download button to save your file.'}
+            {tTools('pdfToJson.successMessage')}
           </p>
         </div>
       )}

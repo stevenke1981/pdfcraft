@@ -75,6 +75,7 @@ interface PageComparisonResult {
 }
 
 export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
 
@@ -420,7 +421,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                   <FileText className="w-10 h-10 text-[hsl(var(--color-primary))]" />
                   <div>
                     <p className="font-semibold text-sm truncate max-w-[200px]" title={file1.file.name}>{file1.file.name}</p>
-                    <p className="text-xs text-[hsl(var(--color-muted-foreground))]">{file1.pageCount} {t('pdfToCbz.pagesLabel') || 'pages'} • {(file1.file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                    <p className="text-xs text-[hsl(var(--color-muted-foreground))]">{file1.pageCount} {tUi('interfaceText.pages')} • {(file1.file.size / (1024 * 1024)).toFixed(2)} MB</p>
                   </div>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => setFile1(null)}>{t('comparePdfs.removeButton')}</Button>
@@ -450,7 +451,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                   <FileText className="w-10 h-10 text-emerald-500" />
                   <div>
                     <p className="font-semibold text-sm truncate max-w-[200px]" title={file2.file.name}>{file2.file.name}</p>
-                    <p className="text-xs text-[hsl(var(--color-muted-foreground))]">{file2.pageCount} {t('pdfToCbz.pagesLabel') || 'pages'} • {(file2.file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                    <p className="text-xs text-[hsl(var(--color-muted-foreground))]">{file2.pageCount} {tUi('interfaceText.pages')} • {(file2.file.size / (1024 * 1024)).toFixed(2)} MB</p>
                   </div>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => setFile2(null)}>{t('comparePdfs.removeButton')}</Button>
@@ -511,7 +512,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                 {t('comparePdfs.successTitle')}
               </h3>
               <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                {t('comparePdfs.totalAligned', { count: pairedPages.length })} • 
+                {tUi('interfaceText.pagesAligned', { count: pairedPages.length })} •
                 {t.rich('comparePdfs.diffSummary', { count: pairedPages.filter(p => p.hasDifference).length, red: (chunks) => <span className="font-bold text-red-500 mx-1">{chunks}</span> })}
               </p>
             </div>
@@ -588,7 +589,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
 
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-[hsl(var(--color-foreground))]">
-                {t('comparePdfs.alignSequence', { current: currentPairIdx + 1, total: pairedPages.length })}
+                {tUi('common.comparePdfs.pagePairIndex', { current: currentPairIdx + 1, total: pairedPages.length })}
               </span>
               {currentPair && (
                 <span className={`text-[10px] font-black px-2.5 py-1 rounded-lg ${
@@ -600,7 +601,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                   {currentPair.pageIndex2 === -1 && t('comparePdfs.deletedPage')}
                   {currentPair.pageIndex1 !== -1 && currentPair.pageIndex2 !== -1 && (
                     currentPair.hasDifference 
-                      ? t('comparePdfs.diffPercentage', { percent: currentPair.diffPercentage.toFixed(1) })
+                      ? tUi('common.comparePdfs.detectedDiff', { percent: currentPair.diffPercentage.toFixed(1) })
                       : t('comparePdfs.noDiff')
                   )}
                 </span>
@@ -645,7 +646,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                   {t('comparePdfs.originalVersion')}
                 </span>
                 <span className="text-[10px] font-bold text-zinc-500">
-                  {currentPair?.pageIndex1 !== -1 ? t('comparePdfs.pageNumber', { page: currentPair.pageIndex1 + 1 }) : '---'}
+                  {currentPair?.pageIndex1 !== -1 ? tUi('common.comparePdfs.pageIndex', { page: currentPair.pageIndex1 + 1 }) : '---'}
                 </span>
               </div>
               
@@ -659,7 +660,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                     {/* Rendered PDF base canvas image */}
                     <img 
                       src={file1?.pagesImages[currentPair.pageIndex1]} 
-                      alt="Original Page" 
+                      alt={tUi('interfaceText.originalPage')}
                       className="max-w-none shadow-md rounded-lg"
                       style={{
                         width: `${file1?.pageDimensions[currentPair.pageIndex1].width}px`,
@@ -728,7 +729,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                   {t('comparePdfs.modifiedVersion')}
                 </span>
                 <span className="text-[10px] font-bold text-zinc-500">
-                  {currentPair?.pageIndex2 !== -1 ? t('comparePdfs.pageNumber', { page: currentPair.pageIndex2 + 1 }) : '---'}
+                  {currentPair?.pageIndex2 !== -1 ? tUi('common.comparePdfs.pageIndex', { page: currentPair.pageIndex2 + 1 }) : '---'}
                 </span>
               </div>
               
@@ -742,7 +743,7 @@ export function ComparePDFsTool({ className = '' }: ComparePDFsToolProps) {
                     {/* Rendered PDF base canvas image */}
                     <img 
                       src={file2?.pagesImages[currentPair.pageIndex2]} 
-                      alt="Modified Page" 
+                      alt={tUi('interfaceText.modifiedPage')}
                       className="max-w-none shadow-md rounded-lg"
                       style={{
                         width: `${file2?.pageDimensions[currentPair.pageIndex2].width}px`,

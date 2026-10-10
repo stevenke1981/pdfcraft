@@ -40,6 +40,7 @@ export const GuidedTour: React.FC<GuidedTourProps> = ({
   translations,
   autoStart = false,
 }) => {
+  const tUi = useTranslations();
   const tA11y = useTranslations('common.accessibility');
   const {
     isActive,
@@ -299,7 +300,7 @@ export const GuidedTour: React.FC<GuidedTourProps> = ({
               type="button"
               role="tab"
               aria-selected={index === currentStep}
-              aria-label={`Step ${index + 1}: ${step.title}`}
+              aria-label={tUi('dynamicUi.tourStep', { step: index + 1, title: step.title })}
               tabIndex={index === currentStep ? 0 : -1}
               onClick={() => {
                 // Navigate to specific step

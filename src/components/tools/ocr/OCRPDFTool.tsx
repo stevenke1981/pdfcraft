@@ -38,6 +38,7 @@ export interface OCRPDFToolProps {
 }
 
 export function OCRPDFTool({ className = '' }: OCRPDFToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -278,7 +279,7 @@ export function OCRPDFTool({ className = '' }: OCRPDFToolProps) {
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Initializing model workers...');
+            setProgressMessage(message || tUi('interfaceFeedback.initializingModelWorkers'));
           }
         }
       );
@@ -314,11 +315,11 @@ export function OCRPDFTool({ className = '' }: OCRPDFToolProps) {
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [file, languages, outputFormat, scale, pageRange, enhanceContrast, tFeedback]);
+  }, [tUi, file, languages, outputFormat, scale, pageRange, enhanceContrast, tFeedback]);
 
   const handleCopy = useCallback(async () => {
     if (!textPreview) return;
@@ -397,8 +398,8 @@ export function OCRPDFTool({ className = '' }: OCRPDFToolProps) {
           onFilesSelected={handleFilesSelected}
           onError={handleUploadError}
           disabled={isProcessing}
-          label={tTools('ocrPdf.uploadLabel') || 'Upload PDF or Scanned Image'}
-          description={tTools('ocrPdf.uploadDescription') || 'Drag and drop a scanned PDF or image (PNG, JPG, WebP) here, or click to browse.'}
+          label={tTools('ocrPdf.uploadLabel')}
+          description={tTools('ocrPdf.uploadDescription')}
         />
       )}
 
@@ -425,7 +426,7 @@ export function OCRPDFTool({ className = '' }: OCRPDFToolProps) {
             </div>
           </div>
           <Button variant="ghost" size="sm" onClick={handleRemoveFile} disabled={isProcessing}>
-            {t('buttons.remove') || 'Remove'}
+            {t('buttons.remove')}
           </Button>
         </Card>
       )}
@@ -576,7 +577,7 @@ export function OCRPDFTool({ className = '' }: OCRPDFToolProps) {
                 {status === 'processing' && (
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                     <div className="px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold text-[10px] tracking-widest uppercase animate-pulse">
-                      Analyzing Pixels
+                      {tUi('interfaceText.analyzingPixels')}
                     </div>
                   </div>
                 )}

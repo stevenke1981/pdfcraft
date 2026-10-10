@@ -31,6 +31,7 @@ export interface PDFToSVGToolProps {
  * Supports preview and individual export.
  */
 export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
@@ -165,16 +166,16 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
                 }
                 setStatus('complete');
             } else {
-                setError(output.error?.message || 'Failed to convert PDF to SVG.');
+                setError(output.error?.message || tUi('interfaceFeedback.failedToConvertPdfToSvg'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, scale, pageRange, tFeedback]);
+    }, [tUi, file, scale, pageRange, tFeedback]);
 
     /**
      * Handle cancel operation
@@ -239,8 +240,8 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('pdfToSvg.uploadLabel') || 'Upload PDF'}
-                description={tTools('pdfToSvg.uploadDescription') || 'Drag and drop a PDF file here, or click to browse.'}
+                label={tTools('pdfToSvg.uploadLabel')}
+                description={tTools('pdfToSvg.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -275,7 +276,7 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
                             onClick={handleRemoveFile}
                             disabled={isProcessing}
                         >
-                            {t('buttons.remove') || 'Remove'}
+                            {t('buttons.remove')}
                         </Button>
                     </div>
                 </Card>
@@ -286,14 +287,14 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
             {file && (
                 <Card variant="outlined">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('pdfToSvg.optionsTitle') || 'Conversion Options'}
+                        {tTools('pdfToSvg.optionsTitle')}
                     </h3>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Scale/Resolution */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('pdfToSvg.resolution') || 'Resolution'}
+                                {tTools('pdfToSvg.resolution')}
                             </label>
                             <select
                                 value={scale}
@@ -301,31 +302,31 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
                                 disabled={isProcessing}
                                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                             >
-                                <option value="1">72 DPI (Low)</option>
-                                <option value="2">144 DPI (Medium)</option>
-                                <option value="3">216 DPI (High)</option>
-                                <option value="4">288 DPI (Very High)</option>
+                                <option value="1">{tUi('interfaceText.72DpiLow')}</option>
+                                <option value="2">{tUi('interfaceText.144DpiMedium')}</option>
+                                <option value="3">{tUi('interfaceText.216DpiHigh')}</option>
+                                <option value="4">{tUi('interfaceText.288DpiVeryHigh')}</option>
                             </select>
                             <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                                {tTools('pdfToSvg.resolutionHint') || 'Higher resolution produces larger, more detailed SVG files.'}
+                                {tTools('pdfToSvg.resolutionHint')}
                             </p>
                         </div>
 
                         {/* Page Range */}
                         <div>
                             <label className="block text-sm font-medium text-[hsl(var(--color-foreground))] mb-2">
-                                {tTools('pdfToSvg.pageRange') || 'Page Range'}
+                                {tTools('pdfToSvg.pageRange')}
                             </label>
                             <input
                                 type="text"
                                 value={pageRange}
                                 onChange={(e) => setPageRange(e.target.value)}
-                                placeholder={tTools('pdfToSvg.pageRangePlaceholder') || 'e.g., 1-3, 5, 7'}
+                                placeholder={tTools('pdfToSvg.pageRangePlaceholder')}
                                 disabled={isProcessing}
                                 className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[hsl(var(--color-border))] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-primary))]"
                             />
                             <p className="text-xs text-[hsl(var(--color-muted-foreground))] mt-1">
-                                {tTools('pdfToSvg.pageRangeHint') || 'Leave empty for all pages'}
+                                {tTools('pdfToSvg.pageRangeHint')}
                             </p>
                         </div>
                     </div>
@@ -353,8 +354,8 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
                     loading={isProcessing}
                 >
                     {isProcessing
-                        ? (t('status.processing') || 'Processing...')
-                        : (tTools('pdfToSvg.convertButton') || 'Convert to SVG')
+                        ? (t('status.processing'))
+                        : (tTools('pdfToSvg.convertButton'))
                     }
                 </Button>
 
@@ -383,7 +384,7 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
             {svgResults.length > 0 && (
                 <Card variant="outlined" size="lg">
                     <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-                        {tTools('pdfToSvg.previewTitle') || 'Converted SVGs'} ({svgResults.length})
+                        {tTools('pdfToSvg.previewTitle')} ({svgResults.length})
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                         {svgResults.map((svgResult, index) => (
@@ -440,7 +441,7 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
                     >
                         <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
                             <h4 className="font-medium">
-                                {tTools('pdfToSvg.previewPage') || 'Page'} {svgResults[previewIndex].pageNumber}
+                                {tTools('pdfToSvg.previewPage')} {svgResults[previewIndex].pageNumber}
                             </h4>
                             <div className="flex items-center gap-2">
                                 <DownloadButton
@@ -473,7 +474,7 @@ export function PDFToSVGTool({ className = '' }: PDFToSVGToolProps) {
                     role="status"
                 >
                     <p className="text-sm font-medium">
-                        {tTools('pdfToSvg.successMessage') || 'PDF converted to SVG successfully! Click on thumbnails to preview or download individual files.'}
+                        {tTools('pdfToSvg.successMessage')}
                     </p>
                 </div>
             )}

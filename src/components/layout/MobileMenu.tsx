@@ -35,6 +35,7 @@ const getFocusableElements = (container: HTMLElement): HTMLElement[] => {
 };
 
 export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, locale }) => {
+  const tUi = useTranslations();
   const t = useTranslations('home.categories');
   const tA11y = useTranslations('common.accessibility');
   const tCommon = useTranslations('common');
@@ -222,7 +223,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, locale 
                             className="block px-4 py-2 text-sm text-[hsl(var(--color-foreground))] hover:text-[hsl(var(--color-primary))] hover:bg-[hsl(var(--color-muted))] rounded-[var(--radius-md)] transition-colors"
                             onClick={handleLinkClick}
                           >
-                            All Tools
+                            {tUi('toolsPage.allTools')}
                           </Link>
                         </li>
                         {categories.map((category) => (

@@ -16,6 +16,7 @@ export interface PdfPageResizerUniformToolProps {
 }
 
 export function PdfPageResizerUniformTool({ className = '' }: PdfPageResizerUniformToolProps) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const [files, setFiles] = useState<File[]>([]);
   const [targetSize, setTargetSize] = useState<'A4' | 'A3' | 'Letter'>('A4');
@@ -49,7 +50,7 @@ export function PdfPageResizerUniformTool({ className = '' }: PdfPageResizerUnif
         (prog, message) => {
           if (!cancelledRef.current) {
             setProgress(prog);
-            setProgressMessage(message || 'Harmonizing page bounds...');
+            setProgressMessage(message || tUi('interfaceFeedback.harmonizingPageBounds'));
           }
         }
       );
@@ -63,12 +64,12 @@ export function PdfPageResizerUniformTool({ className = '' }: PdfPageResizerUnif
         setResultBlob(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to unify page dimensions.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToUnifyPageDimensions'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'Error resizing documents.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.errorResizingDocuments'));
         setStatus('error');
       }
     }
@@ -119,17 +120,17 @@ export function PdfPageResizerUniformTool({ className = '' }: PdfPageResizerUnif
                 <div className="relative w-48 h-36 flex items-center justify-center">
                   <div className="absolute w-36 h-28 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 rounded-lg shadow-md transform rotate-12 scale-90 translate-y-3 z-10" />
                   <div className="absolute w-44 h-32 bg-white/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-lg transform -rotate-6 translate-y-1 z-20 flex items-center justify-center">
-                    <span className="text-[10px] text-zinc-400 font-mono">Letter / A3</span>
+                    <span className="text-[10px] text-zinc-400 font-mono">{tUi('interfaceText.letterA3')}</span>
                   </div>
                   <div className="absolute w-40 h-28 border-2 border-primary bg-primary/5 rounded-lg shadow-xl z-30 flex flex-col items-center justify-center animate-pulse">
                     <Zap className="w-5 h-5 text-primary mb-1 animate-bounce" />
-                    <span className="text-[10px] text-primary font-black tracking-widest">{targetSize} UNIFORM</span>
+                    <span className="text-[10px] text-primary font-black tracking-widest">{targetSize} {tUi('interfaceText.uniform')}</span>
                   </div>
                 </div>
 
                 <div className="max-w-md text-center mt-6 space-y-2">
                   <h4 className="text-sm font-bold text-zinc-800 dark:text-zinc-200">
-                    {t('pdfPageResizerUniform.filesLoaded', { count: files.length })}
+                    {tUi('common.pdfPageResizerUniform.loadedFiles', { count: files.length })}
                   </h4>
                   <p className="text-xs text-zinc-400">
                     {t('pdfPageResizerUniform.uniformHelp')}

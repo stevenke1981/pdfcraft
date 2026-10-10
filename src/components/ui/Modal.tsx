@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import React, {
   forwardRef,
   useEffect,
@@ -55,6 +56,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
     },
     ref
   ) => {
+  const tUi = useTranslations();
     const modalRef = useRef<HTMLDivElement>(null);
     const previousActiveElement = useRef<HTMLElement | null>(null);
 
@@ -189,7 +191,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--color-ring))]
                 transition-colors duration-[var(--transition-fast)]
               "
-              aria-label="Close modal"
+              aria-label={tUi('interfaceText.closeModal')}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

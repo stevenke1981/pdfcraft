@@ -31,6 +31,7 @@ export interface WordToPDFToolProps {
  * Converts Word documents (DOCX) to PDF.
  */
 export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
+  const tUi = useTranslations();
     const t = useTranslations('common');
     const tTools = useTranslations('tools');
 
@@ -58,7 +59,7 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
                     setPreloadStatus('complete');
                     setPreloadProgress(100);
                     setPreloadMessage(
-                        'Compatibility mode: .docx converts without server isolation headers. .doc/.odt/.rtf need COOP/COEP on your host.'
+                        tUi('interfaceFeedback.compatibilityModeDocxConvertsWithoutServerIsolationHeadersDocOdtRtfNeedCoopCoepOnYourHost')
                     );
                     return;
                 }
@@ -69,13 +70,13 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
 
                 setPreloadStatus('processing');
                 setPreloadProgress(0);
-                setPreloadMessage('Checking environment...');
+                setPreloadMessage(tUi('interfaceFeedback.checkingEnvironment'));
 
                 await converter.initialize((loadProgress: { percent: number; message: string; phase?: string }) => {
                     if (cancelled) return;
                     setPreloadStatus('processing');
                     setPreloadProgress(loadProgress.percent);
-                    setPreloadMessage(loadProgress.message || 'Loading conversion engine...');
+                    setPreloadMessage(loadProgress.message || tUi('interfaceFeedback.loadingConversionEngine'));
 
                     if (loadProgress.phase === 'ready' || loadProgress.percent >= 100) {
                         setPreloadStatus('complete');
@@ -85,15 +86,15 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
                 if (cancelled) return;
                 setPreloadStatus('complete');
                 setPreloadProgress(100);
-                setPreloadMessage('Conversion engine ready!');
+                setPreloadMessage(tUi('interfaceFeedback.conversionEngineReady2'));
             } catch (err) {
                 if (cancelled) return;
                 setPreloadStatus('error');
-                setPreloadMessage(err instanceof Error ? err.message : 'Failed to preload conversion engine.');
+                setPreloadMessage(err instanceof Error ? err.message : tUi('interfaceFeedback.failedToPreloadConversionEngine'));
             }
         })();
         return () => { cancelled = true; };
-    }, []);
+    }, [tUi]);
 
     /**
      * Handle file selected from uploader
@@ -136,7 +137,7 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
      */
     const handleConvert = useCallback(async () => {
         if (!file) {
-            setError(t('errors.uploadFile') || 'Please upload a Word document.');
+            setError(tUi('interfaceFeedback.pleaseUploadAWordDocument'));
             return;
         }
 
@@ -167,16 +168,16 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
                 setResult(output.result);
                 setStatus('complete');
             } else {
-                setError(output.error?.message || t('errors.conversionFailed') || 'Failed to convert Word to PDF.');
+                setError(output.error?.message || tUi('errors.processingFailed') || tUi('interfaceFeedback.failedToConvertWordToPdf'));
                 setStatus('error');
             }
         } catch (err) {
             if (!cancelledRef.current) {
-                setError(err instanceof Error ? err.message : t('errors.unexpectedError') || 'An unexpected error occurred.');
+                setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
                 setStatus('error');
             }
         }
-    }, [file, t]);
+    }, [tUi, file]);
 
     /**
      * Handle cancel operation
@@ -195,11 +196,11 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
         );
 
         if (!output.success || !output.result || Array.isArray(output.result)) {
-            throw new Error(output.error?.message || 'Failed to convert file.');
+            throw new Error(output.error?.message || tUi('interfaceFeedback.failedToConvertFile'));
         }
 
         return output.result;
-    }, []);
+    }, [tUi]);
 
     /**
      * Format file size
@@ -228,8 +229,8 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
                 onFilesSelected={handleFilesSelected}
                 onError={handleUploadError}
                 disabled={isProcessing}
-                label={tTools('wordToPdf.uploadLabel') || 'Upload Word Document'}
-                description={tTools('wordToPdf.uploadDescription') || 'Drag and drop a Word document here, or click to browse.'}
+                label={tTools('wordToPdf.uploadLabel')}
+                description={tTools('wordToPdf.uploadDescription')}
             />
 
             {/* Error Message */}
@@ -264,7 +265,7 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
                             className="text-[hsl(var(--color-muted-foreground))] hover:text-red-500 hover:bg-red-50"
                         >
                             <Trash2 className="w-5 h-5" />
-                            <span className="sr-only">{t('buttons.remove') || 'Remove'}</span>
+                            <span className="sr-only">{t('buttons.remove')}</span>
                         </Button>
                     </div>
                 </Card>
@@ -303,8 +304,8 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
                 >
                     {!isProcessing && <RefreshCw className="w-5 h-5 mr-2" />}
                     {isProcessing
-                        ? (t('status.processing') || 'Converting...')
-                        : (tTools('wordToPdf.convertButton') || 'Convert to PDF')
+                        ? (t('status.processing'))
+                        : (tTools('wordToPdf.convertButton'))
                     }
                 </Button>
 
@@ -329,9 +330,9 @@ export function WordToPDFTool({ className = '' }: WordToPDFToolProps) {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
                         <CheckCircle2 className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle') || 'Conversion Successful!'}</h3>
+                    <h3 className="text-lg font-semibold mb-2">{tTools('successTitle')}</h3>
                     <p className="text-green-800/80 max-w-md mx-auto">
-                        {tTools('wordToPdf.successMessage') || 'Your Word document has been converted to PDF. You can now download it.'}
+                        {tTools('wordToPdf.successMessage')}
                     </p>
                 </div>
             )}

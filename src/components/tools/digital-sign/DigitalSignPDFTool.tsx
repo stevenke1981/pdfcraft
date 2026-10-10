@@ -26,6 +26,7 @@ function EyeIcon({ open }: { open: boolean }) {
 }
 
 export function DigitalSignPDFTool({ className = '' }: { className?: string }) {
+  const tUi = useTranslations();
   const t = useTranslations('common');
   const tTool = useTranslations('tools.digitalSign');
 
@@ -140,7 +141,7 @@ export function DigitalSignPDFTool({ className = '' }: { className?: string }) {
     } else {
       setNeedsPassword(true);
     }
-  }, [parseCert]);
+  }, [parseCert, tTool]);
 
   const handlePasswordSubmit = useCallback(async () => {
     if (!certFile || !password) return;
@@ -176,7 +177,7 @@ export function DigitalSignPDFTool({ className = '' }: { className?: string }) {
     const buffer = await file.arrayBuffer();
     setSigImageData(buffer);
     setSigImageType(file.type === 'image/png' ? 'png' : 'jpeg');
-  }, []);
+  }, [tTool]);
 
   const handleSign = useCallback(async () => {
     if (!pdfFile || !certData) return;
@@ -189,13 +190,13 @@ export function DigitalSignPDFTool({ className = '' }: { className?: string }) {
 
     try {
       setProgress(20);
-      setProgressMessage('Reading PDF...');
+      setProgressMessage(tUi('interfaceText.readingPdf'));
       const pdfBytes = new Uint8Array(await pdfFile.arrayBuffer());
 
       if (cancelledRef.current) { setStatus('idle'); return; }
 
       setProgress(40);
-      setProgressMessage('Applying digital signature...');
+      setProgressMessage(tUi('interfaceText.applyingDigitalSignature'));
 
       const { signPdf, getCertificateInfo } = await import('@/lib/pdf/processors/digital-sign');
 
@@ -253,7 +254,7 @@ export function DigitalSignPDFTool({ className = '' }: { className?: string }) {
         setStatus('error');
       }
     }
-  }, [pdfFile, certData, reason, location, contactInfo, enableVisible, sigX, sigY, sigWidth, sigHeight, sigPage, sigText, sigTextColor, sigTextSize, sigImageData, sigImageType]);
+  }, [tUi, pdfFile, certData, reason, location, contactInfo, enableVisible, sigX, sigY, sigWidth, sigHeight, sigPage, sigText, sigTextColor, sigTextSize, sigImageData, sigImageType, tTool]);
 
   const isProcessing = status === 'processing';
   const canSign = pdfFile && certData && !isProcessing;
@@ -351,7 +352,7 @@ export function DigitalSignPDFTool({ className = '' }: { className?: string }) {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      aria-label={showPassword ? tUi('interfaceText.hidePassword') : tUi('interfaceText.showPassword')}
                       className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-foreground))] transition-colors duration-200"
                     >
                       <EyeIcon open={showPassword} />
@@ -491,7 +492,7 @@ export function DigitalSignPDFTool({ className = '' }: { className?: string }) {
       {/* Action Buttons */}
       <div className="flex flex-wrap items-center gap-4">
         <Button variant="primary" size="lg" onClick={handleSign} disabled={!canSign} loading={isProcessing}>
-          {isProcessing ? (t('status.processing') || 'Processing...') : tTool('signButton')}
+          {isProcessing ? (t('status.processing')) : tTool('signButton')}
         </Button>
         {result && (
           <DownloadButton

@@ -30,6 +30,7 @@ export interface AlternateMergeToolProps {
  * Perfect for combining separately scanned front and back pages.
  */
 export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) {
+  const tUi = useTranslations();
   const tFeedback = useTranslations('common.toolFeedback');
   const t = useTranslations('common');
   const tTools = useTranslations('tools');
@@ -206,16 +207,16 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
         setResult(output.result as Blob);
         setStatus('complete');
       } else {
-        setError(output.error?.message || 'Failed to alternate merge PDF files.');
+        setError(output.error?.message || tUi('interfaceFeedback.failedToAlternateMergePdfFiles'));
         setStatus('error');
       }
     } catch (err) {
       if (!cancelledRef.current) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setError(err instanceof Error ? err.message : tUi('interfaceFeedback.anUnexpectedErrorOccurred'));
         setStatus('error');
       }
     }
-  }, [files, reverseSecond, tFeedback]);
+  }, [tUi, files, reverseSecond, tFeedback]);
 
   /**
    * Handle cancel operation
@@ -248,8 +249,8 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
         onFilesSelected={handleFilesSelected}
         onError={handleUploadError}
         disabled={isProcessing}
-        label={tTools('alternateMerge.uploadLabel') || 'Upload PDF Files'}
-        description={tTools('alternateMerge.uploadDescription') || 'Upload two or more PDF files to interleave their pages alternately.'}
+        label={tTools('alternateMerge.uploadLabel')}
+        description={tTools('alternateMerge.uploadDescription')}
       />
 
       {/* Error Message */}
@@ -267,7 +268,7 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
         <Card variant="outlined" size="lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))]">
-              {tTools('alternateMerge.filesTitle') || 'Files to Interleave'} ({files.length})
+              {tTools('alternateMerge.filesTitle')} ({files.length})
             </h3>
             <Button
               variant="ghost"
@@ -275,15 +276,15 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
               onClick={handleClearAll}
               disabled={isProcessing}
             >
-              {t('buttons.clearAll') || 'Clear All'}
+              {t('buttons.clearAll')}
             </Button>
           </div>
 
           <p className="text-sm text-[hsl(var(--color-muted-foreground))] mb-4">
-            {tTools('alternateMerge.reorderHint') || 'Drag and drop to reorder files. Pages will be interleaved in the order shown (1st page from file 1, 1st page from file 2, 2nd page from file 1, etc.).'}
+            {tTools('alternateMerge.reorderHint')}
           </p>
 
-          <ul className="space-y-2" role="list" aria-label="Files to interleave">
+          <ul className="space-y-2" role="list" aria-label={tUi('interfaceText.filesToInterleave')}>
             {files.map((file, index) => (
               <li
                 key={file.id}
@@ -346,7 +347,7 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
                     onClick={() => handleMoveUp(index)}
                     disabled={index === 0 || isProcessing}
                     className="p-1 rounded hover:bg-[hsl(var(--color-muted))] disabled:opacity-30 disabled:cursor-not-allowed"
-                    aria-label="Move up"
+                    aria-label={tUi('common.accessibility.moveUp')}
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M18 15l-6-6-6 6" />
@@ -357,7 +358,7 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
                     onClick={() => handleMoveDown(index)}
                     disabled={index === files.length - 1 || isProcessing}
                     className="p-1 rounded hover:bg-[hsl(var(--color-muted))] disabled:opacity-30 disabled:cursor-not-allowed"
-                    aria-label="Move down"
+                    aria-label={tUi('common.accessibility.moveDown')}
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M6 9l6 6 6-6" />
@@ -371,7 +372,7 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
                   onClick={() => handleRemoveFile(file.id)}
                   disabled={isProcessing}
                   className="flex-shrink-0 p-1 rounded hover:bg-red-100 text-[hsl(var(--color-muted-foreground))] hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
-                  aria-label={`Remove ${file.file.name}`}
+                  aria-label={tUi('dynamicUi.removeFileName', { filename: file.file.name })}
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M18 6L6 18M6 6l12 12" />
@@ -387,7 +388,7 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
       {files.length >= 2 && (
         <Card variant="outlined">
           <h3 className="text-lg font-medium text-[hsl(var(--color-foreground))] mb-4">
-            {tTools('alternateMerge.optionsTitle') || 'Interleave Options'}
+            {tTools('alternateMerge.optionsTitle')}
           </h3>
           
           <label className="flex items-center gap-3 cursor-pointer">
@@ -400,10 +401,10 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
             />
             <div>
               <span className="text-sm text-[hsl(var(--color-foreground))]">
-                {tTools('alternateMerge.reverseSecond') || 'Reverse second document'}
+                {tTools('alternateMerge.reverseSecond')}
               </span>
               <p className="text-xs text-[hsl(var(--color-muted-foreground))]">
-                {tTools('alternateMerge.reverseSecondHint') || 'Enable this for back-to-front scanned documents'}
+                {tTools('alternateMerge.reverseSecondHint')}
               </p>
             </div>
           </label>
@@ -411,8 +412,8 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
           {/* Info box explaining how interleaving works */}
           <div className="mt-4 p-3 rounded-[var(--radius-md)] bg-[hsl(var(--color-muted)/0.3)] border border-[hsl(var(--color-border))]">
             <p className="text-sm text-[hsl(var(--color-muted-foreground))]">
-              <strong>{tTools('alternateMerge.howItWorks') || 'How it works:'}</strong>{' '}
-              {tTools('alternateMerge.howItWorksDescription') || 'Pages are interleaved alternately: Page 1 from File 1, Page 1 from File 2, Page 2 from File 1, Page 2 from File 2, and so on. If documents have different page counts, extra pages are appended at the end.'}
+              <strong>{tTools('alternateMerge.howItWorks')}</strong>{' '}
+              {tTools('alternateMerge.howItWorksDescription')}
             </p>
           </div>
         </Card>
@@ -439,8 +440,8 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
           loading={isProcessing}
         >
           {isProcessing 
-            ? (t('status.processing') || 'Processing...') 
-            : (tTools('alternateMerge.mergeButton') || 'Interleave PDFs')
+            ? (t('status.processing'))
+            : (tTools('alternateMerge.mergeButton'))
           }
         </Button>
 
@@ -462,7 +463,7 @@ export function AlternateMergeTool({ className = '' }: AlternateMergeToolProps) 
           role="status"
         >
           <p className="text-sm font-medium">
-            {tTools('alternateMerge.successMessage') || 'PDFs interleaved successfully! Click the download button to save your file.'}
+            {tTools('alternateMerge.successMessage')}
           </p>
         </div>
       )}
