@@ -629,7 +629,10 @@
       "successTitle": "Optymalizacja zakończona!",
       "zipDownload": "Pobierz ZIP ({count, plural, one {# plik} few {# pliki} many {# plików} other {# pliku}})",
       "successDone": "Dokument PDF został zoptymalizowany lokalnie!",
-      "sizeInfo": "Oryginał: {size} MB • Lokalnie wyczyszczono przestarzałe fragmenty i strumienie metadanych."
+      "sizeInfo": "Oryginał: {size} MB • Lokalnie wyczyszczono przestarzałe fragmenty i strumienie metadanych.",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "Prześlij plik PDF do bezpiecznego oczyszczenia",

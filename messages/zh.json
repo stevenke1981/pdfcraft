@@ -629,7 +629,10 @@
       "successTitle": "压缩操作执行完毕！",
       "zipDownload": "打包下载 ZIP ({count} 个文件)",
       "successDone": "文档优化压缩完毕！",
-      "sizeInfo": "原始大小: {size} MB • 成功在本地清理了非必要废弃片段和无用元数据流。"
+      "sizeInfo": "原始大小: {size} MB • 成功在本地清理了非必要废弃片段和无用元数据流。",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "上传需要脱敏防溯源的 PDF 文档",

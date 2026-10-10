@@ -629,7 +629,10 @@
       "successTitle": "最適化が完了しました！",
       "zipDownload": "ZIPをダウンロード ({count} 個のファイル)",
       "successDone": "PDFドキュメントがローカルで最適化されました！",
-      "sizeInfo": "オリジナル: {size} MB • ローカルで不要なフラグメントとメタデータストリームをクリーンアップしました。"
+      "sizeInfo": "オリジナル: {size} MB • ローカルで不要なフラグメントとメタデータストリームをクリーンアップしました。",
+      "standardAlgorithm": "標準",
+      "originalPreview": "元の PDF のプレビュー",
+      "compressedPreview": "圧縮後の PDF のプレビュー"
     },
     "deepSanitize": {
       "uploadLabel": "安全なクリーンアップ（サニタイズ）用PDFをアップロード",

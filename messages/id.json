@@ -629,7 +629,10 @@
       "successTitle": "Optimasi Selesai!",
       "zipDownload": "Unduh ZIP ({count} file)",
       "successDone": "Dokumen PDF dioptimalkan secara lokal!",
-      "sizeInfo": "Ukuran Asli: {size} MB • Berhasil membersihkan fragmen usang dan aliran metadata di penyimpanan lokal."
+      "sizeInfo": "Ukuran Asli: {size} MB • Berhasil membersihkan fragmen usang dan aliran metadata di penyimpanan lokal.",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "Unggah PDF untuk Sanitasi Aman",

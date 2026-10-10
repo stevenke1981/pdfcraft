@@ -629,7 +629,10 @@
       "successTitle": "Optimierung abgeschlossen!",
       "zipDownload": "ZIP herunterladen ({count} Dateien)",
       "successDone": "PDF-Dokument lokal optimiert!",
-      "sizeInfo": "Original: {size} MB • Veraltete Fragmente und Metadatenströme wurden lokal bereinigt."
+      "sizeInfo": "Original: {size} MB • Veraltete Fragmente und Metadatenströme wurden lokal bereinigt.",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "PDF zur sicheren Bereinigung hochladen",

@@ -629,7 +629,10 @@
       "successTitle": "Tối ưu hóa thành công!",
       "zipDownload": "Tải xuống ZIP ({count} tệp)",
       "successDone": "Tài liệu PDF đã được tối ưu cục bộ!",
-      "sizeInfo": "Dung lượng gốc: {size} MB • Đã làm sạch các phân mảnh lỗi thời và luồng siêu dữ liệu dư thừa trên máy khách."
+      "sizeInfo": "Dung lượng gốc: {size} MB • Đã làm sạch các phân mảnh lỗi thời và luồng siêu dữ liệu dư thừa trên máy khách.",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "Tải lên tài liệu PDF để làm sạch an toàn",

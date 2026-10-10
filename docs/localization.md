@@ -33,6 +33,8 @@ navigation. CJK system font stacks do not add external font requests.
   downloads, progress time estimates, breadcrumbs and navigation labels, error
   pages, PDF library loading, tours and batch control labels are localized.
   Merge/split/compress validation and status messages use localized copy.
+  Compression quality comparison, the standard algorithm option, preview image
+  descriptions and the remove control also use localized labels.
 - Ninety-three previously literal tool validation/load error call sites use
   shared localized messages. PDF editor mode buttons and save notices, form
   filling UI, and theme accessibility labels are also localized.

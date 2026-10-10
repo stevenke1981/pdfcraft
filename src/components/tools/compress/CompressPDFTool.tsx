@@ -332,7 +332,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
                         : 'border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-black/20 text-zinc-500'
                     }`}
                   >
-                    {alg.charAt(0).toUpperCase() + alg.slice(1)}
+                    {alg === 'standard' ? t('compress.standardAlgorithm') : alg.charAt(0).toUpperCase() + alg.slice(1)}
                   </button>
                 ))}
               </div>
@@ -371,7 +371,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
               disabled={!canCompress}
               loading={isProcessing}
             >
-              {isProcessing ? t('compress.processingButton') : (tTools('compressPdf.compressButton') || 'Compress PDF')}
+              {isProcessing ? t('compress.processingButton') : tTools('compressPdf.compressButton')}
             </Button>
           </div>
         </Card>
@@ -391,7 +391,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
                   {t('compress.sliderTooltip')}
                 </span>
                 <span className="text-[10px] text-zinc-400">
-                  {t('compress.qualityCompare', { quality: quality.toUpperCase() })}
+                  {t('compress.qualityCompare', { quality: t(`compress.quality${quality.charAt(0).toUpperCase() + quality.slice(1)}`) })}
                 </span>
               </div>
 
@@ -406,7 +406,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
                 {/* 1. Original Base Page image */}
                 <img 
                   src={pdfPageImage} 
-                  alt="Original layout" 
+                  alt={t('compress.originalPreview')}
                   className="max-h-[380px] object-contain select-none"
                   draggable={false}
                 />
@@ -421,7 +421,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
                   >
                     <img 
                       src={compressedImage} 
-                      alt="Compressed preview" 
+                      alt={t('compress.compressedPreview')}
                       className="max-h-[380px] object-contain select-none"
                       draggable={false}
                     />
@@ -603,7 +603,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
               {/* Compression Actions */}
               <div className="pt-6 border-t border-[hsl(var(--color-border))]">
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="sm" onClick={handleClearSingleFile} disabled={isProcessing}>
+                  <Button variant="ghost" size="sm" onClick={handleClearSingleFile} disabled={isProcessing} aria-label={t('buttons.remove')}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                   <Button
@@ -614,7 +614,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
                     disabled={!canCompress}
                     loading={isProcessing}
                   >
-                    {isProcessing ? t('compress.processingButton') : (tTools('compressPdf.compressButton') || 'Compress PDF')}
+                    {isProcessing ? t('compress.processingButton') : tTools('compressPdf.compressButton')}
                   </Button>
                 </div>
               </div>
@@ -672,7 +672,7 @@ export function CompressPDFTool({ className = '' }: CompressPDFToolProps) {
               className="font-bold"
               onClick={handleClearSingleFile}
             >
-              {t('buttons.clear') || 'Clear'}
+              {t('buttons.clear')}
             </Button>
             <DownloadButton
               file={files[0].result!}

@@ -140,7 +140,7 @@ for (const locale of ['en', 'zh-TW', 'ja'] as const) {
     await verifyOutput(splitOutput, 1, ['SYNTHETIC_A1']);
     await page.goto(`/${locale}/tools/compress-pdf/`);
     await page.locator('input[type=file]').setInputFiles([path.join(fixtureDirectory, 'A.pdf'), path.join(fixtureDirectory, 'B.pdf')]);
-    await page.getByRole('button', { name: 'Standard', exact: true }).click();
+    await page.getByRole('button', { name: messages.common.compress.standardAlgorithm, exact: true }).click();
     await page.getByRole('button', { name: messages.tools.compressPdf.compressButton, exact: true }).click();
     const compressedDownloads = page.getByRole('button', { name: new RegExp(messages.common.buttons.download) }).filter({ hasNotText: 'ZIP' });
     await expect(compressedDownloads).toHaveCount(2);
@@ -151,6 +151,17 @@ for (const locale of ['en', 'zh-TW', 'ja'] as const) {
     const compressedOutput = path.join(fixtureDirectory, `${locale}-compressed.pdf`);
     await compressed.saveAs(compressedOutput);
     await verifyOutput(compressedOutput, 2, ['SYNTHETIC_A1', 'SYNTHETIC_A2']);
+
+    // Single-file comparison uses localized quality names and accessible controls.
+    await page.goto(`/${locale}/tools/compress-pdf/`);
+    await page.locator('input[type=file]').setInputFiles(path.join(fixtureDirectory, 'A.pdf'));
+    await expect(page.getByRole('img', { name: messages.common.compress.originalPreview, exact: true })).toBeVisible();
+    await expect(page.getByRole('img', { name: messages.common.compress.compressedPreview, exact: true })).toBeVisible();
+    await expect(page.getByText(messages.common.compress.qualityCompare.replace('{quality}', messages.common.compress.qualityMedium), { exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: messages.common.buttons.remove, exact: true })).toBeVisible();
+    await screenshot(page, `${locale}-desktop-compress-preview`);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await screenshot(page, `${locale}-mobile-compress-preview`);
     expect(uploads).toEqual([]);
   });
 }

@@ -629,7 +629,10 @@
       "successTitle": "최적화 완료!",
       "zipDownload": "ZIP 다운로드 ({count}개 파일)",
       "successDone": "PDF 문서가 로컬에서 최적화되었습니다!",
-      "sizeInfo": "원본: {size} MB • 불필요한 레거시 조각 및 메타데이터 스트림이 로컬에서 정상 정리되었습니다."
+      "sizeInfo": "원본: {size} MB • 불필요한 레거시 조각 및 메타데이터 스트림이 로컬에서 정상 정리되었습니다.",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "보안 메타데이터 영구 소거(Sanitize)용 PDF 업로드",

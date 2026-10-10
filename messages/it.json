@@ -629,7 +629,10 @@
       "successTitle": "Ottimizzazione completata!",
       "zipDownload": "Scarica ZIP ({count} file)",
       "successDone": "Documento PDF ottimizzato localmente!",
-      "sizeInfo": "Dimensione originale: {size} MB • Pulizia locale dei frammenti obsoleti e dei flussi di metadati completata."
+      "sizeInfo": "Dimensione originale: {size} MB • Pulizia locale dei frammenti obsoleti e dei flussi di metadati completata.",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "Carica PDF per una rimozione sicura dei metadati",

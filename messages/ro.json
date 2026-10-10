@@ -629,7 +629,10 @@
       "successTitle": "Optimizare finalizată!",
       "zipDownload": "Descărcați ZIP ({count} fișiere)",
       "successDone": "Documentul PDF a fost optimizat local!",
-      "sizeInfo": "Dimensiune inițială: {size} MB • S-au curățat fragmentele învechite și fluxurile de metadate local."
+      "sizeInfo": "Dimensiune inițială: {size} MB • S-au curățat fragmentele învechite și fluxurile de metadate local.",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "Încărcați PDF-ul pentru dezinfectare sigură",

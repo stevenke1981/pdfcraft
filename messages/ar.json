@@ -629,7 +629,10 @@
       "successTitle": "اكتمل التحسين!",
       "zipDownload": "تحميل ZIP ({count} ملفات)",
       "successDone": "تم تحسين مستند PDF محليًا!",
-      "sizeInfo": "الحجم الأصلي: {size} ميجابايت • تم تنظيف الأجزاء المهملة وتدفقات البيانات التعريفية محلياً."
+      "sizeInfo": "الحجم الأصلي: {size} ميجابايت • تم تنظيف الأجزاء المهملة وتدفقات البيانات التعريفية محلياً.",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "تحميل ملف PDF لإجراء التطهير الآمن للبيانات",

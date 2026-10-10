@@ -629,7 +629,10 @@
       "successTitle": "最佳化完成！",
       "zipDownload": "打包下載 ZIP ({count} 個檔案)",
       "successDone": "PDF 文件已在本地最佳化成功！",
-      "sizeInfo": "原始大小: {size} MB • 成功在本地清理了非必要廢棄片段和無用後設資料流。"
+      "sizeInfo": "原始大小: {size} MB • 成功在本地清理了非必要廢棄片段和無用後設資料流。",
+      "standardAlgorithm": "標準",
+      "originalPreview": "原始 PDF 預覽",
+      "compressedPreview": "壓縮後的 PDF 預覽"
     },
     "deepSanitize": {
       "uploadLabel": "上傳需要脫敏防溯源的 PDF 文件",

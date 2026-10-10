@@ -629,7 +629,10 @@
       "successTitle": "Optimization Complete!",
       "zipDownload": "Download ZIP ({count} files)",
       "successDone": "PDF document optimized locally!",
-      "sizeInfo": "Original: {size} MB • Cleaned obsolete fragments and metadata streams locally."
+      "sizeInfo": "Original: {size} MB • Cleaned obsolete fragments and metadata streams locally.",
+      "standardAlgorithm": "Standard",
+      "originalPreview": "Original PDF preview",
+      "compressedPreview": "Compressed PDF preview"
     },
     "deepSanitize": {
       "uploadLabel": "Upload PDF for Safe Sanitization",
