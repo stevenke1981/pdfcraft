@@ -81,3 +81,8 @@ The repository's ESLint 9 dependency needed its missing flat configuration.
 The added configuration keeps Next.js rules enabled; existing JSX quotation
 errors and two `module` variable names were corrected to make lint usable.
 Existing lint warnings are reported rather than disabling the rules.
+
+Linux CI also exposed an existing updater test that expected a Windows release
+asset while inheriting the runner OS from jsdom. The test now explicitly models
+Windows, Linux and macOS clients and restores its mocked browser/fetch state.
+The application updater and release behavior are unchanged.

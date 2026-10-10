@@ -2,7 +2,7 @@
  * Software Updater & Version Comparison Tests
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   parseVersionParts,
   compareVersions,
@@ -22,6 +22,11 @@ describe('Software Updater', () => {
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   describe('parseVersionParts', () => {
@@ -144,7 +149,14 @@ describe('Software Updater', () => {
       expect(shouldCheckUpdate()).toBe(true);
     });
 
-    it('fetches release and discovers update via mocked fetch', async () => {
+    it.each([
+      { platform: 'Win32', userAgent: 'Windows NT 10.0', expectedAsset: 'windows-portable' },
+      { platform: 'Linux x86_64', userAgent: 'X11; Linux x86_64', expectedAsset: 'linux-appimage' },
+      { platform: 'MacIntel', userAgent: 'Macintosh; Intel Mac OS X', expectedAsset: 'macos-dmg' },
+    ])('fetches release and discovers update on $platform via mocked fetch', async ({ platform, userAgent, expectedAsset }) => {
+      // jsdom inherits the runner OS; the simulated client must be explicit.
+      vi.spyOn(navigator, 'platform', 'get').mockReturnValue(platform);
+      vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(userAgent);
       const mockGitHubResponse = {
         tag_name: 'v2026.09.15-xyz',
         name: 'PDFCraft v2026.09.15',
@@ -157,18 +169,28 @@ describe('Software Updater', () => {
             browser_download_url: 'https://example.com/portable.zip',
             size: 10485760,
           },
+          {
+            name: 'PDFCraft.AppImage',
+            browser_download_url: 'https://example.com/pdfcraft.AppImage',
+            size: 10485760,
+          },
+          {
+            name: 'PDFCraft.dmg',
+            browser_download_url: 'https://example.com/pdfcraft.dmg',
+            size: 10485760,
+          },
         ],
       };
 
-      global.fetch = vi.fn().mockResolvedValue({
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
         ok: true,
         json: async () => mockGitHubResponse,
-      });
+      }));
 
       const result = await checkUpdate({ force: true });
       expect(result.hasUpdate).toBe(true);
       expect(result.latestVersion).toBe('v2026.09.15-xyz');
-      expect(result.matchedAssets.primary?.platformType).toBe('windows-portable');
+      expect(result.matchedAssets.primary?.platformType).toBe(expectedAsset);
     });
 
     it('disables update checking when NEXT_PUBLIC_DISABLE_UPDATE_CHECK is true', async () => {
