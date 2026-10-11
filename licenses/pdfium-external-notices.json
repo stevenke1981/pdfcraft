@@ -1,0 +1,62 @@
+[
+  {
+    "id": "brotli",
+    "git": "https://chromium.googlesource.com/chromium/src/third_party/brotli.git",
+    "ref": "ac16a36bc55c4c896135084e878f0d6a2f9b347e",
+    "path": "LICENSE",
+    "gitiles_text_url": "https://chromium.googlesource.com/chromium/src/third_party/brotli.git/+/ac16a36bc55c4c896135084e878f0d6a2f9b347e/LICENSE?format=TEXT",
+    "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful.",
+    "sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94",
+    "git_blob_sha": "33b7cdd2dbaeddce1e35aa1a13f63d71154dc42f"
+  },
+  {
+    "id": "icu",
+    "git": "https://chromium.googlesource.com/chromium/deps/icu.git",
+    "ref": "a86a32e67b8d1384b33f8fa48c83a6079b86f8cd",
+    "path": "LICENSE",
+    "gitiles_text_url": "https://chromium.googlesource.com/chromium/deps/icu.git/+/a86a32e67b8d1384b33f8fa48c83a6079b86f8cd/LICENSE?format=TEXT",
+    "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful.",
+    "sha256": "451167c55c0fa447cc2d5632714f5e3c567fe4f1e1badefab2c1333852198aca",
+    "git_blob_sha": "0b9efcd9092f977797c2572de717ca2edac50bc2"
+  },
+  {
+    "id": "libjpeg_turbo",
+    "git": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git",
+    "ref": "6bb85251a8382b5e07f635a981ac685cc5ab5053",
+    "path": "LICENSE.md",
+    "gitiles_text_url": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git/+/6bb85251a8382b5e07f635a981ac685cc5ab5053/LICENSE.md?format=TEXT",
+    "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful.",
+    "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+    "git_blob_sha": "a785258bcdaeb20de639c6a060a7e3d5df17ae8f"
+  },
+  {
+    "id": "libjpeg_turbo_ijg",
+    "git": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git",
+    "ref": "6bb85251a8382b5e07f635a981ac685cc5ab5053",
+    "path": "README.ijg",
+    "gitiles_text_url": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git/+/6bb85251a8382b5e07f635a981ac685cc5ab5053/README.ijg?format=TEXT",
+    "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful.",
+    "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+    "git_blob_sha": "dbf8070cac812bcfd7eb4d407062919f69c777c8"
+  },
+  {
+    "id": "libpng",
+    "git": "https://chromium.googlesource.com/chromium/src/third_party/libpng.git",
+    "ref": "172f83835c98264e6eefdbe8ae82dc08be337ad0",
+    "path": "LICENSE",
+    "gitiles_text_url": "https://chromium.googlesource.com/chromium/src/third_party/libpng.git/+/172f83835c98264e6eefdbe8ae82dc08be337ad0/LICENSE?format=TEXT",
+    "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful.",
+    "sha256": "bf5e22b9dce8464064ae17a48ea1133c3369ac9e1d80ef9e320e5219aa14ea9b",
+    "git_blob_sha": "e0c5b531cf548d608e911c43c577cd4ba9a1526e"
+  },
+  {
+    "id": "zlib",
+    "git": "https://chromium.googlesource.com/chromium/src/third_party/zlib.git",
+    "ref": "980253c1cc835c893c57b5cfc10c5b942e10bc46",
+    "path": "LICENSE",
+    "gitiles_text_url": "https://chromium.googlesource.com/chromium/src/third_party/zlib.git/+/980253c1cc835c893c57b5cfc10c5b942e10bc46/LICENSE?format=TEXT",
+    "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful.",
+    "sha256": "e1cfcc55c325b3f78cf55df9664abaa066e2271dffe8213347d9fccdfbac8f2c",
+    "git_blob_sha": "8aca25d8c7a1336c991a2bc84bc2aa341a920885"
+  }
+]

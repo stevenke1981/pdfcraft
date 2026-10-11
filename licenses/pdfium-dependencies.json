@@ -1,0 +1,206 @@
+{
+  "source": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/DEPS",
+  "note": "Complete DEPS git mapping, including optional/build-only dependencies. Build flags disable Skia, V8, XFA, partition_alloc and custom libcxx. Not all entries are shipped in the WASM. Use fixed revisions and preserve each license. Gitiles tar archives can be requested as gitUrl/+/commit?format=... or gitUrl/+archive/commit.tar.gz; availability was not verified here.",
+  "dependencies": [
+    {
+      "path": "base/allocator/partition_allocator",
+      "git": "https://chromium.googlesource.com/chromium/src/base/allocator/partition_allocator.git",
+      "commit": "baaa6670c23c19485d0a5a538bc43d3332def328"
+    },
+    {
+      "path": "build",
+      "git": "https://chromium.googlesource.com/chromium/src/build.git",
+      "commit": "06d247cb917bb5fac3103b1b7dccb75368a553ce"
+    },
+    {
+      "path": "buildtools",
+      "git": "https://chromium.googlesource.com/chromium/src/buildtools.git",
+      "commit": "6a18683f555b4ac8b05ac8395c29c84483ac9588"
+    },
+    {
+      "path": "testing/corpus",
+      "git": "https://pdfium.googlesource.com/pdfium_tests",
+      "commit": "e64acd24f00d365c3f7c60e9c4eff16ce2d71f5d"
+    },
+    {
+      "path": "testing/scripts/rust",
+      "git": "https://chromium.googlesource.com/chromium/src/testing/scripts/rust.git",
+      "commit": "6712dc59f4a6c5626f391057cded3842700a17eb"
+    },
+    {
+      "path": "third_party/abseil-cpp",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp.git",
+      "commit": "675d3d37ecbec78fd51378c6774c45715b1e4382"
+    },
+    {
+      "path": "third_party/brotli",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/brotli.git",
+      "commit": "ac16a36bc55c4c896135084e878f0d6a2f9b347e"
+    },
+    {
+      "path": "third_party/catapult",
+      "git": "https://chromium.googlesource.com/catapult.git",
+      "commit": "8ce759d4b71fd2dac753a603ca50d7d98067a585"
+    },
+    {
+      "path": "third_party/clang-format/script",
+      "git": "https://chromium.googlesource.com/external/github.com/llvm/llvm-project/clang/tools/clang-format.git",
+      "commit": "c2725e0622e1a86d55f14514f2177a39efea4a0e"
+    },
+    {
+      "path": "third_party/cpu_features/src",
+      "git": "https://chromium.googlesource.com/external/github.com/google/cpu_features.git",
+      "commit": "936b9ab5515dead115606559502e3864958f7f6e"
+    },
+    {
+      "path": "third_party/depot_tools",
+      "git": "https://chromium.googlesource.com/chromium/tools/depot_tools.git",
+      "commit": "6235028c6b18b73e68f5414f935ec537a25ea51a"
+    },
+    {
+      "path": "third_party/dragonbox/src",
+      "git": "https://chromium.googlesource.com/external/github.com/jk-jeon/dragonbox.git",
+      "commit": "beeeef91cf6fef89a4d4ba5e95d47ca64ccb3a44"
+    },
+    {
+      "path": "third_party/fast_float/src",
+      "git": "https://chromium.googlesource.com/external/github.com/fastfloat/fast_float.git",
+      "commit": "cb1d42aaa1e14b09e1452cfdef373d051b8c02a4"
+    },
+    {
+      "path": "third_party/fp16/src",
+      "git": "https://chromium.googlesource.com/external/github.com/Maratyszcza/FP16.git",
+      "commit": "3d2de1816307bac63c16a297e8c4dc501b4076df"
+    },
+    {
+      "path": "third_party/freetype/src",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/freetype2.git",
+      "commit": "b91f75bd02db43b06d634591eb286d3eb0ce3b65"
+    },
+    {
+      "path": "third_party/googletest/src",
+      "git": "https://chromium.googlesource.com/external/github.com/google/googletest.git",
+      "commit": "4fe3307fb2d9f86d19777c7eb0e4809e9694dde7"
+    },
+    {
+      "path": "third_party/harfbuzz-ng/src",
+      "git": "https://chromium.googlesource.com/external/github.com/harfbuzz/harfbuzz.git",
+      "commit": "fa2908bf16d2ccd6623f4d575455fea72a1a722b"
+    },
+    {
+      "path": "third_party/highway/src",
+      "git": "https://chromium.googlesource.com/external/github.com/google/highway.git",
+      "commit": "84379d1c73de9681b54fbe1c035a23c7bd5d272d"
+    },
+    {
+      "path": "third_party/icu",
+      "git": "https://chromium.googlesource.com/chromium/deps/icu.git",
+      "commit": "a86a32e67b8d1384b33f8fa48c83a6079b86f8cd"
+    },
+    {
+      "path": "third_party/instrumented_libs",
+      "git": "https://chromium.googlesource.com/chromium/third_party/instrumented_libraries.git",
+      "commit": "e8cb570a9a2ee9128e2214c73417ad2a3c47780b"
+    },
+    {
+      "path": "third_party/jinja2",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/jinja2.git",
+      "commit": "c3027d884967773057bf74b957e3fea87e5df4d7"
+    },
+    {
+      "path": "third_party/libc++/src",
+      "git": "https://chromium.googlesource.com/external/github.com/llvm/llvm-project/libcxx.git",
+      "commit": "7ab65651aed6802d2599dcb7a73b1f82d5179d05"
+    },
+    {
+      "path": "third_party/libc++abi/src",
+      "git": "https://chromium.googlesource.com/external/github.com/llvm/llvm-project/libcxxabi.git",
+      "commit": "8f11bb1d4438d0239d0dfc1bd9456a9f31629dda"
+    },
+    {
+      "path": "third_party/libunwind/src",
+      "git": "https://chromium.googlesource.com/external/github.com/llvm/llvm-project/libunwind.git",
+      "commit": "ba19d93d6d4f467fba11ff20fe2fc7c056f79345"
+    },
+    {
+      "path": "third_party/libjpeg_turbo",
+      "git": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git",
+      "commit": "6bb85251a8382b5e07f635a981ac685cc5ab5053"
+    },
+    {
+      "path": "third_party/libpng",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/libpng.git",
+      "commit": "172f83835c98264e6eefdbe8ae82dc08be337ad0"
+    },
+    {
+      "path": "third_party/llvm-libc/src",
+      "git": "https://chromium.googlesource.com/external/github.com/llvm/llvm-project/libc.git",
+      "commit": "603c242115079d3a208638a6e56f842c0801d0bd"
+    },
+    {
+      "path": "third_party/markupsafe",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/markupsafe.git",
+      "commit": "4256084ae14175d38a3ff7d739dca83ae49ccec6"
+    },
+    {
+      "path": "third_party/nasm",
+      "git": "https://chromium.googlesource.com/chromium/deps/nasm.git",
+      "commit": "af5eeeb054bebadfbb79c7bcd100a95e2ad4525f"
+    },
+    {
+      "path": "third_party/rust",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/rust",
+      "commit": "7da7c8be1f1b4ba32dcfd73ddc59ea48a376c041"
+    },
+    {
+      "path": "third_party/simdutf",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/simdutf",
+      "commit": "f7356eed293f8208c40b3c1b344a50bd70971983"
+    },
+    {
+      "path": "third_party/skia",
+      "git": "https://skia.googlesource.com/skia.git",
+      "commit": "c497e689bf3db5c8efe853dae45dd61867d3363a"
+    },
+    {
+      "path": "third_party/test_fonts",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/test_fonts.git",
+      "commit": "7f51783942943e965cd56facf786544ccfc07713"
+    },
+    {
+      "path": "third_party/zlib",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/zlib.git",
+      "commit": "980253c1cc835c893c57b5cfc10c5b942e10bc46"
+    },
+    {
+      "path": "tools/clang",
+      "git": "https://chromium.googlesource.com/chromium/src/tools/clang",
+      "commit": "a1542f2952bcc47640d5cfbc39bb8f6926a1bf6a"
+    },
+    {
+      "path": "tools/code_coverage",
+      "git": "https://chromium.googlesource.com/chromium/src/tools/code_coverage.git",
+      "commit": "fc75c61d3a98a78ff83940366aeba83ddeb28179"
+    },
+    {
+      "path": "tools/memory",
+      "git": "https://chromium.googlesource.com/chromium/src/tools/memory",
+      "commit": "16429092be4bb5160bed0ad763bd4c13f1f52990"
+    },
+    {
+      "path": "tools/rust",
+      "git": "https://chromium.googlesource.com/chromium/src/tools/rust",
+      "commit": "8a3ca2dfc91599656a0f154da9254da7a95e8ee4"
+    },
+    {
+      "path": "tools/win",
+      "git": "https://chromium.googlesource.com/chromium/src/tools/win.git",
+      "commit": "baacfc6d5986b07abe0503216b491e234b94ba79"
+    },
+    {
+      "path": "v8",
+      "git": "https://chromium.googlesource.com/v8/v8.git",
+      "commit": "b3995dff9fc0df19d00743da41a567da5eb8318c"
+    }
+  ]
+}

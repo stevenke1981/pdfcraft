@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-11",
+  "review_scope": "Read-only review of vendored static assets for PDFCraft release; no repository edits or publication.",
+  "initial_repository_head": "b1a9e96a662f0e229f5e1a574138ed6e7fd819d5",
+  "preserve_existing_notices": [
+    "LICENSE (AGPL-3.0; copy into binary ZIP root)",
+    "public/pdfjs-annotation-viewer/LICENSE",
+    "public/pdfjs-annotation-viewer/web/cmaps/LICENSE",
+    "public/pdfjs-annotation-viewer/web/standard_fonts/LICENSE_FOXIT",
+    "public/pdfjs-annotation-viewer/web/standard_fonts/LICENSE_LIBERATION",
+    "public/pdfjs-viewer/cmaps/LICENSE",
+    "public/pdfjs-viewer/iccs/LICENSE",
+    "public/pdfjs-viewer/standard_fonts/LICENSE_FOXIT",
+    "public/pdfjs-viewer/standard_fonts/LICENSE_LIBERATION",
+    "public/pdfjs-viewer/wasm/LICENSE_OPENJPEG",
+    "public/pdfjs-viewer/wasm/LICENSE_PDFJS_OPENJPEG",
+    "public/pdfjs-viewer/wasm/LICENSE_PDFJS_QCMS",
+    "public/pdfjs-viewer/wasm/LICENSE_QCMS",
+    "All LICENSE / LICENCE / COPYING and other notices contained inside public/pymupdf-wasm/*.whl; wheels already retain these; openpyxl and et_xmlfile use LICENCE spelling."
+  ],
+  "copy_local_npm_notices": [
+    "node_modules/@phosphor-icons/web/LICENSE",
+    "node_modules/pdfjs-dist/LICENSE",
+    "node_modules/pdfjs-dist-legacy/LICENSE",
+    "node_modules/tesseract.js/LICENSE.md",
+    "node_modules/tesseract.js-core/LICENSE"
+  ],
+  "fonts": [
+    {
+      "asset": "public/fonts/NotoSansSC-Regular.ttf",
+      "actual_name": "Noto Sans CJK SC",
+      "version": "2.004",
+      "license": "OFL-1.1",
+      "copyright": "© 2014-2021 Adobe (http://www.adobe.com/).",
+      "license_document": "font-noto"
+    },
+    {
+      "asset": "public/pdfjs-viewer/standard_fonts/AlexBrush.ttf",
+      "version": "1.111",
+      "license": "OFL-1.1",
+      "copyright": "Copyright 2011 The Alex Brush Project Authors (https://github.com/googlefonts/alex-brush)",
+      "license_document": "font-alexbrush"
+    },
+    {
+      "asset": "public/pdfjs-viewer/standard_fonts/Allura.ttf",
+      "version": "1.110",
+      "license": "OFL-1.1",
+      "copyright": "Copyright 2010 The Allura Project Authors (https://github.com/googlefonts/allura)",
+      "license_document": "font-allura"
+    },
+    {
+      "asset": "public/pdfjs-viewer/standard_fonts/Handlee.ttf",
+      "version": "1.001",
+      "license": "OFL-1.1",
+      "copyright": "Copyright (c) 2011, Admix Designs (http://www.admixdesigns.com/) with Reserved Font Name Handlee.",
+      "license_document": "font-handlee"
+    },
+    {
+      "asset": "public/pdfjs-viewer/standard_fonts/Kalam.ttf",
+      "version": "2.001",
+      "license": "OFL-1.1",
+      "copyright": "Copyright (c) 2014 Indian Type Foundry (info@indiantypefoundry.com)",
+      "license_document": "font-kalam"
+    },
+    {
+      "asset": "public/pdfjs-viewer/standard_fonts/Sacramento.ttf",
+      "version": "1.000",
+      "license": "OFL-1.1",
+      "copyright": "Copyright (c) 2012 by Brian J. Bonislawsky DBA Astigmatic (AOETI) (astigma@astigmatic.com), with Reserved Font Name \"Sacramento\"",
+      "license_document": "font-sacramento"
+    },
+    {
+      "asset": "public/direct-pdf-editor/phosphor/*",
+      "actual_name": "Phosphor",
+      "version": "2.1",
+      "license": "MIT",
+      "authors": "Tobias Fried & Helena Zhang",
+      "license_file": "node_modules/@phosphor-icons/web/LICENSE"
+    }
+  ],
+  "source_supply": [
+    {
+      "component": "LibreOffice WASM",
+      "assets": [
+        {
+          "path": "public/libreoffice-wasm/soffice.wasm.bin",
+          "size": 147411502,
+          "sha256": "2d23fd5845e169e16e3979db37ba11aefa77e474c6db38815531800a63a3c5d5"
+        },
+        {
+          "path": "public/libreoffice-wasm/soffice.data.bin",
+          "size": 99735918,
+          "sha256": "c837ad74b017f5226eb5d027f7c2dcbff913eea2eb762e875f875ca992f57a3e"
+        }
+      ],
+      "provenance": "Both hashes exactly match Git LFS pointers at matbeedotcom/libreoffice-document-converter commit 749a21a4a16c557cf75b59d8bc5aa19c19e4b05b.",
+      "wrapper_source": "https://github.com/matbeedotcom/libreoffice-document-converter/tree/749a21a4a16c557cf75b59d8bc5aa19c19e4b05b",
+      "upstream_source": "https://github.com/LibreOffice/core/tree/d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1",
+      "buildid_evidence": "soffice.js embeds filesystem offsets; read /instdir/program/versionrc at soffice.data.bin bytes 2122707..2123054. ProductKey LibreOfficeDev 24.8, buildid d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1.",
+      "build_recipe": [
+        "build/build-wasm.sh",
+        "build/autogen.input",
+        "build/patches/wasm-build-fixes.patch",
+        "build/patches/archive/*"
+      ],
+      "instruction": "Supply/pin the upstream LibreOffice source and the matching converter source including all patches/build configuration. Set the source checkout to the recorded buildid instead of following the moving libreoffice-24-8 branch. Do not substitute installed npm 2.6.0 as the vendored WASM version.",
+      "license_documents": [
+        "lo-credits-license",
+        "lo-notice",
+        "lo-mpl",
+        "lo-lgpl"
+      ],
+      "embedded_fonts": "The filesystem image contains Alef, Amiri, Caladea, Carlito, Culmus (David/FrankRuehl/Miriam), DejaVu, Gentium, Liberation, Linux Biolinum/Libertine, Noto, ReemKufi, Rubik, Scheherazade, OpenSymbol. The complete matching readlicense_oo/license/license.xml is XHTML and contains the font and third-party notices; ship unchanged as libreoffice-licenses.html with NOTICE. Do not truncate it to MPL alone.",
+      "not_rebuilt": true
+    },
+    {
+      "component": "PyMuPDF WASM",
+      "asset": "public/pymupdf-wasm/pymupdf-1.26.3-cp313-none-pyodide_2025_0_wasm32.whl",
+      "sha256": "d1b117dff663c247f1fad2b51e5d4c8b4b5fa6fda5a105e8adcc0b43b5e86f40",
+      "git_blob_sha": "1d0dbd0c03f02daf2d262f5665604217a6f245cd",
+      "provenance": "Exact git blob match with alam00000/bentopdf-pymupdf-wasm/assets same wheel.",
+      "wrapper_source": "https://github.com/alam00000/bentopdf-pymupdf-wasm/tree/a104fd5de9c74d06eb030ee35ab6fa4f6e92694b",
+      "upstream_source": "https://github.com/pymupdf/PyMuPDF/tree/1.26.3",
+      "mupdf_source_archive": "https://mupdf.com/downloads/archive/mupdf-1.26.3-source.tar.gz",
+      "version_evidence": "wheel pymupdf/__init__.py git blob 65d88073f353ae2bc68066e4560248b687ec2d86 exactly matches official PyMuPDF tag 1.26.3/src/__init__.py; wheel pymupdf/_build.py identifies MuPDF 1.26.3 archive.",
+      "stale_recipe": "Bento build_scripts/scripts/download.js pins PyMuPDF 4a53405a51d29f2f620c0c7659b7c4d404a9f9c0; buildDeps.js expects pymupdf-1.26.1...whl, inconsistent with shipped 1.26.3 wheel. Dockerfile prepares environment only, does not execute compilation; do not repeat README claim that docker build alone produces WASM.",
+      "instruction": "Supply complete PyMuPDF 1.26.3 + MuPDF 1.26.3 sources, Bento wrapper source/build files, and explicit corrected recipe using 1.26.3 ref and wheel filename. Retain existing wheel COPYING. No rebuild verification performed.",
+      "not_rebuilt": true
+    },
+    {
+      "component": "PDFium direct editor",
+      "asset": "public/direct-pdf-editor/editcore.wasm",
+      "size": 7330128,
+      "sha256": "1860f0b33a1c7d231b78fa9bfedace19739f06e80b1d5f654dd2ea77a7a893ce",
+      "git_blob_sha": "0fe9a407282757a252a3d1abc9933c328f77d563",
+      "provenance": "Exact git blob match with alam00000/bentopdf-pdfium-viewer/packages/pdfium/src/vendor/pdfium.wasm.",
+      "wrapper_source": "https://github.com/alam00000/bentopdf-pdfium-viewer/tree/f48637921bf43808261cf18d8a7e3ce7df6bb858",
+      "wasm_build_source_commit": "3ec97c1ea266 (identified by f486379 commit message)",
+      "pdfium_submodule_source": "https://github.com/alam00000/bentopdf-pdfium/tree/fce2b000cc7a9e2cabc92db41cd57ca03233f07d",
+      "build_recipe": [
+        "packages/pdfium/build/",
+        "packages/pdfium/scripts/",
+        "packages/pdfium/pdfium-src (submodule; a plain GitHub source archive does not populate it)",
+        "PDFium DEPS pins required external dependencies"
+      ],
+      "license_documents": [
+        "pdfium-notice",
+        "pdfium-embedpdf-mit",
+        "pdfium-harfbuzz",
+        "pdfium-package-mit",
+        "pdfium-original-license",
+        "pdfium-source-notice",
+        "pdfium-dep-*"
+      ],
+      "instruction": "Preserve BentoPDF/EmbedPDF/HarfBuzz/PDFium notices; source bundle must include the PDFium submodule or provide an exact fetch recipe plus source access. The included third_party license documents cover in-tree files; external DEPS licenses still require checking against build inputs.",
+      "not_rebuilt": true
+    },
+    {
+      "component": "Pyodide + CPython",
+      "assets": "public/pymupdf-wasm/pyodide* and python_stdlib.zip",
+      "version": "Pyodide 0.28.0a3, Python 3.13.2, Emscripten 4.0.9",
+      "evidence": "public/pymupdf-wasm/pyodide-lock.json info",
+      "sources": [
+        "https://github.com/pyodide/pyodide/tree/0.28.0a3",
+        "https://github.com/python/cpython/tree/v3.13.2"
+      ],
+      "license_documents": [
+        "pyodide-mpl",
+        "cpython-license"
+      ],
+      "instruction": "Add runtime licenses; python_stdlib.zip has no standalone LICENSE entry. Preserve notices in bundled wheel archives."
+    }
+  ],
+  "license_documents": [
+    {
+      "id": "lo-credits-license",
+      "repository": "LibreOffice/core",
+      "path": "readlicense_oo/license/license.xml",
+      "ref": "d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1",
+      "blob_sha": "8fd7da94aa24f11f823637d185a21f7cae30b1a7",
+      "source_url": "https://github.com/LibreOffice/core/blob/d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1/readlicense_oo/license/license.xml",
+      "raw_url": "https://raw.githubusercontent.com/LibreOffice/core/d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1/readlicense_oo/license/license.xml",
+      "immutable_blob_api": "https://api.github.com/repos/LibreOffice/core/git/blobs/8fd7da94aa24f11f823637d185a21f7cae30b1a7"
+    },
+    {
+      "id": "lo-notice",
+      "repository": "LibreOffice/core",
+      "path": "readlicense_oo/license/NOTICE",
+      "ref": "d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1",
+      "blob_sha": "15a5e5ad4101b933fa5ba9a697dac29e7fb12561",
+      "source_url": "https://github.com/LibreOffice/core/blob/d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1/readlicense_oo/license/NOTICE",
+      "raw_url": "https://raw.githubusercontent.com/LibreOffice/core/d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1/readlicense_oo/license/NOTICE",
+      "immutable_blob_api": "https://api.github.com/repos/LibreOffice/core/git/blobs/15a5e5ad4101b933fa5ba9a697dac29e7fb12561"
+    },
+    {
+      "id": "lo-mpl",
+      "repository": "LibreOffice/core",
+      "path": "COPYING.MPL",
+      "ref": "d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1",
+      "blob_sha": "a612ad9813b006ce81d1ee438dd784da99a54007",
+      "source_url": "https://github.com/LibreOffice/core/blob/d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1/COPYING.MPL",
+      "raw_url": "https://raw.githubusercontent.com/LibreOffice/core/d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1/COPYING.MPL",
+      "immutable_blob_api": "https://api.github.com/repos/LibreOffice/core/git/blobs/a612ad9813b006ce81d1ee438dd784da99a54007"
+    },
+    {
+      "id": "lo-lgpl",
+      "repository": "LibreOffice/core",
+      "path": "COPYING.LGPL",
+      "ref": "d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1",
+      "blob_sha": "fc8a5de7edf437cdc98a216370faf7c757279bcb",
+      "source_url": "https://github.com/LibreOffice/core/blob/d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1/COPYING.LGPL",
+      "raw_url": "https://raw.githubusercontent.com/LibreOffice/core/d1c9e0e4e1ddeb24fe8f93e56860b3765043f8b1/COPYING.LGPL",
+      "immutable_blob_api": "https://api.github.com/repos/LibreOffice/core/git/blobs/fc8a5de7edf437cdc98a216370faf7c757279bcb"
+    },
+    {
+      "id": "pdfium-notice",
+      "repository": "alam00000/bentopdf-pdfium-viewer",
+      "path": "NOTICE",
+      "ref": "f48637921bf43808261cf18d8a7e3ce7df6bb858",
+      "blob_sha": "9e9eb37fb3e30b4a4c907e0fd72828534837585a",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium-viewer/blob/f48637921bf43808261cf18d8a7e3ce7df6bb858/NOTICE",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium-viewer/f48637921bf43808261cf18d8a7e3ce7df6bb858/NOTICE",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium-viewer/git/blobs/9e9eb37fb3e30b4a4c907e0fd72828534837585a"
+    },
+    {
+      "id": "pdfium-original-license",
+      "repository": "alam00000/bentopdf-pdfium-viewer",
+      "path": "packages/pdfium/LICENSE.pdfium",
+      "ref": "f48637921bf43808261cf18d8a7e3ce7df6bb858",
+      "blob_sha": "213c96197c605bdaa1054a09826efc2e5d686837",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium-viewer/blob/f48637921bf43808261cf18d8a7e3ce7df6bb858/packages/pdfium/LICENSE.pdfium",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium-viewer/f48637921bf43808261cf18d8a7e3ce7df6bb858/packages/pdfium/LICENSE.pdfium",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium-viewer/git/blobs/213c96197c605bdaa1054a09826efc2e5d686837"
+    },
+    {
+      "id": "pdfium-embedpdf-mit",
+      "repository": "alam00000/bentopdf-pdfium-viewer",
+      "path": "licenses/LICENSE.embedpdf-mit",
+      "ref": "f48637921bf43808261cf18d8a7e3ce7df6bb858",
+      "blob_sha": "961daa3ab59570f06400ce5623708c52efb1ba9a",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium-viewer/blob/f48637921bf43808261cf18d8a7e3ce7df6bb858/licenses/LICENSE.embedpdf-mit",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium-viewer/f48637921bf43808261cf18d8a7e3ce7df6bb858/licenses/LICENSE.embedpdf-mit",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium-viewer/git/blobs/961daa3ab59570f06400ce5623708c52efb1ba9a"
+    },
+    {
+      "id": "pdfium-harfbuzz",
+      "repository": "alam00000/bentopdf-pdfium-viewer",
+      "path": "licenses/LICENSE.harfbuzz",
+      "ref": "f48637921bf43808261cf18d8a7e3ce7df6bb858",
+      "blob_sha": "4fd140dfa7b2371b47f8c8ef726b6a5860a6709c",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium-viewer/blob/f48637921bf43808261cf18d8a7e3ce7df6bb858/licenses/LICENSE.harfbuzz",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium-viewer/f48637921bf43808261cf18d8a7e3ce7df6bb858/licenses/LICENSE.harfbuzz",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium-viewer/git/blobs/4fd140dfa7b2371b47f8c8ef726b6a5860a6709c"
+    },
+    {
+      "id": "font-noto",
+      "repository": "notofonts/noto-cjk",
+      "path": "Sans/LICENSE",
+      "ref": null,
+      "blob_sha": "d952d62c065f3f35fb83a173496e90b21525aef3",
+      "source_url": "https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE",
+      "raw_url": null,
+      "immutable_blob_api": "https://api.github.com/repos/notofonts/noto-cjk/git/blobs/d952d62c065f3f35fb83a173496e90b21525aef3"
+    },
+    {
+      "id": "font-alexbrush",
+      "repository": "google/fonts",
+      "path": "ofl/alexbrush/OFL.txt",
+      "ref": null,
+      "blob_sha": "b596b96b81a244ded88e131d8d5edc68967b129d",
+      "source_url": "https://github.com/google/fonts/blob/main/ofl/alexbrush/OFL.txt",
+      "raw_url": null,
+      "immutable_blob_api": "https://api.github.com/repos/google/fonts/git/blobs/b596b96b81a244ded88e131d8d5edc68967b129d"
+    },
+    {
+      "id": "font-allura",
+      "repository": "google/fonts",
+      "path": "ofl/allura/OFL.txt",
+      "ref": null,
+      "blob_sha": "e5f81cefd10af098bb6739e165d30a4a85455629",
+      "source_url": "https://github.com/google/fonts/blob/main/ofl/allura/OFL.txt",
+      "raw_url": null,
+      "immutable_blob_api": "https://api.github.com/repos/google/fonts/git/blobs/e5f81cefd10af098bb6739e165d30a4a85455629"
+    },
+    {
+      "id": "font-handlee",
+      "repository": "google/fonts",
+      "path": "ofl/handlee/OFL.txt",
+      "ref": null,
+      "blob_sha": "85a004090263a1b45f67bab25cf998a4ac2f878d",
+      "source_url": "https://github.com/google/fonts/blob/main/ofl/handlee/OFL.txt",
+      "raw_url": null,
+      "immutable_blob_api": "https://api.github.com/repos/google/fonts/git/blobs/85a004090263a1b45f67bab25cf998a4ac2f878d"
+    },
+    {
+      "id": "font-kalam",
+      "repository": "google/fonts",
+      "path": "ofl/kalam/OFL.txt",
+      "ref": null,
+      "blob_sha": "6dd809659a8ccace7ccee108d024d33cd4f936da",
+      "source_url": "https://github.com/google/fonts/blob/main/ofl/kalam/OFL.txt",
+      "raw_url": null,
+      "immutable_blob_api": "https://api.github.com/repos/google/fonts/git/blobs/6dd809659a8ccace7ccee108d024d33cd4f936da"
+    },
+    {
+      "id": "font-sacramento",
+      "repository": "google/fonts",
+      "path": "ofl/sacramento/OFL.txt",
+      "ref": null,
+      "blob_sha": "ab66add4d8995ca32408b2098794791852644676",
+      "source_url": "https://github.com/google/fonts/blob/main/ofl/sacramento/OFL.txt",
+      "raw_url": null,
+      "immutable_blob_api": "https://api.github.com/repos/google/fonts/git/blobs/ab66add4d8995ca32408b2098794791852644676"
+    },
+    {
+      "id": "pdfium-dep-third_party-NotoSansCJK-LICENSE",
+      "repository": "alam00000/bentopdf-pdfium",
+      "path": "third_party/NotoSansCJK/LICENSE",
+      "ref": "fce2b000cc7a9e2cabc92db41cd57ca03233f07d",
+      "blob_sha": "70fbc7f46a2c4ddafa78858b04ac15222b3b0b59",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/NotoSansCJK/LICENSE",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/NotoSansCJK/LICENSE",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium/git/blobs/70fbc7f46a2c4ddafa78858b04ac15222b3b0b59"
+    },
+    {
+      "id": "pdfium-dep-third_party-fp16-LICENSE",
+      "repository": "alam00000/bentopdf-pdfium",
+      "path": "third_party/fp16/LICENSE",
+      "ref": "fce2b000cc7a9e2cabc92db41cd57ca03233f07d",
+      "blob_sha": "9a13c7985502d2f154ef156b822ee2fd92960e36",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/fp16/LICENSE",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/fp16/LICENSE",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium/git/blobs/9a13c7985502d2f154ef156b822ee2fd92960e36"
+    },
+    {
+      "id": "pdfium-dep-third_party-lcms-LICENSE",
+      "repository": "alam00000/bentopdf-pdfium",
+      "path": "third_party/lcms/LICENSE",
+      "ref": "fce2b000cc7a9e2cabc92db41cd57ca03233f07d",
+      "blob_sha": "85480b50b0c5860b541dc3b0032084c55ca91dcd",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/lcms/LICENSE",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/lcms/LICENSE",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium/git/blobs/85480b50b0c5860b541dc3b0032084c55ca91dcd"
+    },
+    {
+      "id": "pdfium-dep-third_party-agg23-copying",
+      "repository": "alam00000/bentopdf-pdfium",
+      "path": "third_party/agg23/copying",
+      "ref": "fce2b000cc7a9e2cabc92db41cd57ca03233f07d",
+      "blob_sha": "523a4f6cc42206239841620d549a72fcd8c9aa77",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/agg23/copying",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/agg23/copying",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium/git/blobs/523a4f6cc42206239841620d549a72fcd8c9aa77"
+    },
+    {
+      "id": "pdfium-dep-third_party-bigint-LICENSE",
+      "repository": "alam00000/bentopdf-pdfium",
+      "path": "third_party/bigint/LICENSE",
+      "ref": "fce2b000cc7a9e2cabc92db41cd57ca03233f07d",
+      "blob_sha": "ae9d3dac5fb4a2dbafa05ee0c3466fa080e59f3e",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/bigint/LICENSE",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/bigint/LICENSE",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium/git/blobs/ae9d3dac5fb4a2dbafa05ee0c3466fa080e59f3e"
+    },
+    {
+      "id": "pdfium-dep-third_party-highway-LICENSE",
+      "repository": "alam00000/bentopdf-pdfium",
+      "path": "third_party/highway/LICENSE",
+      "ref": "fce2b000cc7a9e2cabc92db41cd57ca03233f07d",
+      "blob_sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/highway/LICENSE",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/highway/LICENSE",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium/git/blobs/261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64"
+    },
+    {
+      "id": "pdfium-dep-third_party-libtiff-LICENSE.md",
+      "repository": "alam00000/bentopdf-pdfium",
+      "path": "third_party/libtiff/LICENSE.md",
+      "ref": "fce2b000cc7a9e2cabc92db41cd57ca03233f07d",
+      "blob_sha": "55b65673edf0d55ee6aba1afadb84f92794a0786",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/libtiff/LICENSE.md",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/libtiff/LICENSE.md",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium/git/blobs/55b65673edf0d55ee6aba1afadb84f92794a0786"
+    },
+    {
+      "id": "pdfium-dep-third_party-libopenjpeg-LICENSE",
+      "repository": "alam00000/bentopdf-pdfium",
+      "path": "third_party/libopenjpeg/LICENSE",
+      "ref": "fce2b000cc7a9e2cabc92db41cd57ca03233f07d",
+      "blob_sha": "e8fa41040dfbe8be524cac5b1bb19d60c6eb0320",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/libopenjpeg/LICENSE",
+      "raw_url": "https://raw.githubusercontent.com/alam00000/bentopdf-pdfium/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/third_party/libopenjpeg/LICENSE",
+      "immutable_blob_api": "https://api.github.com/repos/alam00000/bentopdf-pdfium/git/blobs/e8fa41040dfbe8be524cac5b1bb19d60c6eb0320"
+    },
+    {
+      "id": "pdfium-package-mit",
+      "blob_sha": "c5e13c45b0aff952c34d22cf98475d0496208767",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium-viewer/blob/f48637921bf43808261cf18d8a7e3ce7df6bb858/packages/pdfium/LICENSE"
+    },
+    {
+      "id": "pdfium-source-notice",
+      "blob_sha": "6422fab397b70fa8953ab9f0efdccb7737f6e61b",
+      "source_url": "https://github.com/alam00000/bentopdf-pdfium/blob/fce2b000cc7a9e2cabc92db41cd57ca03233f07d/NOTICE"
+    },
+    {
+      "id": "pyodide-mpl",
+      "blob_sha": "a612ad9813b006ce81d1ee438dd784da99a54007",
+      "source_url": "https://github.com/pyodide/pyodide/blob/0.28.0a3/LICENSE"
+    },
+    {
+      "id": "cpython-license",
+      "blob_sha": "14603b95c2e23b5a4cd6ff93f50348d1817f7638",
+      "source_url": "https://github.com/python/cpython/blob/v3.13.2/LICENSE"
+    }
+  ]
+}

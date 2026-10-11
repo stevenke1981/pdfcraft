@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "provenance": [
+    {
+      "component": "qpdf",
+      "version": "12.2.0",
+      "evidence": "Version string in public/qpdf.wasm; exact Git blob 6c3d9f852fc970cae098e1bf6a41761e4b7cb295 matches BentoPDF public/qpdf.wasm. Npm @neslinesli93/qpdf-wasm0.3.0 Dockerfile builds12.2.0.",
+      "wrapper_source": "https://github.com/neslinesli93/qpdf-wasm/tree/e661db2d17e391a9fbe6b350b4ea6dbd8c385891",
+      "sources": [
+        {
+          "repository": "qpdf/qpdf",
+          "ref": "856d32c610334855d30e96d25eb5f9636fb62f08"
+        },
+        {
+          "repository": "madler/zlib",
+          "ref": "21767c654d31d2dccdde4330529775c6c5fd5389"
+        },
+        {
+          "repository": "ImageMagick/jpeg-turbo",
+          "ref": "7aa2a898c564041a24b09d0a6e780aaa632d08d3"
+        }
+      ],
+      "notice": "qpdf NOTICE + Apache2 LICENSE; libjpeg-turbo LICENSE + README.ijg; zlib README; Emscripten generated glue. Package wrapper declares ISC in package.json but carries no separate license text.",
+      "build": "emscripten/emsdk:3.1.74, wrapper build.sh and patches/jpeg-turbo.patch; no build performed."
+    },
+    {
+      "component": "CoherentPDF browser2.5.5",
+      "local_blob": "7f90ad95215363918de5262cfc894b53975e07ea",
+      "provenance": "Remove only the 402-byte BentoPDF leading copyright comment: remaining1324660bytes Gitblob2af77ab4cf8d24bb6469fbd4fb26aae5217eec05 exactly match official dist/coherentpdf.browser.min.js.",
+      "source_repository": "coherentgraphics/coherentpdf.js",
+      "source_ref": "47ce307fbdfe02fe74febf025cb20b97de46c032",
+      "archive_url": "https://codeload.github.com/coherentgraphics/coherentpdf.js/tar.gz/47ce307fbdfe02fe74febf025cb20b97de46c032",
+      "source_contents": "Includes unminified dist/coherentpdf.browser.js, coherentpdf.js, exports.ml, Makefile, build script, JS crypto/compression stubs, license with SJCL attribution. Preserve all.",
+      "licensor_statement_url": "https://discuss.ocaml.org/t/experience-report-making-a-javascript-library-from-an-ocaml-library-with-js-of-ocaml/10380",
+      "licensor_statement_date": "2022-08-26",
+      "licensor_statement_summary": "Author John Whitington explicitly scopes the AGPL license to the JavaScript output, excluding original OCaml sources. This is first-party evidence of intentional JS-only licensing rather than an accidentally omitted OCaml source archive.",
+      "scope_limit": "Do not represent the official JS source archive as the complete original OCaml preferred-form sources. Do not relabel historical noncommercial OCaml sources as AGPL.",
+      "historical_sources": {
+        "cpdf": {
+          "ref": "8ce990f715ed20fabc9abac2ba469cf9265dea9e",
+          "license": "Coherent Graphics Non-Commercial Use",
+          "note": "Nearest repository snapshot before the JS binary build, not proven exact all-source match."
+        },
+        "cpdflib": {
+          "ref": "3828968d0bc295709b86ee8b7c55b4600b037e97",
+          "license": "Coherent Graphics Non-Commercial Use"
+        },
+        "camlpdf": {
+          "ref": "8d00a3b642e82e778c3b5631dd238ec46d78daf6",
+          "license": "LGPL2.1-or-later with linking exception"
+        }
+      },
+      "relicensing_comparison": {
+        "cpdf": {
+          "total": 70,
+          "changed": [
+            "cpdfaddtext.ml",
+            "cpdfaddtext.mli",
+            "cpdfannot.ml",
+            "cpdfannot.mli",
+            "cpdfattach.ml",
+            "cpdfattach.mli",
+            "cpdfbookmarks.ml",
+            "cpdfcommand.ml",
+            "cpdfcommand.mli",
+            "cpdfcoord.ml",
+            "cpdfcoord.mli",
+            "cpdfcreate.ml",
+            "cpdfdraft.ml",
+            "cpdferror.ml",
+            "cpdffont.ml",
+            "cpdffont.mli",
+            "cpdfimage.ml",
+            "cpdfimage.mli",
+            "cpdfimpose.ml",
+            "cpdfjson.ml",
+            "cpdfjson.mli",
+            "cpdfmetadata.ml",
+            "cpdfmetadata.mli",
+            "cpdfpad.ml",
+            "cpdfpage.ml",
+            "cpdfpage.mli",
+            "cpdfpagespec.ml",
+            "cpdfpagespec.mli",
+            "cpdfposition.ml",
+            "cpdfposition.mli",
+            "cpdfspot.ml",
+            "cpdfsqueeze.ml",
+            "cpdfsqueeze.mli",
+            "cpdfstrftime.ml",
+            "cpdftexttopdf.ml",
+            "cpdftexttopdf.mli",
+            "cpdftoc.ml",
+            "cpdftoc.mli",
+            "cpdftweak.ml",
+            "cpdftweak.mli",
+            "cpdftype.ml",
+            "cpdftype.mli",
+            "cpdfunicodedata.ml",
+            "cpdfunicodedata.source.ml",
+            "cpdfutil.ml",
+            "cpdfutil.mli"
+          ]
+        },
+        "cpdflib": {
+          "total": 2,
+          "changed": [
+            "cpdflib.ml",
+            "cpdflib.mli"
+          ]
+        },
+        "conclusion": "2024 AGPL source snapshots change46/70 CPDF root OCaml modules/interfaces and2/2 CPDFLIB files. They are not license-only changes. Current official JS browser binary is still the matching2022 binary; no newer source-paired browser binary found."
+      }
+    },
+    {
+      "component": "tr460.0.3",
+      "evidence": "Old tag package.json declaresMIT but noLICENSE file.2016 first officialMITlicense addition fixes that omission; include fulltext withSebastianMayr copyright.",
+      "source_ref": "3a6f29721e7063b9ffd421e461a54beae6170001"
+    },
+    {
+      "component": "client-only0.0.1",
+      "evidence": "Installedpackage homepage reactjs.org/bugsfacebook/reactissues/licenseMIT; React18.3.1rootLICENSEprovided.0byte defaultindex.js carries no separate code. A separate package-specific copyright notice was not found."
+    }
+  ],
+  "remaining_pdfium_notice_sources": [
+    {
+      "id": "brotli",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/brotli.git",
+      "ref": "ac16a36bc55c4c896135084e878f0d6a2f9b347e",
+      "path": "LICENSE",
+      "gitiles_text_url": "https://chromium.googlesource.com/chromium/src/third_party/brotli.git/+/ac16a36bc55c4c896135084e878f0d6a2f9b347e/LICENSE?format=TEXT",
+      "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful."
+    },
+    {
+      "id": "icu",
+      "git": "https://chromium.googlesource.com/chromium/deps/icu.git",
+      "ref": "a86a32e67b8d1384b33f8fa48c83a6079b86f8cd",
+      "path": "LICENSE",
+      "gitiles_text_url": "https://chromium.googlesource.com/chromium/deps/icu.git/+/a86a32e67b8d1384b33f8fa48c83a6079b86f8cd/LICENSE?format=TEXT",
+      "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful."
+    },
+    {
+      "id": "libjpeg_turbo",
+      "git": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git",
+      "ref": "6bb85251a8382b5e07f635a981ac685cc5ab5053",
+      "path": "LICENSE.md",
+      "gitiles_text_url": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git/+/6bb85251a8382b5e07f635a981ac685cc5ab5053/LICENSE.md?format=TEXT",
+      "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful."
+    },
+    {
+      "id": "libjpeg_turbo_ijg",
+      "git": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git",
+      "ref": "6bb85251a8382b5e07f635a981ac685cc5ab5053",
+      "path": "README.ijg",
+      "gitiles_text_url": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git/+/6bb85251a8382b5e07f635a981ac685cc5ab5053/README.ijg?format=TEXT",
+      "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful."
+    },
+    {
+      "id": "libpng",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/libpng.git",
+      "ref": "172f83835c98264e6eefdbe8ae82dc08be337ad0",
+      "path": "LICENSE",
+      "gitiles_text_url": "https://chromium.googlesource.com/chromium/src/third_party/libpng.git/+/172f83835c98264e6eefdbe8ae82dc08be337ad0/LICENSE?format=TEXT",
+      "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful."
+    },
+    {
+      "id": "zlib",
+      "git": "https://chromium.googlesource.com/chromium/src/third_party/zlib.git",
+      "ref": "980253c1cc835c893c57b5cfc10c5b942e10bc46",
+      "path": "LICENSE",
+      "gitiles_text_url": "https://chromium.googlesource.com/chromium/src/third_party/zlib.git/+/980253c1cc835c893c57b5cfc10c5b942e10bc46/LICENSE?format=TEXT",
+      "note": "Read-only URL construction from observed DEPS pins; exact path response not yet checked. Response is base64 when successful."
+    }
+  ],
+  "license_documents": [
+    {
+      "id": "qpdfLicense",
+      "repository": "qpdf/qpdf",
+      "path": "LICENSE.txt",
+      "ref": "856d32c610334855d30e96d25eb5f9636fb62f08",
+      "git_blob_sha": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "source_url": "https://github.com/qpdf/qpdf/blob/856d32c610334855d30e96d25eb5f9636fb62f08/LICENSE.txt"
+    },
+    {
+      "id": "qpdfNotice",
+      "repository": "qpdf/qpdf",
+      "path": "NOTICE.md",
+      "ref": "856d32c610334855d30e96d25eb5f9636fb62f08",
+      "git_blob_sha": "53689465afb5c31e7a19acbe8fe7b9eacfe98f37",
+      "source_url": "https://github.com/qpdf/qpdf/blob/856d32c610334855d30e96d25eb5f9636fb62f08/NOTICE.md"
+    },
+    {
+      "id": "qpdfZlibLicense",
+      "repository": "madler/zlib",
+      "path": "README",
+      "ref": "21767c654d31d2dccdde4330529775c6c5fd5389",
+      "git_blob_sha": "024b79d3d8c8b84ceaab461e04a9a7d3c6d46bb9",
+      "source_url": "https://github.com/madler/zlib/blob/21767c654d31d2dccdde4330529775c6c5fd5389/README"
+    },
+    {
+      "id": "qpdfJpegLicense",
+      "repository": "ImageMagick/jpeg-turbo",
+      "path": "LICENSE.md",
+      "ref": "7aa2a898c564041a24b09d0a6e780aaa632d08d3",
+      "git_blob_sha": "a1cdad52faf4c4c0feaa8657c014808287464dfc",
+      "source_url": "https://github.com/ImageMagick/jpeg-turbo/blob/7aa2a898c564041a24b09d0a6e780aaa632d08d3/LICENSE.md"
+    },
+    {
+      "id": "qpdfJpegIJG",
+      "repository": "ImageMagick/jpeg-turbo",
+      "path": "README.ijg",
+      "ref": "7aa2a898c564041a24b09d0a6e780aaa632d08d3",
+      "git_blob_sha": "9453c195010fb0ace756f8e46d74c7688bb1c857",
+      "source_url": "https://github.com/ImageMagick/jpeg-turbo/blob/7aa2a898c564041a24b09d0a6e780aaa632d08d3/README.ijg"
+    },
+    {
+      "id": "cpdfjsOriginalLicense",
+      "repository": "coherentgraphics/coherentpdf.js",
+      "path": "LICENSE.md",
+      "ref": "47ce307fbdfe02fe74febf025cb20b97de46c032",
+      "git_blob_sha": "1fa321b629f7652b2046b082dbb9172e472d170f",
+      "source_url": "https://github.com/coherentgraphics/coherentpdf.js/blob/47ce307fbdfe02fe74febf025cb20b97de46c032/LICENSE.md"
+    },
+    {
+      "id": "schummarLicense",
+      "repository": "schummar/schummar-translate",
+      "path": "LICENSE",
+      "ref": null,
+      "git_blob_sha": "bff7db9437b0357f6b041123dcc9b0f80d61deca",
+      "source_url": "https://github.com/schummar/schummar-translate/blob/master/LICENSE"
+    },
+    {
+      "id": "tr46LicenseAdded",
+      "repository": "jsdom/tr46",
+      "path": "LICENSE.md",
+      "ref": "3a6f29721e7063b9ffd421e461a54beae6170001",
+      "git_blob_sha": "e90f20a5cc7763e1ad07e5c15c193c51cdf3182b",
+      "source_url": "https://github.com/jsdom/tr46/blob/3a6f29721e7063b9ffd421e461a54beae6170001/LICENSE.md"
+    },
+    {
+      "id": "clientOnlyLicenseActual",
+      "repository": "react/react",
+      "path": "LICENSE",
+      "ref": "v18.3.1",
+      "git_blob_sha": "b96dcb0480a0b0be0727976e5202a1e7b23edc3f",
+      "source_url": "https://github.com/react/react/blob/v18.3.1/LICENSE"
+    },
+    {
+      "id": "pdfium-abseil",
+      "repository": "abseil/abseil-cpp",
+      "path": "LICENSE",
+      "ref": "675d3d37ecbec78fd51378c6774c45715b1e4382",
+      "git_blob_sha": "ccd61dcfe3dbcdf77a72794d7794b1e112a39e0b",
+      "source_url": "https://github.com/abseil/abseil-cpp/blob/675d3d37ecbec78fd51378c6774c45715b1e4382/LICENSE"
+    },
+    {
+      "id": "pdfium-hb",
+      "repository": "harfbuzz/harfbuzz",
+      "path": "COPYING",
+      "ref": "fa2908bf16d2ccd6623f4d575455fea72a1a722b",
+      "git_blob_sha": "1dd917e9f2e72167de69e3b5dadbc4e7db417da1",
+      "source_url": "https://github.com/harfbuzz/harfbuzz/blob/fa2908bf16d2ccd6623f4d575455fea72a1a722b/COPYING"
+    },
+    {
+      "id": "pdfium-ft",
+      "repository": "freetype/freetype",
+      "path": "docs/FTL.TXT",
+      "ref": "b91f75bd02db43b06d634591eb286d3eb0ce3b65",
+      "git_blob_sha": "b9e8cbd66ffff526113350953f4a2f4252a92f49",
+      "source_url": "https://github.com/freetype/freetype/blob/b91f75bd02db43b06d634591eb286d3eb0ce3b65/docs/FTL.TXT"
+    },
+    {
+      "id": "pdfium-fp16",
+      "repository": "Maratyszcza/FP16",
+      "path": "LICENSE",
+      "ref": "3d2de1816307bac63c16a297e8c4dc501b4076df",
+      "git_blob_sha": "eabec6c86a3c7117090954b3756012b37b7c3786",
+      "source_url": "https://github.com/Maratyszcza/FP16/blob/3d2de1816307bac63c16a297e8c4dc501b4076df/LICENSE"
+    },
+    {
+      "id": "pdfium-fast-float",
+      "repository": "fastfloat/fast_float",
+      "path": "LICENSE-MIT",
+      "ref": "cb1d42aaa1e14b09e1452cfdef373d051b8c02a4",
+      "git_blob_sha": "2fb2a37ad7fda521092c8b7b16911176c3f8a81b",
+      "source_url": "https://github.com/fastfloat/fast_float/blob/cb1d42aaa1e14b09e1452cfdef373d051b8c02a4/LICENSE-MIT"
+    }
+  ]
+}

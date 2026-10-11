@@ -5,7 +5,7 @@
  * Splits files larger than 24MB into smaller parts to bypass Cloudflare Pages limits.
  */
 import { readFileSync, writeFileSync, readdirSync, statSync, unlinkSync, existsSync } from 'fs';
-import { join } from 'path';
+import { basename, join } from 'path';
 
 // Limit set to 24MB (safely under Cloudflare's 25MB hard limit)
 const LIMIT_SIZE = 24 * 1024 * 1024;
@@ -18,7 +18,7 @@ async function processFile(filePath) {
     const stat = statSync(filePath);
     if (stat.size <= LIMIT_SIZE) return;
 
-    const fileName = filePath.split('/').pop();
+    const fileName = basename(filePath);
     console.log(`[chunking] Splitting ${fileName} (${(stat.size / 1024 / 1024).toFixed(1)}MB)...`);
 
     const buffer = readFileSync(filePath);
